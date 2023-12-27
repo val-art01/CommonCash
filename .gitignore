@@ -5,7 +5,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
-.pnpm-debug.log*
+pnpm-debug.log*
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
@@ -79,6 +79,7 @@ web_modules/
 .env.test.local
 .env.production.local
 .env.local
+*.local
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -105,6 +106,8 @@ out
 
 
 # Stores VSCode versions used for testing VSCode extensions
+.vscode
+!.vscode/extensions.json
 .vscode-test
 
 # yarn v2
@@ -113,3 +116,21 @@ out
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+.DS_Store
+dist
+dist-ssr
+coverage
+
+/cypress/videos/
+/cypress/screenshots/
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+*.tsbuildinfo
