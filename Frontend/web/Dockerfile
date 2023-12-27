@@ -1,23 +1,23 @@
-# Utilisez une image Node.js comme base
-FROM node:14
+# Utiliser une image Node.js
+FROM node:20.9.0
 
-# Définissez le répertoire de travail dans le conteneur
+# Créer le dossier de travail dans le conteneur
 WORKDIR /usr/src/app
 
 # Copiez le fichier package.json et le fichier package-lock.json dans le répertoire de travail
 COPY package*.json ./
 
-# Installez les dépendances
+# Installer les dépendances
 RUN npm install
 
 # Copiez le reste des fichiers dans le répertoire de travail
 COPY . .
 
-# Build du projet
+# Build de l'application frontend
 RUN npm run build
 
-# Exposez le port sur lequel le serveur fonctionne (le port de votre application frontend)
-EXPOSE 3000
+# Exposer le port nécessaire par l'application
+EXPOSE 5173
 
-# Commande à exécuter lors du démarrage du conteneur
-CMD ["npm", "start"]
+# Commande pour démarrer le serveur frontend
+CMD ["npm", "run", "dev"]
