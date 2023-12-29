@@ -5,7 +5,7 @@
   
   <div>
     <div class="navbar">
-      <div class="logo"><img src="./frontend/src/assets/logo/téléchargement-removebg-preview (1).png">
+      <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png">
 </div>
       <ul class="menu">
         <li><router-link to="/Home">Accueil</router-link></li>
@@ -47,8 +47,16 @@
 </template>
 
 <script>
+import telechargementImage from "@/assets/logo/téléchargement-removebg-preview (1).png";
+
 export default {
   name: 'Home',
+  data() {
+    return {
+      telechargementImage,
+    };
+  },
+  // ... Autres options du composant ...
 };
 </script>
 
@@ -92,9 +100,10 @@ body {
 
 
 
-.brand {
-  /*font-size: 1.5em;*/
-  background-image: url('src/assets/logo/téléchargement-removebg-preview (1).png');
+.logo-img {
+
+  width: 15%;
+  height: auto;
 }
 
 .menu {
@@ -178,7 +187,7 @@ body {
   display: flex;
   /*justify-content: center;
   align-items: center;*/
-  height: 45vh; /* Ajustez selon vos besoins */
+  height: 40vh; /* Ajustez selon vos besoins */
   left: 90%;
   font-size: 20px;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
@@ -204,9 +213,5 @@ body {
 
 
 }
-
-
-
-
 
 </style>
