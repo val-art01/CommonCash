@@ -1,5 +1,5 @@
 # Utilisez une image Node.js comme base
-FROM node:14
+FROM node:20.9.0
 
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 8000
 
 # Commande à exécuter lors du démarrage du conteneur
-CMD ["node", "/server.js"]
+CMD ["npm", "start"]
