@@ -5,8 +5,7 @@
   
   <div>
     <div class="navbar">
-      <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png">
-</div>
+      <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png"></div>
       <ul class="menu">
         <li><router-link to="/Home">Accueil</router-link></li>
         <li><router-link to="/login">Connexion</router-link></li>
@@ -17,16 +16,16 @@
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
       </ul>
     </div>
-  </div> 
-  <div class="bande-blanche"></div>
-  <div class="image-container"></div>
-  <!-- Votre contenu HTML ici -->
+  
+    <div class="bande-blanche"></div>
+    <div class="image-container"></div>
+     <!-- Votre contenu HTML ici -->
  
-  <div>
-    <div class="welcome-section">
-      <h1>CommonCash</h1>
-      <h2>Bienvenue sur l'application de gestion de dépenses</h2>
-      <p>Connectez-vous pour commencer à utiliser l'application.</p>
+    <div>
+      <div class="welcome-section">
+        <h1>CommonCash</h1>
+        <h2>Bienvenue sur l'application de gestion de dépenses</h2>
+        <p>Connectez-vous pour commencer à utiliser l'application.</p>
 
       <div class="buttons">
         <router-link to="/login">
@@ -38,15 +37,16 @@
       </div>
     </div>
     <div class="image-container"></div>
-  <!-- Votre contenu HTML ici -->
-  </div>
-  <div class="container">
-    <div class="text-with-bar">
-      <div class="vertical-bar"></div>
-      <span class="text"> CommonCash a pour objectif de permettre à un groupe de personnes de gérer des dépenses communes de manière collaborative.<br> Chaque membre du groupe a la possibilité de déclarer une dépense, <br>en précisant quels sont les autres membres du groupe qui ont bénéficié de cette dépense.<br>Une fois les dépenses déclarées, CommonCash effectue des calculs pour déterminer les remboursements nécessaires afin d'équilibrer les comptes du groupe.<br> En d'autres termes, CommonCash répond à la question "qui doit combien à qui ?" <br>en fournissant des informations sur les ajustements financiers à effectuer entre les membres du groupe.<br></span>
-      
+  
     </div>
-  </div>
+    <div class="container">
+      <div class="text-with-bar">
+        <div class="vertical-bar"></div>
+        <span class="text"> CommonCash a pour objectif de permettre à un groupe de personnes de gérer des dépenses communes de manière collaborative.<br> Chaque membre du groupe a la possibilité de déclarer une dépense, <br>en précisant quels sont les autres membres du groupe qui ont bénéficié de cette dépense.<br>Une fois les dépenses déclarées, CommonCash effectue des calculs pour déterminer les remboursements nécessaires afin d'équilibrer les comptes du groupe.<br> En d'autres termes, CommonCash répond à la question "qui doit combien à qui ?" <br>en fournissant des informations sur les ajustements financiers à effectuer entre les membres du groupe.<br></span>
+      
+      </div>
+    </div>
+  </div>  
 </template>
 
 <script>
