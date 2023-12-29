@@ -7,7 +7,7 @@
     <div class="navbar">
       <div class="brand">Gestion de Dépenses</div>
       <ul class="menu">
-        <li><router-link to="/">Accueil</router-link></li>
+        <li><router-link to="/Home">Accueil</router-link></li>
         <li><router-link to="/login">Connexion</router-link></li>
         <li><router-link to="/register">Inscription</router-link></li>
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
@@ -16,7 +16,7 @@
   </div>  
   <div class="image-container"></div>
   <!-- Votre contenu HTML ici -->
-
+ 
   <div>
     <div class="welcome-section">
       <h1>CommonCash</h1>
@@ -34,6 +34,13 @@
     </div>
     <div class="image-container"></div>
   <!-- Votre contenu HTML ici -->
+  </div>
+  <div class="container">
+    <div class="text-with-bar">
+      <div class="vertical-bar"></div>
+      <span class="text"> CommonCash a pour objectif de permettre à un groupe de personnes de gérer des dépenses communes de manière collaborative.<br> Chaque membre du groupe a la possibilité de déclarer une dépense, <br>en précisant quels sont les autres membres du groupe qui ont bénéficié de cette dépense.<br>Une fois les dépenses déclarées, CommonCash effectue des calculs pour déterminer les remboursements nécessaires afin d'équilibrer les comptes du groupe.<br> En d'autres termes, CommonCash répond à la question "qui doit combien à qui ?" <br>en fournissant des informations sur les ajustements financiers à effectuer entre les membres du groupe.<br></span>
+      
+    </div>
   </div>
 </template>
 
@@ -96,6 +103,8 @@ body {
   text-decoration: none;
   color: #fff;
   font-weight: bold;
+  cursor: pointer;
+  font-size: 40px;
 }
 
 .menu a:hover {
@@ -104,6 +113,7 @@ body {
 .welcome-section {
   text-align: center;
   margin: 50px;
+  
 }
 
 .buttons {
@@ -151,7 +161,36 @@ body {
   background-color: #6b5683;
 }
 
+.container {
+  display: flex;
+  /*justify-content: center;
+  align-items: center;*/
+  height: 45vh; /* Ajustez selon vos besoins */
+  left: 90%;
+  font-size: 20px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  margin-left: 65px;
+}
 
+.text-with-bar {
+  display: flex;
+  align-items: center;
+}
+
+.text {
+  margin-left: 20px; /* Espacement entre le texte et la barre */
+  
+}
+
+.vertical-bar {
+  height: 170px; /* Hauteur de la barre */
+  width: 10px; /* Largeur de la barre */
+  background-color: rgb(100, 0, 128); /* Couleur de la barre */
+  border-radius: 5px;
+  margin-left: 65px;
+
+
+}
 
 
 </style>
