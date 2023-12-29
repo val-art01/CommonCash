@@ -5,7 +5,8 @@
   
   <div>
     <div class="navbar">
-      <div class="brand">Gestion de Dépenses</div>
+      <div class="logo"><img src="./frontend/src/assets/logo/téléchargement-removebg-preview (1).png">
+</div>
       <ul class="menu">
         <li><router-link to="/Home">Accueil</router-link></li>
         <li><router-link to="/login">Connexion</router-link></li>
@@ -13,7 +14,8 @@
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
       </ul>
     </div>
-  </div>  
+  </div> 
+  <div class="bande-blanche"></div>
   <div class="image-container"></div>
   <!-- Votre contenu HTML ici -->
  
@@ -74,7 +76,7 @@ body {
 }
 
 .navbar {
-  background-color: #846f99;
+
   color: #fff;
   padding: 10px;
   display: flex;
@@ -84,10 +86,15 @@ body {
   background-color: #fff;*/
   backdrop-filter: blur(50px); /* Ajoute un flou de 10 pixels au fond */
   /*-webkit-backdrop-filter: blur(50px); /* Pour la prise en charge de WebKit (Safari) */
+  font-size: large;
 }
+ 
+
+
 
 .brand {
-  font-size: 1.5em;
+  /*font-size: 1.5em;*/
+  background-image: url('src/assets/logo/téléchargement-removebg-preview (1).png');
 }
 
 .menu {
@@ -110,6 +117,12 @@ body {
 .menu a:hover {
   color: #ffcc00; /* Couleur au survol du lien */
 }
+
+.bande-blanche {
+    height: 2px;
+    background-color: #b567f1;
+}
+
 .welcome-section {
   text-align: center;
   margin: 50px;
