@@ -74,13 +74,13 @@ body {
 }
 
 .navbar {
-  /*background-color: #333;*/
+  background-color: #846f99;
   color: #fff;
   padding: 10px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  /*height: 5px; /* Ajustez la hauteur de la bande blanche selon vos besoins *//*
+  align-items: center;/*
+  height: 2px; /* Ajustez la hauteur de la bande blanche selon vos besoins *//*
   background-color: #fff;*/
   backdrop-filter: blur(50px); /* Ajoute un flou de 10 pixels au fond */
   /*-webkit-backdrop-filter: blur(50px); /* Pour la prise en charge de WebKit (Safari) */
@@ -191,6 +191,9 @@ body {
 
 
 }
+
+
+
 
 
 </style>
