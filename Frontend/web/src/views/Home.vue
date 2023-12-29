@@ -11,6 +11,9 @@
         <li><router-link to="/Home">Accueil</router-link></li>
         <li><router-link to="/login">Connexion</router-link></li>
         <li><router-link to="/register">Inscription</router-link></li>
+        <li><router-link to="/application"> Application Mobile</router-link></li>
+        <li><router-link to=/about>About</router-link></li>
+
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
       </ul>
     </div>
