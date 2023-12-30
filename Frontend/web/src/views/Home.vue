@@ -7,11 +7,11 @@
     <div class="navbar">
       <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png"></div>
       <ul class="menu">
-        <li><router-link to="/Home">Accueil</router-link></li>
-        <li><router-link to="/login">Connexion</router-link></li>
-        <li><router-link to="/register">Inscription</router-link></li>
-        <li><router-link to="/application"> Application Mobile</router-link></li>
-        <li><router-link to=/about>About</router-link></li>
+        <li><router-link to="/Home" exact>Accueil</router-link></li>
+        <li><router-link to="/login" exact>Connexion</router-link></li>
+        <li><router-link to="/register" exact>Inscription</router-link></li>
+        <li><router-link to="/application" exact> Application Mobile</router-link></li>
+        <li><router-link to=/about exact>About</router-link></li>
 
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
       </ul>
@@ -51,6 +51,8 @@
 
 <script>
 import telechargementImage from "@/assets/logo/téléchargement-removebg-preview (1).png";
+import { defineComponent } from 'vue';
+import { RouterLink } from 'vue-router';
 
 export default {
   name: 'Home',
