@@ -16,6 +16,7 @@
         <!-- Ajoutez d'autres liens du menu selon les besoins -->
       </ul>
     </div>
+    <!--<router-view/>-->
   
     <div class="bande-blanche"></div>
     <div class="image-container"></div>
