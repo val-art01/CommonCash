@@ -7,7 +7,7 @@
     <div class="navbar">
       <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png"></div>
       <ul class="menu">
-        <li><router-link to="/Home" exact>Accueil</router-link></li>
+        <li><router-link to="/" exact>Accueil</router-link></li>
         <li><router-link to="/login" exact>Connexion</router-link></li>
         <li><router-link to="/register" exact>Inscription</router-link></li>
         <li><router-link to="/application" exact> Application Mobile</router-link></li>
@@ -125,11 +125,11 @@ body {
   color: #fff;
   font-weight: bold;
   cursor: pointer;
-  font-size: 40px;
+  font-size: 19px;
 }
 
 .menu a:hover {
-  color: #ffcc00; /* Couleur au survol du lien */
+  color: #6b5683; /* Couleur au survol du lien */
 }
 
 .bande-blanche {
