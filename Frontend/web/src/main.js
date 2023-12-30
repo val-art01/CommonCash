@@ -1,14 +1,13 @@
 import './assets/style/style.css'
 
-import { createApp } from 'vue'
-import App from './views/Home.vue'
-import router from './routes'; // Importez le routeur
 
-createApp(App).mount('#app')
+// main.js
+import { createApp } from 'vue';
+import App from './views/Home.vue';
+import router from './routes'; // Assurez-vous d'importer votre fichier de routage correctement
 
-Vue.config.productionTip = false;
+const app = createApp(App);
 
-new Vue({
-  render: h => h(App),
-  router, // Utilisez le routeur dans l'instance Vue
-}).$mount('#app');
+app.use(router); // Utilisez Vue Router
+
+app.mount('#app');
