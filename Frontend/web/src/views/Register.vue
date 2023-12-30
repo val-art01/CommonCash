@@ -53,7 +53,7 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
-    margin-top: 50px;
+    margin-top: 100px;
   }
   
   label {
