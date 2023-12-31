@@ -3,13 +3,11 @@ import validator from 'validator';
 
 // Middleware de validation des donnees de l'utilisateur
 const validateRegistration = async (req, res, next) => {
-    const {name, email, password} = req.body;
+    const {name, email, password, confirmPassword} = req.body;
 
-
-        if (!isValidName(name)){
-            return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
-        }
-
+    if (!isValidName(name)){
+        return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
+    }
     
     if(!validator.isEmpty(email)){
         if (isValidEmail(email)) {
@@ -31,13 +29,17 @@ const validateRegistration = async (req, res, next) => {
     }
 
     
-    if (!isValidPassword(password)) {
+    if (isValidPassword(password) && isValidPassword(confirmPassword)) {
+        const result = password.localeCompare(confirmPassword);
+        if(result != 0){
+            return res.status(400).json({ message: "les mot de passe ne corespondent pas"});
+        }
+    }else{
         return res.status(400).json({
             message: 'Le mot de passe doit contenir au moins 7 caractères avec au moins un caractère spécial et un chiffre'
         });
     }
     
-
     next();        
 };
 
