@@ -1,5 +1,4 @@
-
-import User from "./../models/users.js";
+import User from './../models/Users.js';
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 
@@ -21,7 +20,7 @@ export const register = async (req, res) =>{
 
         // Enregistrer l'utilisateur dans la base de données
         const savedUser = await newUser.save();
-        res.status(201).json({ message: `Compte utilisateur créé avec succès\n ${savedUser}` });
+        res.status(201).json({ message: `Compte utilisateur créé avec succès ${savedUser}` });
     }catch(err){
         res.status(500).json({ response: 'Internal server error: ' + err.message })
     }

@@ -16,11 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // les routes
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
-app.use('/api/users', userRoute);
+app.use('/users', userRoute);
 
-app.get("/", (_, res) => {
-    res.send('ok')
-});
+app.use((req, res) => {
+    res.status(404).json({ message: `API introuvable à l'adresse ${req.url}` })
+})
 
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}. API Documentation: http://localhost:${PORT}/api-docs/`)
