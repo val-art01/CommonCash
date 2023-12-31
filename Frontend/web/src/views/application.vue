@@ -1,5 +1,17 @@
 <template>
     <div>
+        <div class="navbar">
+      <div class="logo"><img class="logo-img" src="@/assets/logo/téléchargement-removebg-preview (1).png"></div>
+      <ul class="menu">
+        <li><router-link to="/" exact>Accueil</router-link></li>
+        <li><router-link to="/login" exact>Connexion</router-link></li>
+        <li><router-link to="/register" exact>Inscription</router-link></li>
+        <li><router-link to="/application" exact> Application Mobile</router-link></li>
+        <li><router-link to=/about exact>About</router-link></li>
+
+        <!-- Ajoutez d'autres liens du menu selon les besoins -->
+      </ul>
+    </div>
         <div class="explanation-container">
       <h2>Application Mobile</h2>
       <p>
@@ -25,6 +37,10 @@
   
   <style scoped>
   /* Styles spécifiques à la page d'explication mobile */
+
+  body{
+    filter: blur(5px);
+  }
   
   .specific-page {
     position: relative; /* Permet le positionnement relatif des éléments enfants */
