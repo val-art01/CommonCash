@@ -1,34 +1,43 @@
-import User from './../models/Users.js';
+import User from '../models/Users.js';
 import validator from 'validator';
 
 // Middleware de validation des donnees de l'utilisateur
 const validateRegistration = async (req, res, next) => {
     const {name, email, password} = req.body;
 
-    if (validator.isEmpty(name) || !isValidName(name)){
-        return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
-    }
 
-    if (!isValidEmail(email)) {
-        return res.status(400).json({ message: 'L\'email n\'est pas valide' });
-    }
-
-    // verifier di l'email est deja enregistré
-    try {
-        const existingEmail = await User.findOne({ email });
-        if(existingEmail){
-            return res.status(400).json({message: `Cet email est déjà enregistré`})
+        if (!isValidName(name)){
+            return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
         }
 
-    } catch (error) {
-        return res.status(500).json({response: 'Erreur lors de la vérification de l\'email enregistré: '+ error})
+    
+    if(!validator.isEmpty(email)){
+        if (isValidEmail(email)) {
+            // vérification si l'email est deja enregistré
+            try {
+                const existingEmail = await User.findOne({ email });
+                if(existingEmail){
+                    return res.status(400).json({message: `Cet email est déjà enregistré`})
+                }
+
+            } catch (error) {
+                return res.status(500).json({response: 'Erreur lors de la vérification de l\'email enregistré: '+ error})
+            }
+        }else{
+            return res.status(400).json({ message: 'L\'email n\'est pas valide' });
+        }
+    }else{
+        return res.status(400).json({ message: 'Le champ email est vide' });
     }
 
+    
     if (!isValidPassword(password)) {
         return res.status(400).json({
             message: 'Le mot de passe doit contenir au moins 7 caractères avec au moins un caractère spécial et un chiffre'
         });
     }
+    
+
     next();        
 };
 

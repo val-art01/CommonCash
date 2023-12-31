@@ -1,6 +1,6 @@
 import express from 'express';
 import {register} from '../src/controllers/userController.js'
-import {validateRegistration} from './../src/middlewares/insciptionMiddleware.js'
+import {validateRegistration} from '../src/middlewares/registerMiddleware.js'
 
 const router = express.Router()
 
