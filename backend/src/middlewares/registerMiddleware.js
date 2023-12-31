@@ -5,10 +5,9 @@ import validator from 'validator';
 const validateRegistration = async (req, res, next) => {
     const {name, email, password, confirmPassword} = req.body;
 
-        if (!isValidName(name)){
-            return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
-        }
-
+    if (!isValidName(name)){
+        return res.status(400).json({ message: 'Le nom doit contenir au moins 3 caractères' });
+    }
     
     if(!validator.isEmpty(email)){
         if (isValidEmail(email)) {
@@ -41,7 +40,6 @@ const validateRegistration = async (req, res, next) => {
         });
     }
     
-
     next();        
 };
 
