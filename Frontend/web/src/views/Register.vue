@@ -172,6 +172,7 @@ form h3{
     font-weight: 500;
     line-height: 42px;
     text-align: center;
+    color: white;
 }
 
 label{
@@ -179,17 +180,19 @@ label{
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
+    color: white;
 }
 input{
     display: block;
     height: 50px;
     width: 100%;
-    background-color: rgba(255,255,255,0.07);
+    background-color: rgba(255, 255, 255, 0.07);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
     font-size: 14px;
     font-weight: 300;
+    color: white;
 }
 ::placeholder{
     color: #e5e5e5;
@@ -197,7 +200,7 @@ input{
 button{
     margin-top: 23px;
     width: 100%;
-    background-color: #b957f1;
+    background-color: #ffffff;
     color: #080710;
     padding: 15px 0;
     font-size: 18px;

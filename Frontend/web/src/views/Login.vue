@@ -199,7 +199,7 @@ form{
 }
 form *{
     font-family: 'Poppins',sans-serif;
-    color: #be1af0;
+    color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
@@ -234,7 +234,7 @@ input{
 button{
     margin-top: 23px;
     width: 100%;
-    background-color: #b957f1;
+    background-color: #ffffff;
     color: #080710;
     padding: 15px 0;
     font-size: 18px;
@@ -273,7 +273,7 @@ button{
 
 .register-link {
   margin-left: 50px;
-  color: #110127;
+  color: #ffffff;
 }
   </style>
   
