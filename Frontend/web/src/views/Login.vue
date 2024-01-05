@@ -184,8 +184,8 @@ color: #6b5683; /* Couleur au survol du lien */
     bottom: -80px;
 }
 form{
-    height: 410px;
-    width: 400px;
+    height: 520px;
+    width: 500px;
     background-color: rgba(133, 25, 215, 0.13);
     position: absolute;
     transform: translate(-50%,-50%);

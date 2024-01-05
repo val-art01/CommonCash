@@ -147,8 +147,8 @@
     bottom: -80px;
 }
 form{
-    height: 550px;
-    width: 500px;
+    height: 650px;
+    width: 600px;
     background-color: rgba(133, 25, 215, 0.13);
     position: absolute;
     transform: translate(-50%,-50%);

@@ -1,80 +1,108 @@
 <template>
-    <div>
-      <!-- En-tête du tableau de bord -->
-      <div class="dashboard-header">
-        <h1>Bienvenue dans votre Tableau de Bord</h1>
-        <button @click="logout">Déconnexion</button>
-      </div>
+    <v-app id="inspire">
+      <v-system-bar>
+        <v-spacer></v-spacer>
   
-      <!-- Widgets du tableau de bord -->
-      <div class="dashboard-widgets">
-        <!-- Widget 1 : Liste des dépenses récentes -->
-        <div class="dashboard-widget">
-          <h2>Dépenses Récentes</h2>
-          <!-- Contenu du widget (liste des dépenses récentes) -->
-        </div>
+        <v-icon>mdi-square</v-icon>
   
-        <!-- Widget 2 : Graphique des revenus et dépenses -->
-        <div class="dashboard-widget">
-          <h2>Graphique des Revenus et Dépenses</h2>
-          <!-- Contenu du widget (graphique) -->
-        </div>
+        <v-icon>mdi-circle</v-icon>
   
-        <!-- Ajoutez autant de widgets que nécessaire -->
-      </div>
-    </div>
+        <v-icon>mdi-triangle</v-icon>
+      </v-system-bar>
+  
+      <v-navigation-drawer v-model="drawer">
+        <v-sheet
+          color="grey-lighten-4"
+          class="pa-4"
+        >
+          <v-avatar
+            class="mb-4"
+            color="grey-darken-1"
+            size="64"
+          ></v-avatar>
+  
+          <div>john@google.com</div>
+        </v-sheet>
+  
+        <v-divider></v-divider>
+  
+        <v-list>
+          <v-list-item
+            v-for="[icon, text] in links"
+            :key="icon"
+            :prepend-icon="icon"
+            :title="text"
+            link
+          ></v-list-item>
+        </v-list>
+      </v-navigation-drawer>
+  
+      <v-main>
+        <v-container
+          class="py-8 px-6"
+          fluid
+        >
+          <v-row>
+            <v-col
+              v-for="card in cards"
+              :key="card"
+              cols="12"
+            >
+              <v-card>
+                <v-list lines="two">
+                  <v-list-subheader :title="card"></v-list-subheader>
+  
+                  <template v-for="n in 6" :key="n">
+                    <v-list-item>
+                      <template v-slot:prepend>
+                        <v-avatar color="grey-darken-1"></v-avatar>
+                      </template>
+  
+                      <v-list-item-title :title="`Message ${n}`"></v-list-item-title>
+  
+                      <v-list-item-subtitle title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil repellendus distinctio similique"></v-list-item-subtitle>
+                    </v-list-item>
+  
+                    <v-divider
+                      v-if="n !== 6"
+                      :key="`divider-${n}`"
+                      inset
+                    ></v-divider>
+                  </template>
+                </v-list>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-main>
+    </v-app>
   </template>
   
-  <script>
-  export default {
-    methods: {
-      logout() {
-        // Ajoutez ici la logique de déconnexion (par exemple, redirigez vers la page de connexion)
-        // this.$router.push('/login');
-        this.$router.push('/login');
-      },
-    },
-  };
+  <script setup>
+    import { ref } from 'vue'
+  
+    const cards = ['Today', 'Yesterday']
+    const links = [
+      ['mdi-inbox-arrow-down', 'Inbox'],
+      ['mdi-send', 'Send'],
+      ['mdi-delete', 'Trash'],
+      ['mdi-alert-octagon', 'Spam'],
+    ]
+  
+    const drawer = ref(null)
   </script>
   
-  <style scoped>
-  /* Styles spécifiques au tableau de bord */
-  .dashboard-header {
-    background-color: #3498db;
-    color: #fff;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .dashboard-widgets {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
-  .dashboard-widget {
-    background-color: #ecf0f1;
-    padding: 20px;
-    margin: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  button {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #c0392b;
-  }
-  </style>
-  
-  
+  <script>
+    export default {
+      data: () => ({
+        cards: ['Today', 'Yesterday'],
+        drawer: null,
+        links: [
+          ['mdi-inbox-arrow-down', 'Inbox'],
+          ['mdi-send', 'Send'],
+          ['mdi-delete', 'Trash'],
+          ['mdi-alert-octagon', 'Spam'],
+        ],
+      }),
+    }
+  </script>

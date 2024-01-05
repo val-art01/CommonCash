@@ -25,7 +25,7 @@
     <div>
       <div class="welcome-section">
         <h1>CommonCash</h1>
-        <h2>Bienvenue sur l'application de gestion de dépenses</h2>
+        <h2>Bienvenue sur l'application de gestion de dépenses<br></h2>
         <p>Connectez-vous pour commencer à utiliser l'application.</p>
 
       <div class="buttons">
@@ -103,7 +103,13 @@ body {
   font-size: large;
 }
  
+.welcome-section h2 {
+  margin-bottom: 15px; /* Ajoutez une marge en bas (20 pixels dans cet exemple) */
+}
 
+.welcome-section h1 {
+  margin-bottom: 15px; /* Ajoutez une marge en bas (20 pixels dans cet exemple) */
+}
 
 
 .logo-img {
@@ -207,12 +213,13 @@ body {
 
 .text {
   margin-left: 20px; /* Espacement entre le texte et la barre */
-  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
+  font-family:'Times New Roman', Times, serif;
+  font-size: 20px;
   
 }
 
 .vertical-bar {
-  height: 175px; /* Hauteur de la barre */
+  height: 220px; /* Hauteur de la barre */
   width: 10px; /* Largeur de la barre */
   background-color: rgb(100, 0, 128); /* Couleur de la barre */
   border-radius: 5px;
