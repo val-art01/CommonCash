@@ -1,12 +1,29 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
-const generateToken = (userId) => {
-    return jwt.sign({ userId }, 'votre_secret_jwt', { expiresIn: '24h' });
+const generateTokenAndSave = async (user) => {
+    const authToken = jwt.sign(
+        { id: user._id }, 
+        process.env.JWT_SEC, 
+        { expiresIn: '3h' }
+    );
+    user.authTokens.push({authToken});
+    await user.save();
+    return authToken;
 };
   
 const verifyPassword = async (plainPassword, hashedPassword) => {
     return await bcrypt.compare(plainPassword, hashedPassword);
 };
 
-export {generateToken, verifyPassword}
+const logout = async (req, user) => {
+    try {
+        req.session.destroy();
+        await user.save
+        res.status(200).json({ message: 'Déconnexion réussie' });
+    } catch (error) {
+        res.status(500).json({ response: 'Internal server error: ' + error.message });
+    }    
+};
+
+export {generateTokenAndSave, verifyPassword, logout}
