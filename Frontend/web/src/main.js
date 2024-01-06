@@ -6,6 +6,7 @@ import 'vuetify/styles'; // Assurez-vous d'importer correctement les styles de V
 import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
+import '@mdi/font/css/materialdesignicons.css';
 
 // Créez l'application Vue
 const app = createApp(App);
@@ -17,6 +18,8 @@ app.use(router);
 const vuetify = createVuetify({
   components,
   directives,
+  icons: {
+    iconfont: 'mdi',},
 });
 
 // Utilisez Vuetify avec l'application Vue

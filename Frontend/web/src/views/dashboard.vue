@@ -1,4 +1,7 @@
 <template>
+
+
+
     <v-app id="inspire">
       <v-system-bar>
         <v-spacer></v-spacer>
@@ -12,7 +15,7 @@
   
       <v-navigation-drawer v-model="drawer">
         <v-sheet
-          color="grey-lighten-4"
+          color="purple"
           class="pa-4"
         >
           <v-avatar
@@ -36,45 +39,33 @@
           ></v-list-item>
         </v-list>
       </v-navigation-drawer>
+      <v-app-bar app color="white" elevate-on-scroll>
+      <v-app-bar-nav-icon> </v-app-bar-nav-icon>
+      <v-toolbar-title>CommonCash</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn icon> <v-icon> mdi-heart </v-icon> </v-btn>
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+      <v-menu left bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="n in 4" :key="n" @click="() => {}">
+            Option {{ n }}
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+    <v-sheet>
+      <v-container style="height: 1000px"> </v-container>
+    </v-sheet>
   
-      <v-main>
-        <v-container
-          class="py-8 px-6"
-          fluid
-        >
-          <v-row>
-            <v-col
-              v-for="card in cards"
-              :key="card"
-              cols="12"
-            >
-              <v-card>
-                <v-list lines="two">
-                  <v-list-subheader :title="card"></v-list-subheader>
-  
-                  <template v-for="n in 6" :key="n">
-                    <v-list-item>
-                      <template v-slot:prepend>
-                        <v-avatar color="grey-darken-1"></v-avatar>
-                      </template>
-  
-                      <v-list-item-title :title="`Message ${n}`"></v-list-item-title>
-  
-                      <v-list-item-subtitle title="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil repellendus distinctio similique"></v-list-item-subtitle>
-                    </v-list-item>
-  
-                    <v-divider
-                      v-if="n !== 6"
-                      :key="`divider-${n}`"
-                      inset
-                    ></v-divider>
-                  </template>
-                </v-list>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-main>
+      
     </v-app>
   </template>
   
@@ -83,14 +74,31 @@
   
     const cards = ['Today', 'Yesterday']
     const links = [
-      ['mdi-inbox-arrow-down', 'Inbox'],
-      ['mdi-send', 'Send'],
-      ['mdi-delete', 'Trash'],
-      ['mdi-alert-octagon', 'Spam'],
-    ]
+    ['mdi-cash-multiple', 'Nos Depenses'],
+          ['mdi-account-group', 'Liste des groupes'],
+          ['mdi-cash-refund', 'Remboursement'],
+          ['mdi-currency-usd', 'Solde'],
+          ['mdi-email', 'Messagerie'],
+          ['mdi-chart-bar', 'Statistique'],
+          ['mdi-account-circle', 'Mon profil'],
+          ['mdi-logout', 'Deconnection'],
+    ]     
   
     const drawer = ref(null)
+
+    const handleNavigation = (text) => {
+  if (text === 'Deconnexion') {
+    // Appeler la méthode logout définie dans le composant
+    logout();
+  }
+}
+
+
+
+    
   </script>
+
+
   
   <script>
     export default {
@@ -98,10 +106,13 @@
         cards: ['Today', 'Yesterday'],
         drawer: null,
         links: [
-          ['mdi-inbox-arrow-down', 'Inbox'],
-          ['mdi-send', 'Send'],
-          ['mdi-delete', 'Trash'],
-          ['mdi-alert-octagon', 'Spam'],
+          ['mdi-inbox-arrow-down', 'Nos Depenses'],
+          ['mdi-send', 'Liste des groupes'],
+          ['mdi-delete', 'Remboursement'],
+          ['mdi-alert-octagon', 'Solde'],
+          ['mdi-inbox-arrow-down', 'Messagerie'],
+          ['mdi-send', 'Statistique'],
+
         ],
       }),
     }
