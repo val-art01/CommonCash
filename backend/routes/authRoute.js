@@ -12,7 +12,7 @@ router.post('/logout/all',authentification, logoutAll);
 
 // route Google
 router.get('/', (req, res) =>{
-    res.send('<a href = "/auth/google">Authenticate with Google</a>')
+    res.send(`<a href = "/auth/google">Authenticate with Google</a> \n <a href = "/auth/google">Authenticate with Facebook</a>`)
 })
 
 router.get('/auth/google', 
@@ -35,6 +35,22 @@ router.get('/google/callback',
 router.get('/success', isLoggedIn, (req, res) => res.send(req.user));
 
 router.get('/error', (req, res) => res.send("error logging in"));
+
+// route Facebook
+
+userRouter.get("/auth/facebook", passport.authenticate("facebook"));
+
+userRouter.get(
+    "/auth/facebook/callback",
+    passport.authenticate(
+        "facebook", 
+        {
+            successRedirect: "/",
+            failureRedirect: "/fail"
+        }
+    )
+  );
+
 
 
 
