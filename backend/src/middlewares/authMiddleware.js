@@ -33,8 +33,8 @@ export const authentification = async(req, res, next) => {
     next();
 
   }catch(error){
-     // Gérer les erreurs liées à la vérification du token
-        console.error('Erreur d\'authentification :', error.message);
+    // Gérer les erreurs liées à la vérification du token
+    console.error('Erreur d\'authentification :', error.message);
     return res.status(401).json("Vous n'êtes pas authentifié !")
   }
 }
