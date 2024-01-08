@@ -1,46 +1,35 @@
-// autfacebookcontrollers.js
+import dotenv from "dotenv";
+import passport from "passport";
+import strategy from "passport-facebook";
+import {handleOAuthAuthentication} from './../../services/authService.js'
 
-const express = require('express');
-const passport = require('passport');
-const FacebookStrategy = require('passport-facebook').Strategy;
+const FacebookStrategy = strategy.Strategy;
+const passportFace = passport;
 
-const app = express();
+dotenv.config();
 
-passport.use(new FacebookStrategy({
-  clientID: 'process.env.FACEBOOK_CLIENT_ID,',
-  clientSecret: 'process.env.FACEBOOK_CLIENT_SECRET',
-  callbackURL: 'http://localhost:3000/auth/facebook/callback',
-},
-(accessToken, refreshToken, profile, done) => {
-  // Utilisez les informations du profil pour l'authentification ou l'enregistrement dans votre base de données
-  return done(null, profile);
-}));
+passportFace.use(
+  new FacebookStrategy(
+    {
+      clientID: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
+      callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      enableProof: true,
+      profileFields: ['id', 'displayName', 'photos', 'email']
+    },
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
-
-app.use(passport.initialize());
-app.use(passport.session());
-
-app.get('/auth/facebook', passport.authenticate('facebook'));
-
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { successRedirect: '/success', failureRedirect: '/' })
+    async (accessToken, refreshToken, profile, done) => {
+      handleOAuthAuthentication(profile, 'facebook', done);
+    }
+  )
 );
 
-app.get('/success', (req, res) => {
-  res.send('Connecté avec succès avec Facebook');
+passportFace.serializeUser(function(user, done) {
+    done(null, user);
 });
 
-app.get('/', (req, res) => {
-  res.send('Page de connexion');
+passportFace.deserializeUser(function(obj, done) {
+    done(null, obj);
 });
 
-app.listen(3000, () => {
-  console.log('Serveur écoutant sur le port 3000');
-});
+export {passportFace}; 

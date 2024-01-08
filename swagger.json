@@ -24,18 +24,10 @@
   ],
   "tags": [
     {
-      "name": "User",
+      "name": "Users",
       "description": "Everything about your Pets",
       "externalDocs": {
         "description": "Find out more",
-        "url": "#"
-      }
-    },
-    {
-      "name": "group",
-      "description": "Access to Petgroup orders",
-      "externalDocs": {
-        "description": "Find out more about our store",
         "url": "#"
       }
     }
@@ -189,6 +181,119 @@
         }
       }
     },
+    "/users": {
+      "get": {
+        "summary": "Récupérer la liste des utilisateurs",
+        "description": "Récupère la liste complète des utilisateurs.",
+        "tags": ["Users"],
+        "responses": {
+          "200": {
+            "description": "Succès - Liste des utilisateurs."
+          },
+          "500": {
+            "description": "Erreur serveur."
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Récupérer un utilisateur par ID",
+        "description": "Récupère les détails d'un utilisateur spécifique par son ID.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID de l'utilisateur",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Succès - Détails de l'utilisateur."
+          },
+          "404": {
+            "description": "Utilisateur non trouvé."
+          },
+          "500": {
+            "description": "Erreur serveur."
+          }
+        }
+      },
+      "put": {
+        "summary": "Mettre à jour les informations d'un utilisateur",
+        "description": "Permet de mettre à jour les informations d'un utilisateur spécifique.",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "description": "ID de l'utilisateur",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Nouvelles informations de l'utilisateur",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Mise à jour réussie."
+          },
+          "400": {
+            "description": "Données de mise à jour invalides."
+          },
+          "500": {
+            "description": "Erreur serveur."
+          }
+        }
+      }
+    },
+    "/users/register": {
+      "post": {
+        "summary": "Inscrire un nouvel utilisateur",
+        "description": "Permet à un utilisateur de s'inscrire avec un nouveau compte.",
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "Informations d'inscription",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRegistration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Inscription réussie."
+          },
+          "400": {
+            "description": "Données d'inscription invalides."
+          },
+          "500": {
+            "description": "Erreur serveur."
+          }
+        }
+      }
+    },
+
+
     "/user": {
       "post": {
         "tags": [
