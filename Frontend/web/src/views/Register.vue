@@ -80,20 +80,28 @@
             email: this.email,
             password: this.password,
             confirmPassword: this.confirmPassword,
+            errorMessage: "", 
           });
 
-          // Afficher la réponse complète dans la console
+        
           console.log('Réponse complète de l\'API:', response);
           this.$router.push("/dashboard");
 
         } catch (error) {
           console.error('Erreur lors de l\'inscription:', error.message);
-           // Afficher l'erreur côté client si disponible
+          this.errorMessage = 'Vérifier que le mot de passe a au moins 7 caractères, une majuscule, et un symbole ou chiffre';
           if (error.response && error.response.data && error.response.data.error) {
             alert(`Erreur côté serveur: ${error.response.data.error}`);
           }
+         
         }
       }, 
+      isPasswordValid() {
+        // Vérifier que le mot de passe a au moins 7 caractères, une majuscule, et un symbole ou chiffre
+        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9!@#$%^&*])(.{7,})$/;
+        return passwordRegex.test(this.password);
+
+      },
     }  
   };
 </script>

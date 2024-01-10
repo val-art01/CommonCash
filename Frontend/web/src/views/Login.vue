@@ -23,6 +23,8 @@
     <form @submit.prevent="login">
       <h3>Login Here</h3>
 
+      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+
       <label for="email">Email</label>
       <input type="email" placeholder="Email or Phone" id="email" v-model="email" required />
 
@@ -45,29 +47,36 @@
 <script>
   import api from './../services/api';
   export default {
-    data() {
-      return {
-        email: '',
-        password: '',
-      };
-    },
+  data() {
+    return {
+      email: '',
+      password: '',
+      errorMessage: '', // Ajout de la propriété errorMessage
+    };
+  },
 
-    methods: {
-      async login() {
-        try {
-          const response = await api.login({
-            email: this.email,
-            password: this.password,
-          });
+  methods: {
+    async login() {
+      try {
+        // Remise à zéro du message d'erreur avant chaque tentative de connexion
+        this.errorMessage = '';
 
-          console.log('Connexion réussie:', response.data);
-          this.$router.push("/dashboard");
-        } catch (error) {
-          console.error('Erreur lors de la connexion:', error.message || 'Erreur inconnue');
-        }
-      },
+        const response = await api.login({
+          email: this.email,
+          password: this.password,
+        });
+
+        console.log('Connexion réussie:', response.data);
+        this.$router.push("/dashboard");
+      } catch (error) {
+        console.error('Erreur lors de la connexion:', error.message || 'Erreur inconnue');
+
+        // Affichage du message d'erreur
+        this.errorMessage = 'Email ou mot de passe incorrect';
+      }
     },
-  };
+  },
+};
 </script>
   
   <style scoped>
