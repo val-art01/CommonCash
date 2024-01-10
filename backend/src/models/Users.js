@@ -10,7 +10,8 @@ const UserSchema = new mongoose.Schema(
         iv: { type: String, required: true},
         authTokens: [{
             authToken:{ type: String, required: true}
-        }]
+        }],
+        invitations: {type: Array, default: []},
     },
     { timestamps: true }
 )
