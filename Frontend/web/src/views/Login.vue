@@ -23,8 +23,8 @@
     <form @submit.prevent="login">
       <h3>Login Here</h3>
 
-      <label for="username">Username</label>
-      <input type="text" placeholder="Email or Phone" id="username" v-model="username" required>
+      <label for="email">Email</label>
+      <input type="email" placeholder="Email or Phone" id="email" v-model="email" required />
 
       <label for="password">Password</label>
       <input type="password" placeholder="Password" id="password" v-model="password" required>
@@ -37,29 +37,37 @@
      <div class="social">
         <div><i class="fab fa-google"></i> Google</div>
         <div class="fb"><i class="fab fa-facebook"></i> Facebook</div>
-      </div>
-    
-     
+      </div>     
     </form>
   </div>
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    login() {
-      console.log("Tentative de connexion avec:", this.username, this.password);
-      // Redirigez l'utilisateur après la connexion réussie
-      this.$router.push("/dashboard");
+  import api from './../services/api';
+  export default {
+    data() {
+      return {
+        email: '',
+        password: '',
+      };
     },
-  },
-};
+
+    methods: {
+      async login() {
+        try {
+          const response = await api.login({
+            email: this.email,
+            password: this.password,
+          });
+
+          console.log('Connexion réussie:', response.data);
+          this.$router.push("/dashboard");
+        } catch (error) {
+          console.error('Erreur lors de la connexion:', error.message || 'Erreur inconnue');
+        }
+      },
+    },
+  };
 </script>
   
   <style scoped>
