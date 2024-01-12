@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 
 const GroupSchema = new mongoose.Schema(
-    {
-        Id: {type: String, unique: true},
-        name: {type: String, required: true},
-        membersId: {type: Array, required: true},
-        //Dépenses
-        //soldes
+    {       
+        name: { type: String, required: true },
+        description: { type: String },
+        membres: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
+        directors : { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
     },
     { timestamps: true }
 )
