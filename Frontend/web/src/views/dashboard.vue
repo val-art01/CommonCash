@@ -95,7 +95,7 @@
   const logout = () => {
     // Logique pour la déconnexion
   };
-  const currentUser = ref('john@google.com'); // Initialisez avec une valeur par défaut
+  const currentUser = ref(''); // Initialisez avec une valeur par défaut
 
 const handleLogin = (username) => {
   // Mettez à jour le nom de l'utilisateur lorsqu'il se connecte

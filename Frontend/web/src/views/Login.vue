@@ -75,10 +75,10 @@
         this.errorMessage = 'Email ou mot de passe incorrect';
       }
     }, methods: {
-    login() {
+    handleLoginSucess() {
       // Effectuez le processus de connexion et émettez un événement si réussi
       // Supposons que vous récupérez le nom d'utilisateur après une connexion réussie
-      const username = "john@google.com"; // Remplacez ceci par le nom d'utilisateur réel
+      
 
       // Émettez un événement pour informer que l'utilisateur s'est connecté avec succès
       this.$emit("login-success", username);
