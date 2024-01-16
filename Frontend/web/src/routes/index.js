@@ -5,6 +5,15 @@ import Login from '@/views/Login.vue';
 import Register from '@/views/Register.vue';
 import MobileExplanation from '@/views/application.vue';
 import Dashboard from '@/views/dashboard.vue';
+import GroupManagement from '@/views/GroupManagement.vue';
+import NosDepensesComponent from '@/views/NosDepensesComponent.vue';
+import RemboursementComponent from '@/views/RemboursementComponent.vue';
+import SoldeComponent from '@/views/SoldeComponent.vue';
+import MessagerieComponent from '@/views/MessagerieComponent.vue';
+import StatistiqueComponent from '@/views/StatistiqueComponent.vue';
+import MonProfilComponent from '@/views/MonProfilComponent.vue';
+import DeconnectionComponent from '@/views/DeconnectionComponent.vue';
+
 
 const routes = [
   { path: '/', name: 'Home', component: Home },
@@ -12,6 +21,17 @@ const routes = [
   { path: '/register', name: 'Register', component: Register },
   { path: '/application', name: 'MobileExplanation', component: MobileExplanation },
   { path: '/dashboard', name: 'Dashboard',  component: Dashboard },
+  { path: '/group-management',name: 'GroupManagement',component: GroupManagement,},
+  { path: '/nos-depenses',name: 'Nos Depenses',component: NosDepensesComponent,},
+  { path: '/remboursement',name: 'Remboursement', component: RemboursementComponent,},
+  { path: '/solde',name: 'Solde', component: SoldeComponent,}, // Remplacez SoldeComponent par le composant réel},
+  { path: '/messagerie',name: 'Messagerie',component: MessagerieComponent,},
+  { path: '/statistique',name: 'Statistique',component: StatistiqueComponent,},
+  { path: '/mon-profil',name: 'Mon profil',component: MonProfilComponent,},
+  { path: '/deconnexion',name: 'Deconnection',component: DeconnectionComponent,},
+    // ...
+  
+  
   // Ajoutez d'autres routes au besoin
 ];
 

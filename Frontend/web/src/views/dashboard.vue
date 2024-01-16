@@ -13,9 +13,14 @@
           <div>{{ currentUser }}</div>
         </v-sheet>
         <v-divider></v-divider>
-        <v-list>
-          <v-list-item v-for="[icon, text] in links" :key="icon" :prepend-icon="icon" :title="text" link></v-list-item>
-        </v-list>
+        <router-link v-for="[icon, text] in links" :key="icon" :to="{ name: text }">
+  <v-list-item :prepend-icon="icon" link class="custom-list-item">
+    <v-list-item-title>
+      {{ text }}
+    </v-list-item-title>
+  </v-list-item>
+</router-link>
+
       </v-navigation-drawer>
   
       <v-app-bar app color="white" elevate-on-scroll>
@@ -76,7 +81,7 @@
   
   const links = [
     ['mdi-cash-multiple', 'Nos Depenses'],
-    ['mdi-account-group', 'Liste des groupes'],
+    ['mdi-account-group', 'GroupManagement'],
     ['mdi-cash-refund', 'Remboursement'],
     ['mdi-currency-usd', 'Solde'],
     ['mdi-email', 'Messagerie'],
@@ -103,3 +108,9 @@ const handleLogin = (username) => {
 };
   </script>
   
+  <style scoped>
+.custom-list-item .v-list-item__title {
+  text-decoration: none; /* Pour supprimer le soulignement du texte */
+  color: violet; /* Changer la couleur du texte en violet (ou la couleur souhaitée) */
+}
+</style>

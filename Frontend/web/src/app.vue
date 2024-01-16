@@ -5,10 +5,13 @@
     <navbar>
       <!--<router-link to="/" exact>Accueil</router-link>
       <router-link to="/login" exact>Connexion</router-link>
-      <router-link to="/register" exact>Inscription</router-link>-->
+      <router-link to="/register" exact>Inscription</router-link>
+      <router-link to="/group-management">Gestion des groupes</router-link>-->
+
     </navbar>
     <Header />
     <Dashboard />
+  
 
     <!-- Ajoutez cette balise pour afficher le contenu de la page actuelle -->
     <router-view/>
@@ -16,6 +19,8 @@
 </template>
 
 <script>
+//const { default: GroupManagement } = require('./views/GroupManagement.vue');//
+
 //import Header from "@/components/Header.vue";
 //import Sidebar from "@/components/sidebar.vue"; // Assurez-vous que le chemin est correct
 //import Dashboard from "@/views/dashboard.vue";
