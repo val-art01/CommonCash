@@ -8,8 +8,8 @@
       </v-system-bar>
   
       <v-navigation-drawer v-model="drawer">
-        <v-sheet color="purple" class="pa-4">
-          <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
+        <v-sheet color="#6A1B9A" class="pa-4">
+          <v-avatar class="mb-4" color="white" size="64"></v-avatar>
           <div>{{ currentUser }}</div>
         </v-sheet>
         <v-divider></v-divider>
@@ -23,7 +23,7 @@
 
       </v-navigation-drawer>
   
-      <v-app-bar app color="white" elevate-on-scroll>
+      <v-app-bar app color="#4A148C" elevate-on-scroll>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>CommonCash</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -36,48 +36,164 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="n in 4" :key="n" @click="() => {}">
+            <v-list-item v-for="n in 4" :key="n" @click="() => {}" color="#6A1B9A">
               Option {{ n }}
             </v-list-item>
           </v-list>
         </v-menu>
       </v-app-bar>
-  
-      <v-sheet>
-        <v-container fluid fill-height>
-          <v-row align="center" justify="center" style="height: 100vh; align-items: center;">
-            <v-col lg="7" cols="12">
-              <v-alert dense text type="success" class="mt-16">
-                Login Successfully! Welcome to <strong>CommonCash</strong>
-              </v-alert>
-              <v-row>
-                <v-col lg="6" cols="12" v-for="(item, index) in activityLog" :key="index">
-                  <v-card elevation="2" class="rounded-lg">
-                    <v-card-text class="d-flex justify-space-between align-center">
-                      <div>
-                        <strong>{{ item.title }}</strong> <br>
-                        <span>Last 3 weeks</span>
-                      </div>
-                      <v-avatar size="60" :color="item.color" style="border: 3px solid #444">
-                        <span style="color: white">{{ item.amount }} +</span>
-                      </v-avatar>
-                    </v-card-text>
-                    <v-card-actions class="d-flex justify-space-between">
-                      <!-- Ajoutez du contenu ici si nécessaire -->
-                    </v-card-actions>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-sheet>
+
+      <v-sheet color="gray" class="pa-4">
+    <v-container fluid fill-height>
+      <v-row align="center" justify="end" style="height: 80vh; align-items: center;">
+        <v-col lg="4" cols="12" class="ml-auto">
+          <v-card elevation="2" class="rounded-lg mb-3">
+            <v-card-text class="d-flex justify-space-between align-center">
+              <div>
+                <strong>Total Revenue</strong> <br>
+                <span>
+                  
+                 
+<v-icon>
+                    mdi-currency-usd
+                  </v-icon>
+                  {{ totalRevenue.amount }}
+                </span>
+              </div>
+              <v-avatar size="60" :color="totalRevenue.color" style="border: 3px solid #444">
+                <span style="color: white">{{ totalRevenue.amount }} +</span>
+              </v-avatar>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text class="d-flex justify-space-between align-center">
+              <div>
+                <strong>Total Expense</strong> <br>
+                <span>
+                  <v-icon>
+                    mdi-ticket
+                  </v-icon>
+                  {{ totalExpense.amount }}
+                </span>
+              </div>
+              <v-avatar size="60" :color="totalExpense.color" style="border: 3px solid #444">
+                <span style="color: white">{{ totalExpense.amount }} +</span>
+              </v-avatar>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-text class="d-flex justify-space-between align-center">
+              <div>
+                <strong>Remboursement</strong> <br>
+                <span>
+                  <v-icon>
+                    mdi-account-group
+                  </v-icon>
+                  {{ remboursement.amount }}
+                </span>
+              </div>
+              <v-avatar size="60" :color="remboursement.color" style="border: 3px solid #444">
+                <span style="color: white">{{ remboursement.amount }} +</span>
+              </v-avatar>
+            </v-card-text>
+            <v-card-actions class="d-flex justify-space-between">
+              <!-- Ajoutez du contenu ici si nécessaire -->
+            </v-card-actions>
+          </v-card>
+        </v-col>
+         <!-- Liste des alertes -->
+         <v-col lg="6" cols="12" style="max-height: 600px;;">
+          <v-card elevation="2" class="rounded-lg" style=" max-height:600px;">
+            <v-card-title>
+              Alertes Récentes
+            </v-card-title>
+            <v-list dense>
+              <v-list-item-group v-model="activeAlert">
+                <v-list-item v-for="(alert, index) in alerts" :key="index">
+                  <v-list-item-content>
+                    <v-list-item-title>{{ alert.title }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ alert.date }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
+        </v-col>
+      </v-row>
+        <!-- Section des statistiques globales -->
+    <v-row align="center" justify="center">
+      <!-- Carte pour les statistiques globales -->
+      <v-col lg="6" cols="12">
+        <v-card elevation="2" class="rounded-lg">
+          <v-card-title>
+            Statistiques Globales
+          </v-card-title>
+          <v-card-text>
+            <!-- Graphique en ligne pour les dépenses mensuelles -->
+            <v-line-chart
+              :chart-data="monthlyExpenses"
+              :options="chartOptions"
+            ></v-line-chart>
+
+            <!-- Chiffres -->
+            <v-row>
+              <v-col>
+                <v-chip>
+                  <v-avatar color="primary" left>
+                    <v-icon>mdi-currency-usd</v-icon>
+                  </v-avatar>
+                  Total des dépenses : 2000€
+                </v-chip>
+              </v-col>
+              <v-col>
+                <v-chip>
+                  <v-avatar color="success" left>
+                    <v-icon>mdi-currency-usd</v-icon>
+                  </v-avatar>
+                  Total des revenus : 10000€
+                </v-chip>
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <!-- Liste des alertes -->
+      <v-col lg="4" cols="12">
+        <!-- ... (le reste de votre code) ... -->
+      </v-col>
+      </v-row>
+    </v-container>
+  </v-sheet>
+ 
+
       <Login @login-success="handleLoginSuccess" />
     </v-app>
   </template>
   
   <script setup>
   import { ref } from 'vue';
+
+  const monthlyExpenses = ref({
+  labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
+  datasets: [
+    {
+      label: 'Dépenses mensuelles',
+      data: [200, 150, 300, 100, 250],
+      fill: false,
+      borderColor: 'primary',
+      borderWidth: 2,
+    },
+  ],
+});
+
+const chartOptions = {
+  scales: {
+    y: {
+      beginAtZero: true,
+    },
+  },
+};
+
+
   
   const links = [
     ['mdi-cash-multiple', 'Nos Depenses'],
@@ -91,11 +207,19 @@
   ];
   
   const drawer = ref(null);
-  const activityLog = ref([
-    { title: 'Item 1', amount: 10, color: 'blue' },
-    { title: 'Item 2', amount: 15, color: 'green' },
+  const totalRevenue = { amount: 10000, color: 'black' };
+const totalExpense = { amount: 2000, color: 'black' };
+const remboursement = { amount: 500, color: 'black' };
+
+const alerts = [
+  { title: 'Alerte 1', date: '2022-05-01' },
+  { title: 'Alerte 2', date: '2022-05-02' },
+  { title: 'Alerte 3', date: '2022-05-03' },
+];
+
+let activeAlert = null; // Pour la gestion de la sélection des alertes
+
     // Ajoutez d'autres éléments si nécessaire//
-  ]);
   
   const logout = () => {
     // Logique pour la déconnexion
