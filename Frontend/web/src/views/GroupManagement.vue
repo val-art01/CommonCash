@@ -8,8 +8,8 @@
       </v-system-bar>
   
       <v-navigation-drawer v-model="drawer">
-        <v-sheet color="purple" class="pa-4">
-          <v-avatar class="mb-4" color="grey-darken-1" size="64"></v-avatar>
+        <v-sheet color="#6A1B9A" class="pa-4">
+          <v-avatar class="mb-4" color="white" size="64"></v-avatar>
           <div>{{ currentUser }}</div>
         </v-sheet>
         <v-divider></v-divider>
@@ -23,7 +23,7 @@
 
       </v-navigation-drawer>
   
-      <v-app-bar app color="white" elevate-on-scroll>
+      <v-app-bar app color="#4A148C" elevate-on-scroll>
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
         <v-toolbar-title>CommonCash</v-toolbar-title>
         <v-spacer></v-spacer>
@@ -36,66 +36,98 @@
             </v-btn>
           </template>
           <v-list>
-            <v-list-item v-for="n in 4" :key="n" @click="() => {}">
+            <v-list-item v-for="n in 4" :key="n" @click="() => {}" color="#6A1B9A">
               Option {{ n }}
             </v-list-item>
           </v-list>
         </v-menu>
       </v-app-bar>
+    <v-sheet color="#6A1B9A" class="pa-4">
+      <v-container fluid fill-height>
+        <v-row align="center" justify="end" style="height: 80vh; align-items: center;">
+         
+    
   
-      <v-sheet>
+          <!-- Carte pour inviter un membre -->
+          <v-col lg="4" cols="12" class="ml-3">
+            <v-card elevation="2" class="rounded-lg mb-3">
+              <v-card-title>
+                Inviter un Nouveau Membre
+              </v-card-title>
+              <v-card-text>
+                <v-form @submit.prevent="inviteMember">
+                  <v-select
+                    v-model="selectedGroup"
+                    :items="groups"
+                    item-text="name"
+                    label="Sélectionnez un Groupe"
+                  ></v-select>
+                  <v-text-field v-model="newMemberName" label="Nom du Membre"></v-text-field>
+                  <v-btn type="submit">Inviter</v-btn>
+                </v-form>
+              </v-card-text>
+            </v-card>
+          </v-col>
+  
+          <!-- Liste des groupes -->
+          <v-col lg="6" cols="12">
+            <v-data-table
+              :headers="tableHeaders"
+              :items="groups"
+              :items-per-page="5"
+              class="elevation-1"
+            >
+              <template v-slot:top>
+                <v-toolbar flat>
+                  <v-toolbar-title>Liste des groupes</v-toolbar-title>
+                  <v-divider class="mx-4" inset vertical></v-divider>
+                  <v-spacer></v-spacer>
+                  <v-dialog v-model="dialog" max-width="600px">
+  <template v-slot:activator="{ on, attrs }">
+    <v-form @submit.prevent="createGroup">
+      <v-text-field v-model="newGroupName" label="Nom du Groupe"></v-text-field>
+      <v-btn type="submit" class="mt-2 ml-9">Créer</v-btn>
+    </v-form>
+    </template>
+    <v-card>
+      <v-card-title>
+        <span class="headline">{{ formTitle }}</span>
+      </v-card-title>
+      <v-card-text>
         <v-container>
-      <h2>Liste des Groupes</h2>
-  
-      <v-list-item-group v-if="groups.length > 0">
-        <v-list-item v-for="group in groups" :key="group.id">
-          <v-list-item-content>
-            <v-list-item-title>{{ group.name }}</v-list-item-title>
-            <!-- Affichez la liste des membres -->
-            <v-list-item-subtitle v-for="member in group.members" :key="member.name">
-              {{ member.name }}
-            </v-list-item-subtitle>
-          </v-list-item-content>
-          <!-- Ajoutez des boutons pour modifier ou supprimer un groupe -->
-          <v-list-item-action>
-            <v-btn @click="editGroup(group)">Modifier</v-btn>
-            <v-btn @click="deleteGroup(group)">Supprimer</v-btn>
-          </v-list-item-action>
-        </v-list-item>
-      </v-list-item-group>
-  
-      <h2>Créer un Nouveau Groupe</h2>
-  
-      <!-- Formulaire de création de groupe -->
-      <v-form @submit.prevent="createGroup">
-        <v-text-field v-model="newGroupName" label="Nom du Groupe"></v-text-field>
-        <v-btn type="submit">Créer</v-btn>
-      </v-form>
-  
-      <h2>Inviter des Membres</h2>
-  
-      <!-- Formulaire d'invitation de membres -->
-      <v-form @submit.prevent="inviteMember">
-        <v-select
-          v-model="selectedGroup"
-          :items="groups"
-          item-text="name"
-          label="Sélectionnez un Groupe"
-        ></v-select>
-        <v-text-field v-model="newMemberName" label="Nom du Membre"></v-text-field>
-        <v-btn type="submit">Inviter</v-btn>
-      </v-form>
-    </v-container>
-        
-      </v-sheet>
-      <Login @login-success="handleLoginSuccess" />
+          <v-row>
+            <v-col>
+              <v-text-field v-model="editedItem.name" class="mt-2 ml-0" label="Nom du Groupe"></v-text-field>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-card-text>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
+        <v-btn color="blue darken-1" text @click="save">Enregistrer</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+                </v-toolbar>
+              </template>
+              <template v-slot:item.actions="{ item }">
+                <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+                <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
+              </template>
+            </v-data-table>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-sheet>
     </v-app>
   </template>
   
   <script setup>
-  import { ref } from 'vue';
+  import { ref, reactive, onMounted } from 'vue';
   
   const links = [
+    ['mdi-view-dashboard', 'Dashboard'],
     ['mdi-cash-multiple', 'Nos Depenses'],
     ['mdi-account-group', 'GroupManagement'],
     ['mdi-cash-refund', 'Remboursement'],
@@ -122,54 +154,87 @@ const handleLogin = (username) => {
   // Mettez à jour le nom de l'utilisateur lorsqu'il se connecte
   currentUser.value = username;
 };
-
-const groups = ref([
+  
+ 
+  
+  const groups = ref([
     { id: 1, name: 'Groupe 1', members: [{ name: 'Membre 1' }, { name: 'Membre 2' }] },
     { id: 2, name: 'Groupe 2', members: [{ name: 'Membre 3' }, { name: 'Membre 4' }] },
     // ... Ajoutez d'autres groupes si nécessaire
   ]);
   
+  const headers = [
+    { text: 'Nom du Groupe', align: 'start', value: 'name' },
+    { text: 'Actions', value: 'actions', sortable: false },
+  ];
+  
+  const editedItem = ref(null);
+  const dialog = ref(false);
+  
+  const formTitle = ref('');
+  const tableHeaders = reactive(headers);
+  
+  const editItem = (item) => {
+    editedItem.value = Object.assign({}, item);
+    formTitle.value = 'Modifier le Groupe';
+    dialog.value = true;
+  };
+  
+  const deleteItem = (item) => {
+    const index = groups.value.indexOf(item);
+    groups.value.splice(index, 1);
+  };
+  
+  const close = () => {
+    editedItem.value = {};
+    dialog.value = false;
+  };
+  
+  const save = () => {
+    if (editedItem.value.id === undefined) {
+      // Nouveau groupe
+      groups.value.push(editedItem.value);
+    } else {
+      // Modifier le groupe existant
+      const index = groups.value.findIndex((g) => g.id === editedItem.value.id);
+      groups.value.splice(index, 1, editedItem.value);
+    }
+  
+    close();
+  };
+  
+  onMounted(() => {
+    // Assurez-vous de modifier ces valeurs pour refléter vos données réelles
+    groups.value.forEach((group) => {
+      group.actions = true;
+    });
+  });
+  
+  const inviteMember = () => {
+  if (selectedGroup.value && newMemberName.value) {
+    const group = groups.value.find(g => g.id === selectedGroup.value);
+    if (group) {
+      group.members = group.members || [];
+      group.members.push({ name: newMemberName.value });
+      newMemberName.value = '';
+      selectedGroup.value = null;
+    }
+  }
+};
   const newGroupName = ref('');
   const selectedGroup = ref(null);
   const newMemberName = ref('');
-  
+
   const createGroup = () => {
-    if (newGroupName.value) {
-      const newGroup = { id: groups.length + 1, name: newGroupName.value, members: [] };
-      groups.value.push(newGroup);
-      newGroupName.value = '';
-    }
-  };
-  
-  const inviteMember = () => {
-    if (selectedGroup.value && newMemberName.value) {
-      const group = groups.value.find(g => g.id === selectedGroup.value);
-      if (group) {
-        group.members = group.members || [];
-        group.members.push({ name: newMemberName.value });
-        newMemberName.value = '';
-        selectedGroup.value = null;
-      }
-    }
-  };
-  
-  const editGroup = (group) => {
-    // Ajoutez la logique pour modifier un groupe
-    console.log('Modifier le groupe :', group);
-  };
-  
-  const deleteGroup = (group) => {
-    // Ajoutez la logique pour supprimer un groupe
-    console.log('Supprimer le groupe :', group);
-  };
+  if (newGroupName.value) {
+    const newGroup = { id: groups.length + 1, name: newGroupName.value, members: [] };
+    groups.value.push(newGroup);
+    newGroupName.value = '';
+  }
+};
   </script>
   
   <style scoped>
-.custom-list-item .v-list-item__title {
-  text-decoration: none; /* Pour supprimer le soulignement du texte */
-  color: violet; /* Changer la couleur du texte en violet (ou la couleur souhaitée) */
-}
-</style>
-
-
-
+  /* Ajoutez vos styles ici si nécessaire */
+  </style>
+  

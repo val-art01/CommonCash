@@ -24,11 +24,19 @@
       </v-navigation-drawer>
   
       <v-app-bar app color="#4A148C" elevate-on-scroll>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        
+        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
         <v-toolbar-title>CommonCash</v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Recherche"
+        single-line
+        hide-details
+      ></v-text-field>
         <v-btn icon><v-icon>mdi-heart</v-icon></v-btn>
-        <v-btn icon><v-icon>mdi-magnify</v-icon></v-btn>
+        <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
             <v-btn icon v-bind="attrs" v-on="on">
@@ -43,9 +51,9 @@
         </v-menu>
       </v-app-bar>
 
-      <v-sheet color="gray" class="pa-4">
+      <v-sheet color="gray" class="pa-4" style="top: 50%;">
     <v-container fluid fill-height>
-      <v-row align="center" justify="end" style="height: 80vh; align-items: center;">
+      <v-row align="center" justify="space-between" style="height: 80vh; align-items: center;">
         <v-col lg="4" cols="12" class="ml-auto">
           <v-card elevation="2" class="rounded-lg mb-3">
             <v-card-text class="d-flex justify-space-between align-center">
@@ -196,6 +204,7 @@ const chartOptions = {
 
   
   const links = [
+    ['mdi-view-dashboard', 'Dashboard'],
     ['mdi-cash-multiple', 'Nos Depenses'],
     ['mdi-account-group', 'GroupManagement'],
     ['mdi-cash-refund', 'Remboursement'],
@@ -229,6 +238,14 @@ let activeAlert = null; // Pour la gestion de la sélection des alertes
 const handleLogin = (username) => {
   // Mettez à jour le nom de l'utilisateur lorsqu'il se connecte
   currentUser.value = username;
+};
+
+const closeDrawer = () => {
+  drawer.value = false;
+};
+
+const toggleDrawer = () => {
+  drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
 };
   </script>
   
