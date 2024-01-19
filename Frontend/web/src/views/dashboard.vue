@@ -35,7 +35,6 @@
         single-line
         hide-details
       ></v-text-field>
-        <v-btn icon><v-icon>mdi-heart</v-icon></v-btn>
         <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
         <v-menu left bottom>
           <template v-slot:activator="{ on, attrs }">
