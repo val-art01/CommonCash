@@ -4,7 +4,7 @@ import session from 'express-session';
 import cors from 'cors';
 import bodyParser from "body-parser";
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../swagger.json' assert { type: 'json' };
+import swaggerDocument from './swagger.json' assert { type: 'json' };
 import {connectToDB} from './src/utils/mongoose.js';
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';

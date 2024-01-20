@@ -1,5 +1,5 @@
 # Utilisez une image Node.js comme base
-FROM node:20.9.0
+FROM node:lts-alpine
 
 # Définissez le répertoire de travail dans le conteneur
 WORKDIR /usr/src/app
@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Exposez le port sur lequel le serveur fonctionne
-EXPOSE 8000
+EXPOSE 8080
 
 # Commande à exécuter lors du démarrage du conteneur
 CMD ["npm", "start"]

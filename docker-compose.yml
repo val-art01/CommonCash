@@ -1,12 +1,15 @@
+
 version: '3'
+
 services:
+
   frontend:
     build:
-      context: ./frontend/web
+      context: ./Frontend/web
     ports:
       - "5173:5173"
     networks:
-      - app-commonCash
+      - commonCash
 
   backend:
     build:
@@ -14,7 +17,21 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - app-commonCash
+      - commonCash
+
+  mongodb:
+    image: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - commonCash
+
+
+volumes:
+  mongodb_data:      
 
 networks:
-  app-commonCash:
+  commonCash:
+
