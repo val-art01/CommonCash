@@ -22,7 +22,11 @@
 
     <form @submit.prevent="login">
       <h3>Login Here</h3>
-
+       <!-- Affichez le message d'erreur -->
+       <div v-if="errorMessage" class="alert alert-danger alert-dismissible" id="myAlert">
+        <strong>Oup!</strong> {{ errorMessage }}
+      </div>
+      
       <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
       <label for="email">Email</label>
@@ -51,16 +55,13 @@
     return {
       email: '',
       password: '',
-      errorMessage: '', // Ajout de la propriété errorMessage
+      errorMessage: '', 
     };
   },
 
   methods: {
     async login() {
       try {
-        // Remise à zéro du message d'erreur avant chaque tentative de connexion
-        this.errorMessage = '';
-
         const response = await api.login({
           email: this.email,
           password: this.password,
@@ -69,10 +70,17 @@
         console.log('Connexion réussie:', response.data);
         this.$router.push("/dashboard");
       } catch (error) {
-        console.error('Erreur lors de la connexion:', error.message || 'Erreur inconnue');
+        if (error.response) {
+          // Affichez le message d'erreur à l'utilisateur
+          this.errorMessage = error.response.data.message;
 
-        // Affichage du message d'erreur
-        this.errorMessage = 'Email ou mot de passe incorrect';
+          // Affichez le message d'erreur dans la console (à des fins de débogage)
+          console.error('Erreur lors de la connexion:', error.response.data);
+          
+        } else if (error.request) {
+          // La requête a été faite, mais aucune réponse n'a été reçue
+          console.error('Aucune réponse reçue de l\API');
+        } 
       }
     }, methods: {
     handleLoginSucess() {
