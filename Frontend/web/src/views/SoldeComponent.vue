@@ -27,7 +27,7 @@
         <v-divider></v-divider>
         <router-link v-for="[icon, text] in links" :key="icon" :to="{ name: text }">
   <v-list-item :prepend-icon="icon" link class="custom-list-item">
-    <v-list-item-title color="black">
+    <v-list-item-title color="">
       {{ text }}
     </v-list-item-title>
   </v-list-item>
