@@ -7,6 +7,12 @@ import { createVuetify } from 'vuetify';
 import * as components from 'vuetify/components';
 import * as directives from 'vuetify/directives';
 import '@mdi/font/css/materialdesignicons.css';
+import 'chart.js'; // Importez Chart.js
+import 'chartkick/chart.js'; // Importez le support Chartkick pour Chart.js
+import VueChartkick from 'vue-chartkick';
+import '@/assets/style/style.css';
+
+
 
 // Créez l'application Vue
 const app = createApp(App);
@@ -24,6 +30,8 @@ const vuetify = createVuetify({
 
 // Utilisez Vuetify avec l'application Vue
 app.use(vuetify);
+
+app.use(VueChartkick);
 
 // Montez l'application sur l'élément avec l'ID 'app'
 app.mount('#app');

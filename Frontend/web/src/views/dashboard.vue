@@ -7,11 +7,23 @@
         <v-icon>mdi-triangle</v-icon>
       </v-system-bar>
   
-      <v-navigation-drawer v-model="drawer">
-        <v-sheet color="#6A1B9A" class="pa-4">
-          <v-avatar class="mb-4" color="white" size="64"></v-avatar>
-          <div>{{ currentUser }}</div>
-        </v-sheet>
+      <v-navigation-drawer v-model="drawer" color="#B39DDB">
+        <v-img
+      height="172"
+      class="pa-4"
+      src="https://fr.pngtree.com/freepng/automatic-floating-bubble-illustration_4701485.html"
+
+
+    >
+      <div class="text-center">
+        <v-avatar class="mb-4" color="#4A148C" size="64">
+            <v-icon size="60">
+          mdi-account-circle
+        </v-icon>
+        </v-avatar>
+        <h2 class="white--text" color="#4A148C">Donia laajili</h2>
+      </div>
+    </v-img>
         <v-divider></v-divider>
         <router-link v-for="[icon, text] in links" :key="icon" :to="{ name: text }">
   <v-list-item :prepend-icon="icon" link class="custom-list-item">
@@ -20,6 +32,7 @@
     </v-list-item-title>
   </v-list-item>
 </router-link>
+
 
       </v-navigation-drawer>
   
@@ -177,7 +190,10 @@
   </template>
   
   <script setup>
+  import Chartkick from 'chartkick'
   import { ref } from 'vue';
+
+  
 
   const monthlyExpenses = ref({
   labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],

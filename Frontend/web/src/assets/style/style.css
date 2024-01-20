@@ -1,0 +1,12 @@
+/* styles.css */
+.v-application {
+    background-color: #e8d4f3; /* Exemple de personnalisation de l'arrière-plan de l'application */
+  }
+  
+  /* Ajoutez d'autres styles personnalisés selon vos besoins */
+ 
+/* Exemple avec une classe supplémentaire */
+#inspire .v-list-item__title.custom-list-item {
+  text-decoration: none !important;
+  color: violet !important;
+}
