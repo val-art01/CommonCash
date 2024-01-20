@@ -39,12 +39,16 @@
 
     <form @submit.prevent="register">
       <h3>inscrivez vous</h3>
-
+       <!-- Affichez le message d'erreur -->
+      <div v-if="errorMessage" class="alert alert-danger alert-dismissible" id="myAlert">
+        <strong>Oup!</strong> {{ errorMessage }}
+      </div>
+       
       <label for="name">Username</label>
       <input type="text" placeholder="Username or Phone" id="name" v-model="name" required>
 
       <label for="email">Adresse e-mail:</label>
-      <input type="email" id="email" v-model="email" required />
+      <input type="text" id="email" v-model="email" required />
        
       <label for="password">Mot de passe:</label>
       <input type="password" id="password" v-model="password" required />
@@ -69,6 +73,7 @@
         email: "",
         password: "",
         confirmPassword: "",
+        errorMessage: ""
       };
     },
     methods: {
@@ -80,30 +85,36 @@
             email: this.email,
             password: this.password,
             confirmPassword: this.confirmPassword,
-            errorMessage: "", 
           });
 
-        
-          console.log('Réponse complète de l\'API:', response);
+          console.log('création de compte succee:', response);
           this.$router.push("/dashboard");
 
         } catch (error) {
-          console.error('Erreur lors de l\'inscription:', error.message);
-          this.errorMessage = 'Vérifier que le mot de passe a au moins 7 caractères, une majuscule, et un symbole ou chiffre';
-          if (error.response && error.response.data && error.response.data.error) {
-            alert(`Erreur côté serveur: ${error.response.data.error}`);
-          }
-         
+          // Gestion des erreurs
+          if (error.response) {
+            // Affichez le message d'erreur à l'utilisateur
+            this.errorMessage = error.response.data.message;
+
+            // Affichez le message d'erreur dans la console (à des fins de débogage)
+            console.error('Erreur de création de compte:', error.response.data);
+            
+          } else if (error.request) {
+            // La requête a été faite, mais aucune réponse n'a été reçue
+            console.error('Aucune réponse reçue de l\API');
+          } 
         }
       }, 
-      isPasswordValid() {
-        // Vérifier que le mot de passe a au moins 7 caractères, une majuscule, et un symbole ou chiffre
-        const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9!@#$%^&*])(.{7,})$/;
-        return passwordRegex.test(this.password);
-
-      },
+      
     }  
   };
+
+  // $(document).ready(function(){
+  //   $(".close").click(function(){
+  //     $("#myAlert").alert("close");
+  //   });
+  // });
+
 </script>
   
 <style scoped>
