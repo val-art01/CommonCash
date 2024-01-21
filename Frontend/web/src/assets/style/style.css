@@ -5,6 +5,8 @@
   box-sizing: border-box;
   text-decoration: none;
   
+  
+  
 }
 
 .v-application {
@@ -58,6 +60,7 @@
   margin-right: 50px;
   /*margin-left: auto;*/
   max-height: 100vh; 
+ /* background-color: #B39DDB;*/
 }
 
 .v-list-item--variant-plain, .v-list-item--variant-outlined, .v-list-item--variant-text, .v-list-item--variant-tonal {
@@ -117,4 +120,58 @@
 .mdi-account-circle::before {
   content: "\F0009";
   color: #ffffff;
+}
+
+.v-navigation-drawer__content {
+  flex: 0 1 auto;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  box-shadow: 0 8px 16px rgba(0, 0.9, 0.9, 0.9);}
+
+  /*.mdi-bell::before {
+    content: "\F009A";
+
+    /*content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px; /* Diamètre du cercle, ajustez selon vos besoins */
+    /*height: 35px; /* Diamètre du cercle, ajustez selon vos besoins */
+    /*background-color: #ff0000; /* Couleur du cercle */
+   /* border-radius: 50%;
+    box-shadow: 0 0 20px 10px #111111; 
+  
+}
+.mdi-bell {
+  position: center;
+  display: inline-block;
+}
+
+.mdi-dots-vertical::before {
+  content: "\F01D9";
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 35px; /* Diamètre du cercle, ajustez selon vos besoins */
+    /*height: 35px; /* Diamètre du cercle, ajustez selon vos besoins */
+    /*background-color: #ff0000; /* Couleur du cercle */
+   /* border-radius: 50%;
+    box-shadow: 0 0 20px 10px #111111; 
+}*/
+
+/*.v-col-12 {
+  flex: 0 0 100%;
+  max-width: 30%;
+  margin-top: 5%;
+  max-height: 51%;
+  box-shadow: 0 0 20px 10px #111111; 
+  
+}*/
+
+.v-col-12{
+  margin-top: 5%;
 }

@@ -69,24 +69,57 @@
         <v-card>
           <v-card-title class="headline">Déclaration de Dépense</v-card-title>
           <v-card-text>
-            <v-form @submit.prevent="submitExpense">
-              <!-- Champ pour le titre de la dépense -->
-              <v-text-field v-model="expense.title" label="Titre de la Dépense" required></v-text-field>
 
-              <!-- Champ pour le montant de la dépense -->
-              <v-text-field v-model="expense.amount" label="Montant" type="number" required></v-text-field>
+  <v-form @submit.prevent="submitExpense">
+    <!-- Champ pour le titre de la dépense -->
+    <v-text-field v-model="expense.title" label="Titre de la Dépense" required></v-text-field>
 
-              <!-- Sélection de la catégorie de la dépense -->
-              <v-select v-model="expense.category" :items="categories" label="Catégorie" required></v-select>
+    <!-- Champ pour le montant de la dépense -->
+    <v-text-field v-model="expense.amount" label="Montant" type="number" required></v-text-field>
 
-              <!-- Date de la dépense -->
-              <v-date-picker v-model="expense.date" label="Date de la Dépense" required></v-date-picker>
+    <!-- Sélection de la catégorie de la dépense -->
+    <v-select v-model="expense.category" :items="categories" label="Catégorie" required></v-select>
 
-              <!-- Bouton pour soumettre la dépense -->
-              <v-btn type="submit" color="primary">Soumettre la Dépense</v-btn>
-            </v-form>
-          </v-card-text>
+    <v-file-input v-model="expense.receipt" label="Justificatif de la Dépense"></v-file-input>
+
+    <!-- Date de la dépense -->
+    <v-date-picker v-model="expense.date" label="Date de la Dépense" required></v-date-picker>
+
+
+
+    <!-- Autres champs de collecte d'informations (ajoutez autant que nécessaire) -->
+
+    <!-- Bouton pour soumettre la dépense -->
+    <v-btn type="submit" color="primary">Soumettre la Dépense</v-btn>
+  </v-form>
+</v-card-text>
         </v-card>
+
+  <!-- Affichage des informations de la dépense -->
+  <v-card v-if="expense.title || expense.amount || expense.category || expense.date || expense.receipt">
+    <v-card-title>Informations de la Dépense</v-card-title>
+    <v-card-text>
+      <p><strong>Titre :</strong> {{ expense.title }}</p>
+      <p><strong>Montant :</strong> {{ expense.amount }}</p>
+      <p><strong>Catégorie :</strong> {{ expense.category }}</p>
+      <p><strong>Date :</strong> {{ expense.date }}</p>
+      <p><strong>Justificatif :</strong> {{ expense.receipt }}</p>
+      <!-- Ajoutez d'autres champs au besoin -->
+    </v-card-text>
+  </v-card>
+
+  <!-- Liste des dépenses enregistrées -->
+  <v-list>
+    <v-list-item-group>
+      <v-list-item v-for="(savedExpense, index) in savedExpenses" :key="index">
+        <!-- Affichez les informations de la dépense enregistrée -->
+        <v-list-item-content>
+          <v-list-item-title>{{ savedExpense.title }} - {{ savedExpense.amount }} - {{ savedExpense.category }} - {{ savedExpense.date }} - {{ savedExpense.receipt }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list-item-group>
+  </v-list>
+
       </v-col>
     </v-row>
   </v-container>
@@ -147,8 +180,17 @@ const submitExpense = () => {
     amount: 0,
     category: null,
     date: null,
+    receipt: null,
   };
 };
+
+// Tableau pour stocker les dépenses enregistrées
+const savedExpenses = ref([]);
+  
+  // Ajouter la dépense à la liste des dépenses enregistrées
+  savedExpenses.value.push({ ...expense.value });
+  
+
 </script>
 
 <style scoped>
