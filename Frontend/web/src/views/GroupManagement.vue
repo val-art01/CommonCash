@@ -139,104 +139,135 @@
                 <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
                 <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
               </template>
+              <template v-slot:item.details="{ item }">
+    <v-icon small @click="showDetails(item)">mdi-information</v-icon>
+  </template>
             </v-data-table>
           </v-col>
         </v-row>
       </v-container>
     </v-sheet>
+    
+  <!-- Nouvelle section pour afficher les détails du groupe sélectionné -->
+<v-sheet v-if="selectedGroupDetails" color="#6A1B9A" class="pa-4 fill-height">
+  <v-dialog v-model="showDetailsModal" max-width="800px">
+  <v-card>
+    <v-card-title>
+      Détails du Groupe {{ selectedGroupDetails.name }}
+    </v-card-title>
+    <v-card-text>
+      <!-- Affichez ici les détails du groupe, tels que la liste des membres, les dépenses récentes, etc. -->
+      <v-list>
+        <v-list-item-group>
+          <v-list-item v-for="(member, index) in selectedGroupDetails.members" :key="index">
+            <v-list-item-content>
+              <v-list-item-title>{{ member.name }}</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+      </v-list>
+    </v-card-text>
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="blue darken-1" text @click="showDetailsModal = false">Annuler</v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+  
+</v-sheet>
+
     </v-app>
   </template>
   
   <script setup>
-  import { ref, reactive, onMounted } from 'vue';
-  
-  const links = [
-    ['mdi-view-dashboard', 'Dashboard'],
-    ['mdi-cash-multiple', 'Nos Depenses'],
-    ['mdi-account-group', 'GroupManagement'],
-    ['mdi-cash-refund', 'Remboursement'],
-    ['mdi-currency-usd', 'Solde'],
-    ['mdi-email', 'Messagerie'],
-    ['mdi-chart-bar', 'Statistique'],
-    ['mdi-account-circle', 'Mon profil'],
-    ['mdi-logout', 'Deconnection'],
-  ];
-  
-  const drawer = ref(null);
-  const activityLog = ref([
-    { title: 'Item 1', amount: 10, color: 'blue' },
-    { title: 'Item 2', amount: 15, color: 'green' },
-    // Ajoutez d'autres éléments si nécessaire//
-  ]);
-  
-  const logout = () => {
-    // Logique pour la déconnexion
-  };
-  const currentUser = ref(''); // Initialisez avec une valeur par défaut
+
+import { ref, reactive, onMounted } from 'vue';
+
+const links = [
+  ['mdi-view-dashboard', 'Dashboard'],
+  ['mdi-cash-multiple', 'Nos Depenses'],
+  ['mdi-account-group', 'GroupManagement'],
+  ['mdi-cash-refund', 'Remboursement'],
+  ['mdi-currency-usd', 'Solde'],
+  ['mdi-email', 'Messagerie'],
+  ['mdi-chart-bar', 'Statistique'],
+  ['mdi-account-circle', 'Mon profil'],
+  ['mdi-logout', 'Deconnection'],
+];
+
+const drawer = ref(null);
+const activityLog = ref([
+  { title: 'Item 1', amount: 10, color: 'blue' },
+  { title: 'Item 2', amount: 15, color: 'green' },
+  // Ajoutez d'autres éléments si nécessaire
+]);
+
+const currentUser = ref(''); // Initialisez avec une valeur par défaut
 
 const handleLogin = (username) => {
   // Mettez à jour le nom de l'utilisateur lorsqu'il se connecte
   currentUser.value = username;
 };
-  
- 
-  
-  const groups = ref([
-    { id: 1, name: 'Groupe 1', members: [{ name: 'Membre 1' }, { name: 'Membre 2' }] },
-    { id: 2, name: 'Groupe 2', members: [{ name: 'Membre 3' }, { name: 'Membre 4' }] },
-    // ... Ajoutez d'autres groupes si nécessaire
-  ]);
-  
-  const headers = [
-    { text: 'Nom du Groupe', align: 'start', value: 'name' },
-    { text: 'Actions', value: 'actions', sortable: false },
-  ];
-  
-  const editedItem = ref(null);
-  const dialog = ref(false);
-  
-  const formTitle = ref('');
-  const tableHeaders = reactive(headers);
-  
-  const editItem = (item) => {
-    editedItem.value = Object.assign({}, item);
-    formTitle.value = 'Modifier le Groupe';
-    dialog.value = true;
-  };
-  
-  const deleteItem = (item) => {
-    const index = groups.value.indexOf(item);
-    groups.value.splice(index, 1);
-  };
-  
-  const close = () => {
-    editedItem.value = {};
-    dialog.value = false;
-  };
-  
-  const save = () => {
-    if (editedItem.value.id === undefined) {
-      // Nouveau groupe
-      groups.value.push(editedItem.value);
-    } else {
-      // Modifier le groupe existant
-      const index = groups.value.findIndex((g) => g.id === editedItem.value.id);
-      groups.value.splice(index, 1, editedItem.value);
-    }
-  
-    close();
-  };
-  
-  onMounted(() => {
-    // Assurez-vous de modifier ces valeurs pour refléter vos données réelles
-    groups.value.forEach((group) => {
-      group.actions = true;
-    });
+
+const groups = ref([
+  { id: 1, name: 'Groupe 1', members: [{ name: 'Membre 1' }, { name: 'Membre 2' }] },
+  { id: 2, name: 'Groupe 2', members: [{ name: 'Membre 3' }, { name: 'Membre 4' }] },
+  // ... Ajoutez d'autres groupes si nécessaire
+]);
+
+const headers = [
+  { text: 'Nom du Groupe', align: 'start', value: 'name' },
+  { text: 'Actions', value: 'actions', sortable: false },
+  { text: 'Détails', value: 'details', sortable: false }, // Nouvelle colonne pour les détails
+];
+
+const editedItem = ref(null);
+const dialog = ref(false);
+const selectedGroupDetails = ref(null);
+
+const formTitle = ref('');
+const tableHeaders = reactive(headers);
+
+const editItem = (item) => {
+  selectedGroupDetails.value = item;
+  editedItem.value = Object.assign({}, item);
+  formTitle.value = 'Modifier le Groupe';
+  dialog.value = true;
+};
+
+const deleteItem = (item) => {
+  const index = groups.value.indexOf(item);
+  groups.value.splice(index, 1);
+};
+
+const close = () => {
+  editedItem.value = {};
+  dialog.value = false;
+};
+
+const save = () => {
+  if (editedItem.value.id === undefined) {
+    // Nouveau groupe
+    groups.value.push(editedItem.value);
+  } else {
+    // Modifier le groupe existant
+    const index = groups.value.findIndex((g) => g.id === editedItem.value.id);
+    groups.value.splice(index, 1, editedItem.value);
+  }
+
+  close();
+};
+
+onMounted(() => {
+  // Assurez-vous de modifier ces valeurs pour refléter vos données réelles
+  groups.value.forEach((group) => {
+    group.actions = true;
   });
-  
-  const inviteMember = () => {
+});
+
+const inviteMember = () => {
   if (selectedGroup.value && newMemberName.value) {
-    const group = groups.value.find(g => g.id === selectedGroup.value);
+    const group = groups.value.find((g) => g.id === selectedGroup.value);
     if (group) {
       group.members = group.members || [];
       group.members.push({ name: newMemberName.value });
@@ -245,13 +276,14 @@ const handleLogin = (username) => {
     }
   }
 };
-  const newGroupName = ref('');
-  const selectedGroup = ref(null);
-  const newMemberName = ref('');
 
-  const createGroup = () => {
+const newGroupName = ref('');
+const selectedGroup = ref(null);
+const newMemberName = ref('');
+
+const createGroup = () => {
   if (newGroupName.value) {
-    const newGroup = { id: groups.length + 1, name: newGroupName.value, members: [] };
+    const newGroup = { id: groups.value.length + 1, name: newGroupName.value, members: [] };
     groups.value.push(newGroup);
     newGroupName.value = '';
   }
@@ -266,9 +298,14 @@ const showInviteCard = () => {
 const toggleDrawer = () => {
   drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
 };
-  </script>
-  
-  <style scoped>
-  /* Ajoutez vos styles ici si nécessaire */
-  </style>
+
+const showDetails = (item) => {
+  selectedGroupDetails.value = item;
+  showDetailsModal.value = true;
+};
+
+const showDetailsModal = ref(false);
+
+
+</script>
   
