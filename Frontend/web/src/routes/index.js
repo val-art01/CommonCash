@@ -13,6 +13,7 @@ import MessagerieComponent from '@/views/MessagerieComponent.vue';
 import StatistiqueComponent from '@/views/StatistiqueComponent.vue';
 import MonProfilComponent from '@/views/MonProfilComponent.vue';
 import DeconnectionComponent from '@/views/DeconnectionComponent.vue';
+import Sidebar from '@/components/Sidebar.vue';
 
 
 const routes = [
@@ -29,6 +30,8 @@ const routes = [
   { path: '/statistique',name: 'Statistique',component: StatistiqueComponent,},
   { path: '/mon-profil',name: 'Mon profil',component: MonProfilComponent,},
   { path: '/deconnexion',name: 'Deconnection',component: DeconnectionComponent,},
+  { path: '/sidebar',name: 'Sidebar',component: Sidebar,},
+
     // ...
   
   

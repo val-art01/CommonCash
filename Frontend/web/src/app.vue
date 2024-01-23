@@ -19,6 +19,7 @@
 </template>
 
 <script>
+
 //const { default: GroupManagement } = require('./views/GroupManagement.vue');//
 
 //import Header from "@/components/Header.vue";

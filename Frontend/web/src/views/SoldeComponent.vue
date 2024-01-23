@@ -1,11 +1,6 @@
 <template>
     <v-app id="inspire">
-      <v-system-bar>
-        <v-spacer></v-spacer>
-        <v-icon>mdi-square</v-icon>
-        <v-icon>mdi-circle</v-icon>
-        <v-icon>mdi-triangle</v-icon>
-      </v-system-bar>
+      
   
       <v-navigation-drawer v-model="drawer" color="#B39DDB">
         <v-img
@@ -61,7 +56,18 @@
           </v-list>
         </v-menu>
       </v-app-bar>
-
+      <v-container>
+         <v-row>
+            <v-col cols="12" sm="12">
+              <v-card  class="mx-auto rounded-xl"
+      height="675px"
+      width="1150px"
+      elevation-2
+      color="#9575CD"
+       ></v-card>
+            </v-col>
+          </v-row>  
+      </v-container>
       <v-sheet color="gray" class="pa-4" style="top: 50%;">
     
   </v-sheet>
