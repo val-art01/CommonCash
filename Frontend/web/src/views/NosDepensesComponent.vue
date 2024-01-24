@@ -90,7 +90,10 @@
     <!-- Autres champs de collecte d'informations (ajoutez autant que nécessaire) -->
 
     <!-- Bouton pour soumettre la dépense -->
-    <v-btn type="submit" color="primary">Soumettre la Dépense</v-btn>
+    <v-btn type="submit" color="primary">
+  {{ isEditing ? 'Modifier la Dépense' : 'Soumettre la Dépense' }}
+</v-btn>
+
   </v-form>
 </v-card-text>
         </v-card>
@@ -108,17 +111,41 @@
     </v-card-text>
   </v-card>
 
-  <!-- Liste des dépenses enregistrées -->
-  <v-list>
-    <v-list-item-group>
-      <v-list-item v-for="(savedExpense, index) in savedExpenses" :key="index">
-        <!-- Affichez les informations de la dépense enregistrée -->
-        <v-list-item-content>
-          <v-list-item-title>{{ savedExpense.title }} - {{ savedExpense.amount }} - {{ savedExpense.category }} - {{ savedExpense.date }} - {{ savedExpense.receipt }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-item-group>
-  </v-list>
+  <v-card>
+    <v-card-title>Tableau des Dépenses Enregistrées</v-card-title>
+    <v-card-text>
+      <!-- Tableau des dépenses enregistrées -->
+      <v-simple-table>
+        <template v-slot:default>
+          <thead>
+            <tr>
+              <th class="text-left">Titre</th>
+              <th class="text-left">Montant (€)</th>
+              <th class="text-left">Catégorie</th>
+              <th class="text-left">Date</th>
+              <th class="text-left">Justificatif</th>
+              <th class="text-left">Actions</th> 
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(savedExpense, index) in savedExpenses" :key="index">
+              <td>{{ savedExpense.title }}</td>
+              <td>{{ formatCurrency(savedExpense.amount) }}</td>
+              <td>{{ savedExpense.category }}</td>
+              <td>{{ savedExpense.date }}</td>
+              <td>{{ savedExpense.receipt }}</td>
+              <td>
+                <!-- Boutons d'édition -->
+                <v-icon @click="editExpense(index)">mdi-pencil</v-icon> <!-- Bouton de modification -->
+                <v-icon @click="deleteExpense(index)">mdi-delete</v-icon> <!-- Bouton de suppression -->
+              </td>
+
+            </tr>
+          </tbody>
+        </template>
+      </v-simple-table>
+    </v-card-text>
+  </v-card>
 
       </v-col>
     </v-row>
@@ -156,25 +183,37 @@ const drawer = ref(null);
 
 
 const toggleDrawer = () => {
-drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
+drawer.value = !drawer.value; 
 };
 
-// Modèle de la dépense
 const expense = ref({
   title: '',
   amount: 0,
   category: null,
   date: null,
+  receipt: null,
 });
 
-// Catégories possibles
 const categories = ['Alimentation', 'Transport', 'Logement', 'Divertissement', 'Autre'];
 
-// Fonction pour soumettre la dépense
+const savedExpenses = ref([]);
+
+const isEditing = ref(false);
+
+const editedExpenseIndex = ref(null);
+
+const formatCurrency = (amount) => {
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+};
+
 const submitExpense = () => {
-  // Logique pour traiter la dépense (envoyer à un serveur, stocker localement, etc.)
-  console.log('Dépense soumise :', expense.value);
-  // Réinitialiser le formulaire après la soumission
+  if (isEditing.value) {
+    savedExpenses.value.splice(editedExpenseIndex, 1, { ...expense.value });
+    isEditing.value = false;
+    editedExpenseIndex.value = null;
+  } else {
+    savedExpenses.value.push({ ...expense.value });
+  }
   expense.value = {
     title: '',
     amount: 0,
@@ -184,18 +223,18 @@ const submitExpense = () => {
   };
 };
 
-// Tableau pour stocker les dépenses enregistrées
-const savedExpenses = ref([]);
-  
-  // Ajouter la dépense à la liste des dépenses enregistrées
-  savedExpenses.value.push({ ...expense.value });
-  
+const editExpense = (index) => {
+  const selectedExpense = savedExpenses.value[index];
+  expense.value = { ...selectedExpense };
+  isEditing.value = true;
+};
+
+const deleteExpense = (index) => {
+  savedExpenses.value.splice(index, 1);
+};
+
+
 
 </script>
 
-<style scoped>
-.custom-list-item .v-list-item__title {
-text-decoration: none; /* Pour supprimer le soulignement du texte */
-color: violet; /* Changer la couleur du texte en violet (ou la couleur souhaitée) */
-}
-</style>
+
