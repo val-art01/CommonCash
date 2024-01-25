@@ -62,9 +62,33 @@
       </v-menu>
     </v-app-bar>
 
-    <v-sheet color="gray" class="pa-4" style="top: 50%;">
-  
-</v-sheet>
+    <v-sheet color="#6A1B9A" class="pa-4 fill-height">
+    <v-container fluid>
+      <!-- Autres éléments de la page Remboursement -->
+
+      <h2 class="headline mb-4">Liste des Remboursements Nécessaires</h2>
+
+      <v-list>
+        <v-list-item-group v-if="remboursements.length > 0">
+          <v-list-item v-for="(remboursement, index) in remboursements" :key="index">
+            <v-list-item-content>
+              <v-list-item-title>
+                {{ remboursement.sender }} doit {{ remboursement.amount }} à {{ remboursement.receiver }}
+              </v-list-item-title>
+              <v-list-item-subtitle>
+                Dépense associée : {{ remboursement.expenseTitle }}
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-item-group>
+        <v-list-item v-else>
+          <v-list-item-content>
+            <v-list-item-title>Aucun remboursement nécessaire pour le moment.</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-container>
+  </v-sheet>
 
 
     <Login @login-success="handleLoginSuccess" />
@@ -74,6 +98,8 @@
 <script setup>
 
 import { ref } from 'vue';
+import { onMounted } from 'vue';
+
 
 
 
@@ -98,6 +124,23 @@ const drawer = ref(null);
 const toggleDrawer = () => {
 drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
 };
+
+const remboursements = ref([]);
+
+const calculateRemboursements = () => {
+  // Logique de calcul des remboursements basée sur vos données et règles métier
+
+  // Exemple de données fictives
+  remboursements.value = [
+    { sender: 'Alice', receiver: 'Bob', amount: 20, expenseTitle: 'Dîner' },
+    // Ajoutez d'autres remboursements
+  ];
+};
+
+// Appelez cette méthode lorsque la composante est montée
+onMounted(() => {
+  calculateRemboursements();
+});
 </script>
 
 <style scoped>

@@ -175,14 +175,14 @@
 </v-card>
 <!-- Affichez ici les détails du groupe, tels que la liste des membres, les dépenses récentes, etc. -->
 <v-list>
-            <!-- Liste des membres -->
+            <!-- Liste des membres 
             <v-list-item-group>
               <v-list-item v-for="(member, index) in selectedGroupDetails.members" :key="index">
                 <v-list-item-content>
                   <v-list-item-title>{{ member.name }}</v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
-            </v-list-item-group>
+            </v-list-item-group>-->
 
             <!-- Dépenses récentes -->
             <v-list-item>
@@ -255,8 +255,8 @@ currentUser.value = username;
 };
 
 const groups = ref([
-{ id: 1, name: 'Groupe 1', members: [{ name: 'Membre 1' }, { name: 'Membre 2' }] },
-{ id: 2, name: 'Groupe 2', members: [{ name: 'Membre 3' }, { name: 'Membre 4' }] },
+{ id: 1, name: 'Groupe 1', members: [{ name: '' }, { name: '' }] },
+{ id: 2, name: 'Groupe 2', members: [{ name: '' }, { name: '' }] },
 // ... Ajoutez d'autres groupes si nécessaire
 ]);
 
