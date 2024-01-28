@@ -1,5 +1,24 @@
-import Group from '../models/Groups.js';
+import {registerGroup, getAllGroup, getGroupById, editGroup, deleteGroup, addMembersToGroup} from './../services/groupService.js';
 
+/**
+ * Contrôleur pour la création d'un nouveau groupe.
+ * @param {Object} req - L'objet de la requête Express.
+ * @param {Object} res - L'objet de la réponse Express.
+ * @returns {void}
+ */
+export const createGroup = async (req, res) => {
+    const { name, description} = req.body;
+    const admin = req.user._id;
+    try {
+        // Utilisation du service pour créer le groupe
+        const group = await registerGroup(name, description, admin);
+
+        res.status(200).json({ message: 'Groupe créé avec succès', group });
+    } catch (err) {
+        console.error('Erreur lors de la création :', err.message);
+        res.status(500).json({ response: 'Erreur de serveur interne' });
+    }
+};
 
 /**
  * Contrôleur pour obtenir tous les Groupes.
@@ -9,36 +28,35 @@ import Group from '../models/Groups.js';
  */
 export const getAllGroups = async (req, res) => {
     try {
-        const groups = await Group.find().lean()
-        res.status(200).json(groups)
+        const allGroups = await getAllGroup();
+        res.status(200).json(allGroups)
     } catch(err) {
         console.error('Erreur lors de la récupération des groupes :', err.message);
         res.status(500).json({ response: 'Internal server error' })
     }
 };
 
-
 /**
- * Contrôleur pour la création d'un nouveau groupe.
+ * Contrôleur pour obtenir un groupe specifique.
  * @param {Object} req - L'objet de la requête Express.
  * @param {Object} res - L'objet de la réponse Express.
  * @returns {void}
  */
-export const register = async (req, res) =>{
-    const { name } = req.body
-    try{
-        const newGroup = new Group({
-            name,
-            membersId: [req.id]
-        });
-
-
-        res.status(201).json({ message: 'Groupe créé avec succès', newGroup});
-    }catch(err){
-        console.error('Erreur lors de la création :', err.message);
-        res.status(500).json({ response: 'Erreur de serveur interne: '})
+export const getGroupByIds = async (req, res) => {
+    const { id } = req.params;
+    try {
+        
+        const group = await getGroupById(id);
+        // if (!group) {
+        //     return res.status(404).json({ error: 'groupe introuvable' })
+        // }
+        res.status(200).json({ group });
+    } catch (error) {
+        console.error('Erreur lors de la récupération du groupe :', error.message);
+        res.status(500).json({ response: 'Erreur de serveur interne' });
     }
-}
+};
+
 
 /**
  * Contrôleur pour àjouter un/des nouveaux membres au groupe.
@@ -48,20 +66,15 @@ export const register = async (req, res) =>{
  */
 export const addMembers = async (req, res) => {
     const { id } = req.params
-    const { newMembers } = req.body
+    const { members } = req.body
+
     try {
-        const updatedGroup = await Group.findByIdAndUpdate(id)
+        const updatedGroup = addMembersToGroup(id, members);
 
-        if (!updatedGroup) {
-            return res.status(404).json({ error: 'Groupe introuvable' })
-        }
-
-        updatedGroup.membersId = updatedGroup.membersId.concat(newMembers);
-
-        res.status(200).json({ message: 'Groupe mis à jour avec succès' });
-    } catch (err) {
-        console.error('Erreur lors de la mise a jour du groupe :', err.message);
-        res.status(500).json({ response: 'Erreur de serveur interne '})
+        res.status(200).json({ message: 'Membres ajoutés avec succès', updatedGroup });
+    } catch (error) {
+        console.error('Erreur lors de l\'ajout de membres au groupe :', error.message);
+        res.status(500).json({ response: 'Erreur de serveur interne' });
     }
 }
 
@@ -89,6 +102,28 @@ export const inviteUsers = async (req, res) => {
     }
 }
 
+/**
+ * Contrôleur pour modifier un groupe.
+ * @param {Object} req - L'objet de la requête Express.
+ * @param {Object} res - L'objet de la réponse Express.
+ * @returns {void}
+ */
+export const updateGroups = async (req, res) => {
+    const { id } = req.params;
+    const updatedDetails = req.body;
+
+    try {
+        const updatedGroup = await editGroup(id, updatedDetails);
+        // if (!updatedGroup) {
+        //     return res.status(404).json({ error: 'groupe introuvable' })
+        // }
+        res.status(200).json({ message: 'Groupe mis à jour avec succès', updatedGroup });
+    } catch (error) {
+
+      console.error('Erreur lors de la modification du groupe :', error.message);
+      res.status(500).json({ response: 'Erreur de serveur interne' });
+    }
+};
 
 /**
  * Contrôleur pour supprimer un groupe.
@@ -96,15 +131,10 @@ export const inviteUsers = async (req, res) => {
  * @param {Object} res - L'objet de la réponse Express.
  * @returns {void}
  */
-export const deleteGroup = async (req, res) => {
+export const deleteGroups = async (req, res) => {
     const { id }  = req.params
     try {
-        const deletedGroup = await Group.findByIdAndDelete(id)
-
-        if (!deletedGroup) {
-            return res.status(404).json({ error: 'Utilisateur introuvable' })
-        }
-
+        await deleteGroup(id);
         res.status(200).json({ message: 'Groupe supprimé avec succés'})
     } catch(err) {
         res.status(500).json({ response: 'Erreur de serveur interne ' + err.message})

@@ -8,6 +8,7 @@ import swaggerDocument from './swagger.json' assert { type: 'json' };
 import {connectToDB} from './src/utils/mongoose.js';
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
+import groupRoute from './routes/groupRoute.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -32,6 +33,7 @@ app.use(passport.session());
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use('/users', userRoute);
 app.use('/', authRoute);
+app.use('/group', groupRoute);
 
 // Gestionnaire d'erreurs global
 app.use((err, req, res, next) => {
