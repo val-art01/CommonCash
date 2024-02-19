@@ -80,7 +80,8 @@ body {
   background-size: cover; /* Ajustez la taille de l'image selon vos besoins */
   background-repeat: no-repeat;
   background-position: center center;
-  opacity: 0.06; /* Opacité de l'image, 1 étant complètement opaque et 0 complètement transparent */
+  opacity: 0.06; 
+  /* Opacité de l'image, 1 étant complètement opaque et 0 complètement transparent */
   position: absolute;
   top: 0;
   right: 0;

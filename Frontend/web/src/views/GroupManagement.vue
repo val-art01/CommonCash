@@ -88,7 +88,7 @@
               ></v-select>
               <v-text-field v-model="newMemberName" label="Nom du Membre"></v-text-field>
               <v-btn @click="inviteMember(selectedGroupDetails.id)">Inviter</v-btn>
-
+              
             </v-form>
           </v-card-text>
         </v-card>

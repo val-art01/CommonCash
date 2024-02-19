@@ -1,114 +1,117 @@
 <template>
-    <v-app id="inspire">
-      
-  
-      <v-navigation-drawer v-model="drawer" color="#B39DDB">
-        <v-img
-      height="172"
-      class="pa-4"
-      src="https://fr.pngtree.com/freepng/automatic-floating-bubble-illustration_4701485.html"
-
-
-    >
-      <div class="text-center">
-        <v-avatar class="mb-4" color="#4A148C" size="64">
-            <v-icon size="60">
-          mdi-account-circle
-        </v-icon>
-        </v-avatar>
-        <h2 class="white--text" color="#4A148C">Donia laajili</h2>
-      </div>
-    </v-img>
-        <v-divider></v-divider>
-        <router-link v-for="[icon, text] in links" :key="icon" :to="{ name: text }">
-  <v-list-item :prepend-icon="icon" link class="custom-list-item">
-    <v-list-item-title color="">
-      {{ text }}
-    </v-list-item-title>
-  </v-list-item>
-</router-link>
-
-      </v-navigation-drawer>
-  
-      <v-app-bar app color="#4A148C" elevate-on-scroll>
-        
-        <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
-        <v-toolbar-title>CommonCash</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-text-field
-        v-model="search"
-        append-icon="mdi-magnify"
-        label="Recherche"
-        single-line
-        hide-details
-      ></v-text-field>
-        <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
-        <v-menu left bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
+  <v-app id="inspire">
+    <v-sheet color="gray" class="pa-4" style="top: 50%;">
+      <v-card class="chat-room">
+        <v-toolbar card dense flat class="white chat-room--toolbar" light>
+          <v-btn icon @click="goBack">
+            <v-icon color="text--secondary">keyboard_arrow_left</v-icon>
+          </v-btn>
+          <v-avatar size="32" class="avatar-stack" v-for="(user_id, index) in chat.users" :key="index">
+            <img :src="getAvatar(user_id)" alt="">
+          </v-avatar>
+          <v-spacer></v-spacer>
+          <v-toolbar-title><h4>Chat Channel</h4></v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-tooltip bottom>
+            <v-btn icon slot="activator">
+              <v-icon color="text--secondary">add</v-icon>
             </v-btn>
-          </template>
-          <v-list>
-            <v-list-item v-for="n in 4" :key="n" @click="() => {}" color="#6A1B9A">
-              Option {{ n }}
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-app-bar>
-      <v-container>
-         <v-row>
-            <v-col cols="12" sm="12">
-              <v-card  class="mx-auto rounded-xl"
-      height="675px"
-      width="1150px"
-      elevation-2
-      color="#9575CD"
-       ></v-card>
-            </v-col>
-          </v-row>  
-      </v-container>
-      <v-sheet color="gray" class="pa-4" style="top: 50%;">
+            <span>Add user</span>
+          </v-tooltip>
+        </v-toolbar>
+
+        <vue-perfect-scrollbar class="chat-room--scrollbar grey lighten-5" v-bind:style="computeHeight">
+          <v-card-text class="chat-room--list pa-3">
+            <template v-if="chat.messages">
+              <div v-for="(item, index) in chat.messages" :key="index" v-bind:class="[ index % 2 == 0 ? 'reverse' : '']" class="messaging-item layout row my-4">
+                <v-avatar class="indigo mx-1" size="40">
+                  <img v-bind:src="item.user.avatar" alt="">
+                </v-avatar>
+                <div class="messaging--body layout column mx-2">
+                  <p :value="true" v-bind:class="[ index % 2 == 0 ? 'primary white--text' : 'white']" class="pa-2">
+                    {{ item.text }}
+                  </p>
+                  <div class="caption px-2 text--secondary">{{ new Date(item.created_at).toLocaleString() }}</div>
+                </div>
+                <v-spacer></v-spacer>
+              </div>
+            </template>
+          </v-card-text>
+        </vue-perfect-scrollbar>
+
+        <v-card-actions>
+          <v-text-field
+            full-width
+            flat
+            clearable
+            solo
+            append-icon="send"
+            label="Type some message here"
+          >
+            <v-icon slot="append-icon">send</v-icon>
+            <v-icon slot="append-icon" class="mx-2">photo</v-icon>
+            <v-icon slot="append-icon">face</v-icon>
+          </v-text-field>
+        </v-card-actions>
+      </v-card>
+    </v-sheet>
     
-  </v-sheet>
- 
 
-      <Login @login-success="handleLoginSuccess" />
-    </v-app>
-  </template>
-  
-  <script setup>
+    <Login @login-success="handleLoginSuccess" />
+  </v-app>
+</template>
 
-  import { ref } from 'vue';
+<script>
+import { ref } from 'vue';
 
-
-
-
-  
-  const links = [
-    ['mdi-view-dashboard', 'Dashboard'],
-    ['mdi-cash-multiple', 'Nos Depenses'],
-    ['mdi-account-group', 'GroupManagement'],
-    ['mdi-cash-refund', 'Remboursement'],
-    ['mdi-currency-usd', 'Solde'],
-    ['mdi-email', 'Messagerie'],
-    ['mdi-chart-bar', 'Statistique'],
-    ['mdi-account-circle', 'Mon profil'],
-    ['mdi-logout', 'Deconnection'],
-  ];
-  
-  const drawer = ref(null);
-
-
-
-const toggleDrawer = () => {
-  drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
+export default {
+  props: {
+    uuid: {
+      type: String,
+      default: '',
+    },
+    height: {
+      type: String,
+      default: null,
+    }
+  },
+  computed: {
+    chat() {
+      return {
+        title: 'Chat',
+        users: [],
+        messages: [
+          { text: 'Hello!', user: { avatar: 'url_de_votre_image_statique' }, created_at: new Date() },
+          // Ajoutez d'autres messages simulés
+        ]
+      };
+    },
+    computeHeight() {
+      return {
+        height: this.height || ''
+      };
+    },
+    activity() {
+      return [
+        { timeString: '09:00 AM', text: 'First activity', color: 'blue' },
+        { timeString: '10:30 AM', text: 'Second activity', color: 'green' },
+      ];
+    }
+  },
+  methods: {
+    getAvatar(uid) {
+      // Logique pour récupérer l'avatar en fonction de l'ID de l'utilisateur
+    },
+    goBack() {
+      // Logique pour revenir en arrière
+    },
+    handleLoginSuccess() {
+      // Logique pour gérer la connexion réussie
+    }
+  }
 };
-  </script>
-  
-  <style scoped>
-.custom-list-item .v-list-item__title {
-  text-decoration: none; /* Pour supprimer le soulignement du texte */
-  color: violet; /* Changer la couleur du texte en violet (ou la couleur souhaitée) */
-}
+</script>
+
+<style scoped>
+  /* Ajoutez vos styles personnalisés ici */
 </style>

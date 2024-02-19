@@ -176,4 +176,32 @@
   margin-top: 5%;
 }
 
+.cardOr{
+  background: rgb(1,1,1);
+  background: linear-gradient(90deg, rgb(232, 65, 247) 0%, rgba(34,34,29,1) 70%, rgb(69, 1, 81) 100%);
+  width: 300px;
+  height: 160px;
+  left: 40%;
+  
+  }
+  .cardVr{
+    background: rgb(1,1,1);
+  background: linear-gradient(90deg, rgba(1,1,1,1) 0%, rgba(29,34,30,1) 70%, rgb(91, 19, 158) 100%);
+  width: 300px;
+  left : 40%;
+  height: 160px;
+  }
+  .cardR{
+    background: rgb(1,1,1);
+  background: linear-gradient(90deg, rgba(1,1,1,1) 0%, rgb(58, 36, 74) 70%, rgb(119, 19, 158) 100%);
+  width: 300px;
+  left: 40%;
+  height: 160px;
+  }
 
+  .mdi-chart-line::before{
+    content: "\F012A";
+    width: 100px;
+    height: 100px;
+
+}
