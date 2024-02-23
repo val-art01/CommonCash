@@ -31,7 +31,6 @@ export const authentification = async(req, res, next) => {
     req.user = user;
 
     next();
-
   }catch(error){
     // Gérer les erreurs liées à la vérification du token
     console.error('Erreur d\'authentification :', error.message);
