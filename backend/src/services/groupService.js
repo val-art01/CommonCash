@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import Group from '../models/Groups.js';
 
 /**
@@ -11,20 +12,21 @@ import Group from '../models/Groups.js';
  */
 export const registerGroup = async (name, description, admin ) => {
   
-    // Créer un groupe
-    const newgroup = new Group({
-        name,
-        description,
-        admins: [admin]
-    });
+  // Créer un groupe
+  const newgroup = new Group({
+    name,
+    description,
+    admins: [admin]
+  });
 
-    try {
-        // Enregistrer le groupe dans la base de données
-        const savedGrope = await newgroup.save()
-        return savedGrope;
-    } catch (error) {
-        throw new Error('Erreur lors de la création du groupe');
-    }    
+  try {
+    // Enregistrer le groupe dans la base de données
+    const savedGrope = await newgroup.save() 
+    return savedGrope;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Erreur lors de la création du groupe');
+  }    
 };
 
 /**
@@ -34,12 +36,12 @@ export const registerGroup = async (name, description, admin ) => {
  * @throws {Error} - Une erreur si la récupération des groupes échoue.
  */
 export const getAllGroup = async () => {
-    try {
-      const groups = await Group.find();
-      return groups;
-    } catch (error) {
-      throw new Error('Erreur lors de la récupération des groupes');
-    }
+  try {
+    const groups = await Group.find();
+    return groups;
+  } catch (error) {
+    throw new Error('Erreur lors de la récupération des groupes');
+  }
 };
 
 /**
@@ -50,12 +52,28 @@ export const getAllGroup = async () => {
  * @throws {Error} - Une erreur si la récupération du groupe échoue.
  */
 export const getGroupById = async (groupId) => {
-    try {
-      const group = await Group.findById(groupId).lean(); 
-      return group;
-    } catch (error) {
-      throw new Error('Erreur lors de la récupération du groupe');
-    }
+  try {
+    const group = await Group.findById(groupId).lean(); 
+    return group;
+  } catch (error) {
+    throw new Error('Erreur lors de la récupération du groupe');
+  }
+};
+
+/**
+ * Récupère un groupe par son Nom.
+ *
+ * @param {string} name - L'identifiant du groupe à récupérer.
+ * @returns {Promise<object|null>} - Une promesse résolue avec les détails du groupe, ou null si le groupe n'est pas trouvé.
+ * @throws {Error} - Une erreur si la récupération du nom de groupe échoue.
+ */
+export const getGroupByName = async (name) => {
+  try {
+    const groupName = await Group.findOne({ name }).lean(); 
+    return groupName;
+  } catch (error) {
+    throw new Error('Erreur lors de la récupération du nom de groupe');
+  }
 };
 
 /**
@@ -67,17 +85,17 @@ export const getGroupById = async (groupId) => {
  * @throws {Error} - Une erreur si la modification du groupe échoue.
  */
 export const editGroup = async (groupId, updatedDetails) => {
-    const {name, description} = updatedDetails
-    try {
-        const updatedGroup = await Group.findByIdAndUpdate(
-            groupId,
-            {name, description},
-            { new: true, runValidators: true }
-        );
-      return updatedGroup;
-    } catch (error) {
-      throw new Error('Erreur lors de la modification du groupe');
-    }
+  const {name, description} = updatedDetails
+  try {
+    const updatedGroup = await Group.findByIdAndUpdate(
+      groupId,
+      {name, description},
+      { new: true, runValidators: true }
+    );
+    return updatedGroup;
+  } catch (error) {
+    throw new Error('Erreur lors de la modification du groupe');
+  }
 };
 
 /**
@@ -88,21 +106,37 @@ export const editGroup = async (groupId, updatedDetails) => {
  * @throws {Error} - Une erreur si la suppression du groupe échoue.
  */
 export const deleteGroup = async (groupId) => {
-    try {
-      await Group.findByIdAndDelete(groupId);
-    } catch (error) {
-      throw new Error('Erreur lors de la suppression du groupe');
-    }
+  try {
+    await Group.findByIdAndDelete(groupId);
+  } catch (error) {
+    throw new Error('Erreur lors de la suppression du groupe');
+  }
 };
 
-export const addMembersToGroup = async (memberIds) =>{
-    try{
-        group.members.push(...memberIds)
+/**
+ * Ajoute des membres à un groupe.
+ * @param {string} groupId - L'ID du groupe auquel ajouter les membres.
+ * @param {Array.<string>} memberIds - Les IDs des membres à ajouter.
+ * @returns {Promise} Une promesse qui se résout avec le groupe mis à jour après l'ajout des membres.
+ * @throws {Error} Lance une erreur si une erreur se produit lors de l'ajout des membres au groupe.
+ */
+export const addMembersToGroup = async (groupId, memberIds) =>{
+  try{
+    //  Récupérer le groupe
+    const group = await Group.findById(groupId);
 
-        const updatedGroup = await group.save();
+    const validMemberIds = memberIds.filter(id => mongoose.Types.ObjectId.isValid(id));
 
-        return updatedGroup;
-    }catch (error) {
-        throw new Error('Erreur lors de l\'ajout de membres au groupe');
-    }
+    // Convertir les chaînes en objets ObjectId
+    // const objectIdMemberIds = validMemberIds.map(id => mongoose.Types.ObjectId(id));
+
+    // Ajouter les membres à la propriété "members" du groupe
+    group.members.push(...validMemberIds)
+
+    // Sauvegarder le groupe mis à jour
+    const updatedGroup = await group.save();
+    return updatedGroup;
+  }catch (error) {
+    throw new Error('Erreur lors de l\'ajout de membres au groupe'+ error);
+  }
 };

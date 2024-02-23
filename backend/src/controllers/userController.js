@@ -86,7 +86,7 @@ export const updateUser = async (req, res) => {
             return res.status(404).json({ error: 'Utilisateur introuvable' })
         }
 
-        res.status(200).json({ message: 'Utilisateur mis à jour avec succès' });
+        res.status(204).json({ message: 'Utilisateur mis à jour avec succès' });
     } catch (err) {
         console.error('Erreur lors de la mise a jour de l\'utilisateur :', err.message);
         res.status(500).json({ response: 'Erreur de serveur interne '})
@@ -108,7 +108,7 @@ export const deleteUser = async (req, res) => {
             return res.status(404).json({ error: 'Utilisateur introuvable' })
         }
 
-        res.status(200).json({ message: 'User deleted successfully'})
+        res.status(204).json({ message: 'Utilisateur supprimé avec succès'})
     } catch(err) {
         res.status(500).json({ response: 'Erreur de serveur interne ' + err.message})
     }
