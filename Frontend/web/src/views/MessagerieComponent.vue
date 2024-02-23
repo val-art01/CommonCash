@@ -1,113 +1,274 @@
 <template>
-  <v-app :style="{ background: '#6A1B9A' }">
-    <v-row class="my-4">
-      <v-col class="mx-auto">
-        <v-row align="center">
-          <v-icon color="purple">mdi-message-text-outline</v-icon>
-          <span class="ml-2 headline">Chat</span>
-        </v-row>
-      </v-col>
-    </v-row>
-    <v-container>
-      <v-row class="no-gutters elevation-4">
-        <v-col cols="12" sm="3" class="flex-grow-1 flex-shrink-0" style="border-right: 1px solid #0000001f;">
-          <v-responsive class="overflow-y-auto fill-height" height="400">
-            <v-list subheader>
-              <v-list-item-group v-model="activeChat">
-                <template v-for="(item, index) in parents" :key="index">
-                  <v-list-item @click="selectChat(index)">
-                    <v-list-item-avatar color="grey lighten-1 white--text">
-                      <v-icon>mdi-account-circle</v-icon>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item.title" />
-                      <v-list-item-subtitle v-text="'hi'" />
-                    </v-list-item-content>
-                    <v-list-item-icon>
-                      <v-icon :color="item.active ? 'deep-purple accent-4' : 'grey'">mdi-chevron-right</v-icon>
-                    </v-list-item-icon>
-                  </v-list-item>
-                  <v-divider v-if="index < parents.length - 1" class="my-0" />
-                </template>
-              </v-list-item-group>
-            </v-list>
-          </v-responsive>
-        </v-col>
-        <v-col cols="9" class="flex-grow-1 flex-shrink-0">
-          <v-responsive v-if="activeChat !== null" class="overflow-y-hidden fill-height" height="500">
-            <!-- Fenêtre de discussion -->
-            <v-card flat class="d-flex flex-column fill-height">
-              <v-card-title>
-                {{ parents[activeChat].title }}
-              </v-card-title>
-              <v-divider></v-divider>
-              <v-card-text class="flex-grow-1 overflow-y-auto">
-                <template v-for="(msg, i) in parents[activeChat].messages" :key="i">
-                  <div :class="{ 'd-flex flex-row-reverse': msg.me }">
-                    <v-menu offset-y>
-                      <template v-slot:activator="{ on }">
-                        <v-hover v-slot:default="{ hover }">
-                          <v-chip :color="msg.me ? 'primary' : ''" dark style="height:auto;white-space: normal;" class="pa-4 mb-2" v-on="on">
-                            {{ msg.content }}
-                            <sub class="ml-2" style="font-size: 0.5rem;">{{ msg.created_at }}</sub>
-                            <v-icon v-if="hover" small>expand_more</v-icon>
-                          </v-chip>
-                        </v-hover>
-                      </template>
-                      <v-list>
-                        <v-list-item @click="deleteMessage(activeChat, i)">
-                          <v-list-item-title>Delete</v-list-item-title>
-                        </v-list-item>
-                      </v-list>
-                    </v-menu>
-                  </div>
-                </template>
-              </v-card-text>
-              <v-divider></v-divider>
-              <v-card-actions>
-                <v-text-field v-model="parents[activeChat].newMessage" label="Type your message..." outlined @keyup.enter="sendMessage(activeChat)"></v-text-field>
-                <v-btn @click="sendMessage(activeChat)" color="primary">Send</v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-responsive>
-        </v-col>
-      </v-row>
+  <v-app>
+    
+ 
+    <v-navigation-drawer
+      color="grey-lighten-3"
+      rail
+    >
+      <v-avatar
+        class="d-block text-center mx-auto mt-4"
+        color="grey-darken-1"
+        size="36"
+      ></v-avatar>
+
+      <v-divider class="mx-3 my-5"></v-divider>
+
+      <v-avatar
+        v-for="n in 6"
+        :key="n"
+        class="d-block text-center mx-auto mb-9"
+        color="grey-lighten-1"
+        size="28"
+      ></v-avatar>
+    </v-navigation-drawer>
+
+    
+<!--
+    <v-app-bar
+      class="px-3"
+      color="grey-lighten-4"
+      flat
+      height="72"
+    >-->
+      <v-spacer></v-spacer>
+
+     <!-- <v-responsive max-width="156">
+        <v-text-field
+          bg-color="grey-lighten-1"
+          density="compact"
+          flat
+          hide-details
+          rounded="pill"
+          variant="solo-filled"
+        ></v-text-field>
+      </v-responsive>-->
+    
+
+    <v-main>
+      <!-- Votre contenu principal ici -->
+      <v-content>
+        <!-- Barre de navigation de messagerie -->
+        <v-app-bar app>
+          <v-toolbar-title>Messagerie</v-toolbar-title>
+          <v-container>
+            
+            <v-row>
+              <v-col v-if="selectedContact" cols="2">
+                <v-divider vertical></v-divider>
+              </v-col>
+              <v-col v-if="selectedContact" cols="10">
+                <v-toolbar color="grey lighten-3">
+                  <v-avatar>
+                    <v-icon :color="selectedContact.avatarColor">{{ selectedContact.avatar }}</v-icon>
+                  </v-avatar>
+                  
+                  <v-toolbar-title>{{ selectedContact.username }}</v-toolbar-title>
+                </v-toolbar>
+                
+              </v-col>
+            </v-row>
+          </v-container>
+          
+          
+     
+        </v-app-bar>
+
+       <!-- Barre des listes des messages -->
+       <v-col :cols="showDiscussion ? 8 : 12">
+  <!-- Boutons à l'extérieur de la barre latérale -->
+  <v-btn icon @click="closeDrawer" v-if="isDrawerOpen">
+    <v-icon>mdi-close</v-icon>
+  </v-btn>
+  <v-btn icon @click="openDrawer" v-else>
+    <v-icon>mdi-format-list-bulleted</v-icon>
+  </v-btn>
+
+  <v-navigation-drawer v-model="isDrawerOpen" :width="drawerWidth">
+    <v-sheet color="grey-lighten-4" class="pa-4">
+      <div>Liste des messages</div>
+      <v-responsive max-width="156">
+        <v-text-field
+          v-model="searchQuery"
+          label="Rechercher des messages par contact"
+          outlined
+          clearable
+          @input="searchMessages"
+        ></v-text-field>
+      </v-responsive>
+    </v-sheet>
+    <v-divider></v-divider>
+    <v-list>
+                <v-list-item v-for="contact in filteredContacts" :key="contact.id" @click="openChatWith(contact)" link>
+                  <v-list-item-avatar>
+                    <v-icon :color="contact.avatarColor">{{ contact.avatar }}</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ contact.username }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ contact.lastMessage }}</v-list-item-subtitle>
+                    <v-list-item-subtitle>{{ formatDateTime(contact.lastMessageDate) }}</v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-navigation-drawer>
+          </v-col>
+
+
+        <!-- Section de fil de discussion ou messagerie privée -->
+        <v-container>
+          <!-- Ajoutez ici la logique pour afficher la fenêtre de discussion avec le contact sélectionné -->
+        </v-container>
+      
+       <!-- Section de discussion ou messagerie privée -->
+       <v-container v-if="privateMessagesVisible">
+  <v-row>
+    <v-col v-if="selectedContact" :cols="showDiscussion ? 8 : 0">
+      <div v-if="showDiscussion">
+        <h2>Discussion avec {{ selectedContact.username }}</h2>
+        <div v-for="message in selectedContact.messages" :key="message.id">
+          {{ message.sender }}: {{ message.content }}
+        </div>
+        <v-textarea v-model="newMessage" placeholder="Écrire un message"></v-textarea>
+        <v-btn @click="sendMessage">Envoyer</v-btn>
+      </div>
+    </v-col>
+  </v-row>
+
+
     </v-container>
-  </v-app>
+    </v-content>
+    </v-main>
+ 
+    <v-navigation-drawer location="right">
+      <v-list>
+        <v-list-item
+          v-for="n in 5"
+          :key="n"
+          :title="`Item ${ n }`"
+          link
+        ></v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+
+    <v-footer app height="72">
+      <v-text-field
+        bg-color="gray"
+        class="overflow-hidden"
+        density="compact"
+        flat
+        hide-details
+        rounded="pill"
+        variant="solo-filled"
+        
+      ></v-text-field>
+      <v-btn @click="sendMessage">
+      <v-icon>mdi-send</v-icon>
+    
+    </v-btn>
+    </v-footer>
+
+ 
+</v-app>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    activeChat: null,
-    parents: [
-      { id: 1, title: "John Doe", active: true, messages: [], newMessage: "" },
-      { id: 3, title: "Scarlett", active: false, messages: [], newMessage: "" },
-      // ... (autres utilisateurs)
-    ],
-  }),
-  methods: {
-    selectChat(index) {
-      this.activeChat = index;
-    },
-    sendMessage(chatIndex) {
-      if (chatIndex !== null) {
-        const currentUser = this.parents[chatIndex];
-        currentUser.messages.push({ content: currentUser.newMessage, me: true, created_at: "now" });
-        currentUser.newMessage = "";
-      }
-    },
-    deleteMessage(chatIndex, messageIndex) {
-      if (chatIndex !== null) {
-        this.parents[chatIndex].messages.splice(messageIndex, 1);
-      }
-    },
+
+<script setup>
+import { ref, computed } from 'vue';
+
+const drawer = ref(null);
+const currentSection = ref('general');
+const privateMessagesVisible = ref(false);
+
+
+
+
+const searchQuery = ref("");
+const contacts = ref([
+  { id: 1, username: "Bob", messages: [{ sender: "Utilisateur1", content: "Bonjour!" }], avatar:"mdi-account-circle", avatarColor: "blue"},
+  { id: 2, username: "Donia", messages: [{ sender: "Utilisateur2", content: "Salut!" }], avatar:"mdi-account-circle", avatarColor: "green" },
+  { id: 1, username: "Wary", messages: [{ sender: "Utilisateur3", content: "Hi!" }], avatar:"mdi-account-circle", avatarColor: "purple"},
+  { id: 2, username: "Roby", messages: [{ sender: "Utilisateur4", content: "Hiiiiiii" }], avatar:"mdi-account-circle", avatarColor: "red" },
+
+  // ... Ajoutez d'autres contacts ici
+]);
+
+contacts.value.forEach(contact => {
+  contact.lastMessage = contact.messages.length > 0 ? contact.messages[contact.messages.length - 1].content : "";
+});
+
+const selectedContact = ref(null);
+const newMessage = ref("");
+
+const filteredContacts = computed(() => {
+  // Filtrer les contacts en fonction de la recherche
+  return contacts.value.filter((contact) =>
+    contact.username.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
+
+
+const formatDateTime = (dateTimeString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  return new Date(dateTimeString).toLocaleDateString('fr-FR', options);
+};
+const toggleSection = (section) => {
+  currentSection.value = section;
+};
+
+const userInfoPanelOpen = ref(false);
+
+const toggleNotifications = () => {
+  // Logique de gestion des notifications
+};
+
+const openPrivateMessages = () => {
+  privateMessagesVisible.value = true;
+};
+
+
+
+const toggleDrawer = () => {
+  drawer.value = !drawer.value;
+};
+
+contacts.value.forEach(contact => {
+  contact.lastMessage = contact.messages.length > 0 ? contact.messages[contact.messages.length - 1].content : "";
+});
+
+
+
+const searchContacts = () => {
+  // Logique de recherche ici
+  filteredContacts.value = contacts.value;
+};
+
+const openChatWith = (contact) => {
+  selectedContact.value = contact;
+  showDiscussion.value = true;
+};
+
+const openDrawer = () => {
+  isDrawerOpen.value = true;
+};
+
+const closeDrawer = () => {
+  isDrawerOpen.value = false;
+};
+
+const sendMessage = () => {
+  if (selectedContact.value) {
+    const message = { sender: "Moi", content: newMessage.value };
+    selectedContact.value.messages.push(message);
+    showDiscussion.value = true;
+    newMessage.value = "";
   }
 };
-</script>
 
-<style>
-.fill-height {
-  height: 100%;
-}
-</style>
+const isDrawerOpen = ref(true);
+
+const drawerWidth = ref(400);
+
+const showDiscussion = ref(false);
+
+
+</script>

@@ -114,7 +114,7 @@ const links = [
   ['mdi-email', 'Messagerie'],
   ['mdi-chart-bar', 'Statistique'],
   ['mdi-account-circle', 'Mon profil'],
-  ['mdi-logout', 'Deconnection'],
+  
 ];
 
 const drawer = ref(null);

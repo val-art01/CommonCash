@@ -1,4 +1,5 @@
 <template>
+  
   <v-app id="inspire">
 
     <v-navigation-drawer v-model="drawer" color="#B39DDB">
@@ -45,9 +46,136 @@
       <v-btn icon><v-icon>mdi-bell</v-icon></v-btn>
       <v-menu left bottom>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn icon v-bind="attrs" v-on="on">
+          <!--<v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
-          </v-btn>
+
+          </v-btn>-->
+          <VBadge
+    dot
+    location="bottom right"
+    offset-x="3"
+    offset-y="3"
+    color="success"
+    bordered
+  >
+    <VAvatar
+      class="cursor-pointer"
+      color="primary"
+      variant="tonal"
+    >
+
+    <v-icon>mdi-account-circle</v-icon>
+     
+
+      <!-- SECTION Menu -->
+      <VMenu
+        activator="parent"
+        width="230"
+        location="bottom end"
+        offset="14px"
+      >
+        <VList>
+          <!-- 👉 User Avatar & Name -->
+          <VListItem>
+            <template #prepend>
+              <VListItemAction start>
+                <VBadge
+                  dot
+                  location="bottom right"
+                  offset-x="3"
+                  offset-y="3"
+                  color="success"
+                >
+                  <VAvatar
+                    color="primary"
+                    variant="tonal"
+                  >
+                  <v-icon>mdi-account-circle</v-icon>
+                    
+                  </VAvatar>
+                </VBadge>
+              </VListItemAction>
+            </template>
+
+            <VListItemTitle class="font-weight-semibold">
+              Donia Laajili
+            </VListItemTitle>
+            <VListItemSubtitle>Admin</VListItemSubtitle>
+          </VListItem>
+          <VDivider class="my-2" />
+
+          <!-- 👉 Profile -->
+          <VListItem link>
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="ri-user-line"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>Profile</VListItemTitle>
+          </VListItem>
+
+          <!-- 👉 Settings -->
+          <VListItem link>
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="ri-settings-4-line"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>Settings</VListItemTitle>
+          </VListItem>
+
+          <!-- 👉 Pricing -->
+          <VListItem link>
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="ri-money-dollar-circle-line"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>Pricing</VListItemTitle>
+          </VListItem>
+
+          <!-- 👉 FAQ -->
+          <VListItem link>
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="ri-question-line"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>FAQ</VListItemTitle>
+          </VListItem>
+
+          <!-- Divider -->
+          <VDivider class="my-2" />
+
+          <!-- 👉 Logout -->
+          <VListItem to="/login">
+            <template #prepend>
+              <VIcon
+                class="me-2"
+                icon="ri-logout-box-r-line"
+                size="22"
+              />
+            </template>
+
+            <VListItemTitle>Logout</VListItemTitle>
+          </VListItem>
+        </VList>
+      </VMenu>
+      <!-- !SECTION -->
+    </VAvatar>
+  </VBadge>
         </template>
         <v-list>
           <v-list-item v-for="n in 4" :key="n" @click="() => {}" color="#6A1B9A">
@@ -249,6 +377,9 @@ import { ref } from 'vue';
 
 
 
+
+
+
 const monthlyExpenses = ref({
 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
 datasets: [
@@ -281,7 +412,7 @@ const links = [
   ['mdi-email', 'Messagerie'],
   ['mdi-chart-bar', 'Statistique'],
   ['mdi-account-circle', 'Mon profil'],
-  ['mdi-logout', 'Deconnection'],
+  
 ];
 
 const drawer = ref(null);

@@ -15,6 +15,16 @@
 
 
   >
+  <v-app-bar app color="#B39DDB">
+    <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+    <v-spacer></v-spacer>
+    
+ 
+<!-- Ajoutez ici les icônes que vous souhaitez afficher en permanence -->
+    <v-icon>mdi-square</v-icon>
+    <v-icon>mdi-circle</v-icon>
+    <v-icon>mdi-triangle</v-icon>
+  </v-app-bar>
     <div class="text-center">
       <v-avatar class="mb-4" color="#4A148C" size="64">
           <v-icon size="60">
@@ -88,7 +98,7 @@ const links = [
   ['mdi-email', 'Messagerie'],
   ['mdi-chart-bar', 'Statistique'],
   ['mdi-account-circle', 'Mon profil'],
-  ['mdi-logout', 'Deconnection'],
+  
 ];
 
 const drawer = ref(null);

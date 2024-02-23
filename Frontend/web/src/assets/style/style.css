@@ -205,3 +205,8 @@
     height: 100px;
 
 }
+
+.mdi-account-circle::before {
+  content: "\F0009";
+  color: #5727f4;
+}
