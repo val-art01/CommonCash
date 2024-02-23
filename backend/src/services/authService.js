@@ -15,7 +15,7 @@ const generateTokenAndSave = async (user) => {
     const authToken = jwt.sign(
         { id: _id}, 
         process.env.JWT_SEC, 
-        { expiresIn: '3h' }
+        { expiresIn: '72h' }
     );
     user.authTokens.push({authToken});
     await user.save();
