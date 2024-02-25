@@ -64,10 +64,13 @@ const validateGroupChamps = (req, res, next) => {
 const existGroup = async (req, res, next) => {
   const { id } = req.params;
   const loggedInUserId = req.user._id.toString(); 
+  const { groupId } = req.body;
 
   try {  
+    console.log(`groupId: ${groupId}`);
     // Récupérer le groupe par son ID
-    const group = await getGroupById(id);
+    const groupIdOK = id || groupId;
+    const group = await getGroupById(groupIdOK);
     if (!group) {
       return res.status(404).json({ error: 'Le groupe n\existe pas.' });
     }
@@ -77,7 +80,7 @@ const existGroup = async (req, res, next) => {
     const admins = group.admins.map(admin => admin.toString());
 
     if(!members.includes(loggedInUserId) && !admins.includes(loggedInUserId)){
-      return res.status(403).json({error:'Vous n\'avez pas membres de ce groupe'})
+      return res.status(403).json({error:'Vous n\'etes pas membres de ce groupe'})
     }
 
     next();
@@ -99,9 +102,9 @@ const existGroup = async (req, res, next) => {
 const checkGroupManagementauthorisations = async (req, res, next) => {
   const { id } = req.params;
   const { members } = req.body;
-  const loggedInUserId = req.user._id.toString();
 
   try {  
+    const loggedInUserId = req.user._id.toString();
     // Récupérer le groupe par son ID
     const group = await getGroupById(id);
     if (!group) {

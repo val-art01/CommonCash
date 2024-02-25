@@ -3,7 +3,7 @@ import {login} from '../src/controllers/auth/authController.js';
 import {logout, logoutAll} from '../src/controllers/logoutController.js';
 import {passport} from '../src/controllers/auth/authGoogleController.js';
 import {passportFace} from '../src/controllers/auth/authFaceboockController.js';
-import {authentification} from "../src/middlewares/authMiddleware.js";
+import {authentificationWithoutId} from "../src/middlewares/authMiddleware.js";
 
 /**
  * @swagger
@@ -77,7 +77,7 @@ router.post('/login', login);
  *             example:
  *               message: User logged out successfully
  */
-router.post('/logout',authentification, logout);
+router.post('/logout',authentificationWithoutId, logout);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.post('/logout',authentification, logout);
  *             example:
  *               message: User logged out from all devices successfully
  */
-router.post('/logout/all', authentification, logoutAll);
+router.post('/logout/all', authentificationWithoutId, logoutAll);
 
 router.get('/success', (req, res) => res.send(req.user));
 router.get('/error', (req, res) => res.send("error logging in"));
