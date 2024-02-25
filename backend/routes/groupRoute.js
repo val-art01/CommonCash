@@ -1,6 +1,6 @@
 import express from 'express';
 import {createGroup, getAllGroups, getGroupByIds, addMembers, updateGroups, deleteGroups} from '../src/controllers/groupController.js';
-import { authentification } from '../src/middlewares/authMiddleware.js';
+import { authentificationWithoutId } from '../src/middlewares/authMiddleware.js';
 import {validateGroupName, validateGroupChamps, existGroup, checkGroupManagementauthorisations} from '../src/middlewares/groupMiddleware.js';
 
 /**
@@ -47,7 +47,7 @@ const router = express.Router()
  *                   "admins": [],
  *                 }
  */
-router.post('/create', authentification, validateGroupName, createGroup);
+router.post('/create', authentificationWithoutId, validateGroupName, createGroup);
 
 /**
  * @swagger
@@ -100,7 +100,7 @@ router.get('/', getAllGroups);
  *               data:
  *                 group: { ... }
  */
-router.get('/:id',authentification, existGroup, getGroupByIds);
+router.get('/:id', authentificationWithoutId, existGroup, getGroupByIds);
 
 // route pour inviter un joueur dans un groupe
 // router.put('/inviteUsers/:id', inviteUsers);
@@ -136,7 +136,7 @@ router.get('/:id',authentification, existGroup, getGroupByIds);
  *               data:
  *                 group: { ... }
  */           
-router.put('/add-members/:id', authentification, checkGroupManagementauthorisations, addMembers);
+router.put('/add-members/:id', authentificationWithoutId, checkGroupManagementauthorisations, addMembers);
 
 /**
  * @swagger
@@ -174,7 +174,7 @@ router.put('/add-members/:id', authentification, checkGroupManagementauthorisati
  *               data:
  *                 group: { ... }
  */
-router.put('/:id', authentification, validateGroupChamps, updateGroups);
+router.put('/:id', authentificationWithoutId, validateGroupChamps, updateGroups);
 
 /**
  * @swagger
@@ -199,7 +199,7 @@ router.put('/:id', authentification, validateGroupChamps, updateGroups);
  *             example:
  *               message: Group deleted successfully
  */
-router.delete('/:id', authentification, deleteGroups);
+router.delete('/:id', authentificationWithoutId, existGroup, deleteGroups);
 
 /**
  * @swagger

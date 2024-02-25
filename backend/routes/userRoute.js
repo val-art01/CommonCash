@@ -1,7 +1,7 @@
 import express from 'express';
 import {register, getAllUsers, getUserById, updateUser, deleteUser} from '../src/controllers/userController.js';
 import {validateRegister, validateUpdate} from '../src/middlewares/checkFieldsMiddleware.js';
-import {authentification} from "../src/middlewares/authMiddleware.js"
+import {authentificationWithId} from "../src/middlewares/authMiddleware.js"
 
 /**
  * @swagger
@@ -81,7 +81,7 @@ router.get('/', getAllUsers);
  *                      invitations: []
  *                 }
  */
-router.get('/:id', authentification, getUserById);
+router.get('/:id', authentificationWithId, getUserById);
 
 /**
  * @swagger
@@ -177,7 +177,7 @@ router.post('/register', validateRegister, register);
  *                   invitations: []
  *                 }
  */
-router.put('/:id', authentification, updateUser);
+router.put('/:id', authentificationWithId, updateUser);
 
 /**
  * @swagger
@@ -203,7 +203,7 @@ router.put('/:id', authentification, updateUser);
  *               message: User deleted successfully
  *               
  */
-router.delete('/:id', authentification, deleteUser);
+router.delete('/:id', authentificationWithId, deleteUser);
 
 
 /**

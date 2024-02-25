@@ -137,6 +137,6 @@ export const addMembersToGroup = async (groupId, memberIds) =>{
     const updatedGroup = await group.save();
     return updatedGroup;
   }catch (error) {
-    throw new Error('Erreur lors de l\'ajout de membres au groupe'+ error);
+    throw new Error('Erreur lors de l\'ajout de membres au groupe');
   }
 };

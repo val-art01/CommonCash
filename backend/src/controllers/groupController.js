@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import User from './../models/Users.js';
 import {registerGroup, getAllGroup, getGroupById, editGroup, deleteGroup, addMembersToGroup} from './../services/groupService.js';
 
@@ -12,20 +13,16 @@ export const createGroup = async (req, res) => {
     const admin = req.user._id;
 
     try {    
-        // Vérifier l'existence des utilisateurs
-        // const { existingUsers, nonExistingUsers } = await checkUsersExistence([...members]);
-
-        // console.log(nonExistingUsers)
-
-        // if (nonExistingUsers.length > 0) {
-        //     return res.status(404).json({
-        //         error: 'Certains membres n\'existent pas dans la base de données.',
-        //         nonExistingUsersDetails: await findUsersWithoutAccount(nonExistingUsers),
-        //     });
-        // }
 
         // Utilisation du service pour créer le groupe
         const group = await registerGroup(name, description, admin);
+
+        // ajout de l'Id du group a la propriete "invitation" l'admin
+        const user = await User.findById(req.user._id);
+        if (user) {
+            user.invitations.push({id: group._id, groupTitle: group.name, description: group.description});
+            await user.save();
+        }       
 
         res.status(201).json({ message: 'Groupe créé avec succès', group });
     } catch (err) {
@@ -60,15 +57,12 @@ export const getGroupByIds = async (req, res) => {
     const { id } = req.params;
     try {        
         const group = await getGroupById(id);
-        // if (!group) {
-        //     return res.status(404).json({ error: 'groupe introuvable' })
-        // }
         res.status(200).json({ group });
     } catch (error) {
         console.error('Erreur lors de la récupération du groupe :', error.message);
         res.status(500).json({ response: 'Erreur de serveur interne' });
     }
-};
+}
 
 /**
  * Contrôleur pour àjouter un/des nouveaux membres au groupe.
@@ -79,10 +73,20 @@ export const getGroupByIds = async (req, res) => {
 export const addMembers = async (req, res) => {
     const { id } = req.params;
     const { members } = req.body
-    // Supposons que vous avez un middleware d'authentification qui ajoute l'utilisateur à req.user
-    // const loggedInUser = req.user; 
 
-    try {
+    try {          
+        //  Récupérer le groupe
+        const group = await getGroupById(id);
+
+        // ajout de l'Id du group a la propriete "invitation" de chaque l'utilisateur
+        for( let memberId of members){
+            // let memberIdObjet = new mongoose.Types.ObjectId(memberId)
+            const user = await User.findById(memberId);
+            if (user) {
+                user.invitations.push({id: group._id, groupTitle: group.name, description: group.description});
+                await user.save();
+            }       
+        }
         const updatedGroup = addMembersToGroup(id, members);
 
         res.status(201).json({ message: 'Membres ajoutés avec succès', updatedGroup });
@@ -149,37 +153,8 @@ export const deleteGroups = async (req, res) => {
     const { id }  = req.params
     try {
         await deleteGroup(id);
-        res.status(20).json({ message: 'Groupe supprimé avec succés'})
+        res.status(204).json({ message: 'Groupe supprimé avec succès'})
     } catch(err) {
         res.status(500).json({ response: 'Erreur de serveur interne ' + err.message})
     }
 }
-
-// vérifier l'existence des utilisateurs
-const checkUsersExistence = async (userIds) => {
-    try {
-        const existingUsers = await User.find({ _id: { $in: userIds } });
-
-        const nonExistingUsers = userIds.filter(userId => !existingUsers.some(user => user._id.equals(userId)));
-
-        return { existingUsers, nonExistingUsers };
-    } catch (error) {
-        console.error('Erreur lors de la vérification de l\'existence des utilisateurs :', error.message);
-        throw new Error('Erreur interne du serveur lors de la vérification de l\'existence des utilisateurs.');
-    }
-};
-
-//trouver des utilisateurs sans compte 
-const findUsersWithoutAccount = async (userIds) => {
-    try {
-        const usersWithoutAccount = await User.find({
-            _id: { $in: userIds },
-            compte: { $exists: false },
-        });
-
-        return usersWithoutAccount;
-    } catch (error) {
-        console.error('Erreur lors de la recherche des utilisateurs sans compte :', error.message);
-        throw new Error('Erreur interne du serveur lors de la recherche des utilisateurs sans compte.');
-    }
-};
