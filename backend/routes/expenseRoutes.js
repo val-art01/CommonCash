@@ -1,4 +1,5 @@
 import express from 'express';
+import multer from 'multer'
 import {createExpense} from './../src/controllers/expenseController.js';
 import { authentificationWithoutId } from '../src/middlewares/authMiddleware.js';
 import {validateAmountDesc} from './../src/middlewares/expenseMiddleware.js';
@@ -12,6 +13,7 @@ import {existGroup} from '../src/middlewares/groupMiddleware.js';
 */
 
 const router = express.Router();
+const upload = multer({ dest: 'uploads/' })
 
 /**
  * @swagger
@@ -46,9 +48,10 @@ const router = express.Router();
  *                   "admins": [],
  *                 }
 */
+router.post('/create', authentificationWithoutId, existGroup, validateAmountDesc, upload.single('receipt'), createExpense);
 
-router.post('/create', authentificationWithoutId, existGroup, validateAmountDesc, createExpense);
 
+router.get('/receipt/:expenseId');
 
 /**
  * @swagger
