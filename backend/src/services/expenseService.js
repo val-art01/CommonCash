@@ -9,13 +9,17 @@ import Expense from "../models/Expense.js";
  * @returns {Promise<object>} - La dépense ajoutée à la base de données.
  * @throws {Error} - Une erreur est levée si l'ajout de la dépense échoue. 
 */
-export const addExpense = async (groupId, authorId, amount, description) =>{
+export const addExpense = async (title, amount, description, receiptFile, category, paidBy, groupId, membersInvolved) =>{
     try {
         const newExpense = new Expense({
-            groupId, 
-            authorId, 
-            amount, 
-            description
+            title,
+            amount,
+            description,
+            receipts: [receiptFile.filename],//// Stocker la référence au fichier de justificatif
+            category,
+            paidBy,
+            groupId,
+            membersInvolved           
         });
 
         // Sauvegarder la dépense dans la base de données
