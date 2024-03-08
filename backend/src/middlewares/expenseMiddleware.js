@@ -1,3 +1,4 @@
+import {getSpendById} from '../services/expenseService.js';
 
 /**
  * Valide le montant et la description de la dépense à partir des données de la requête.
@@ -7,7 +8,7 @@
  * @returns {Promise<void>} - Ne renvoie aucune valeur directement, mais appelle le middleware suivant si la validation réussit, sinon envoie une réponse d'erreur.
 */
 const validateAmountDesc = async (req, res, next) => {
-    const {title, amount, description } = req.body;
+    const {title, amount } = req.body;
 
     // Validation pour le champ description
     if (title && title.length < 4 && title.length > 16) {
@@ -20,12 +21,34 @@ const validateAmountDesc = async (req, res, next) => {
     }
 
     // Validation pour le champ description
-    if (description && description.length > 50) {
-        return res.status(400).json({ message: 'Le champ description ne doit pas dépasser 50 caractères' });
-    }
+    // if (description && description.length > 50) {
+    //     return res.status(400).json({ message: 'Le champ description ne doit pas dépasser 50 caractères' });
+    // }
 
     // Si la validation réussit, passez au middleware suivant
     next();
 };
 
-export {validateAmountDesc};
+const isAvailable = async (req, res, next) => {
+    const { id } = req.params;
+    try {  
+        const expense  = await getSpendById(id);
+
+        // Récupérer le groupe par son ID
+        if (!expense) {
+            return res.status(404).json({ error: 'Dépense non trouvée' });
+        }
+  
+        // Vérifier si l'utilisateur connecté est un membres du groupe
+        // if (!expense.receipts || expense.receipts.length === 0) {
+        //     return res.status(403).json({error:'Pas de justificatif disponible pour cette dépense'});
+        // }
+  
+      next();
+    } catch (error) {
+      console.error('Erreur lors de la vérification: ', error.message);
+      res.status(500).json({ response: 'Erreur de serveur interne' });
+    }
+  };
+
+export {validateAmountDesc, isAvailable};

@@ -10,7 +10,7 @@ import {connectToDB} from './src/utils/mongoose.js';
 import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
 import groupRoute from './routes/groupRoute.js';
-import expenseRoute from './routes/expenseRoutes.js';
+import spendRoute from './routes/expenseRoute.js';
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -37,7 +37,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs))
 app.use('/users', userRoute);
 app.use('/auht', authRoute);
 app.use('/group', groupRoute);
-app.use('/expense', expenseRoute);
+app.use('/spend', spendRoute);
 
 // Gestionnaire d'erreurs global
 app.use((err, req, res, next) => {
