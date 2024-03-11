@@ -1,3 +1,5 @@
+import mongoose from 'mongoose';
+import User from './../models/Users.js';
 import {registerGroup, getAllGroup, getGroupById, editGroup, deleteGroup, addMembersToGroup} from './../services/groupService.js';
 
 /**
@@ -7,13 +9,22 @@ import {registerGroup, getAllGroup, getGroupById, editGroup, deleteGroup, addMem
  * @returns {void}
  */
 export const createGroup = async (req, res) => {
-    const { name, description} = req.body;
+    const { name, description, members} = req.body;
     const admin = req.user._id;
-    try {
+
+    try {    
+
         // Utilisation du service pour créer le groupe
         const group = await registerGroup(name, description, admin);
 
-        res.status(200).json({ message: 'Groupe créé avec succès', group });
+        // ajout de l'Id du group a la propriete "invitation" l'admin
+        const user = await User.findById(req.user._id);
+        if (user) {
+            user.invitations.push({id: group._id, groupTitle: group.name, description: group.description});
+            await user.save();
+        }       
+
+        res.status(201).json({ message: 'Groupe créé avec succès', group });
     } catch (err) {
         console.error('Erreur lors de la création :', err.message);
         res.status(500).json({ response: 'Erreur de serveur interne' });
@@ -44,19 +55,14 @@ export const getAllGroups = async (req, res) => {
  */
 export const getGroupByIds = async (req, res) => {
     const { id } = req.params;
-    try {
-        
+    try {        
         const group = await getGroupById(id);
-        // if (!group) {
-        //     return res.status(404).json({ error: 'groupe introuvable' })
-        // }
         res.status(200).json({ group });
     } catch (error) {
         console.error('Erreur lors de la récupération du groupe :', error.message);
         res.status(500).json({ response: 'Erreur de serveur interne' });
     }
-};
-
+}
 
 /**
  * Contrôleur pour àjouter un/des nouveaux membres au groupe.
@@ -65,13 +71,25 @@ export const getGroupByIds = async (req, res) => {
  * @returns {void}
  */
 export const addMembers = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
     const { members } = req.body
 
-    try {
+    try {          
+        //  Récupérer le groupe
+        const group = await getGroupById(id);
+
+        // ajout de l'Id du group a la propriete "invitation" de chaque l'utilisateur
+        for( let memberId of members){
+            // let memberIdObjet = new mongoose.Types.ObjectId(memberId)
+            const user = await User.findById(memberId);
+            if (user) {
+                user.invitations.push({id: group._id, groupTitle: group.name, description: group.description});
+                await user.save();
+            }       
+        }
         const updatedGroup = addMembersToGroup(id, members);
 
-        res.status(200).json({ message: 'Membres ajoutés avec succès', updatedGroup });
+        res.status(201).json({ message: 'Membres ajoutés avec succès', updatedGroup });
     } catch (error) {
         console.error('Erreur lors de l\'ajout de membres au groupe :', error.message);
         res.status(500).json({ response: 'Erreur de serveur interne' });
@@ -95,7 +113,7 @@ export const inviteUsers = async (req, res) => {
 
         updatedUser.invitations = updatedUser.invitations.concat(invitation)
 
-        res.status(200).json({ message: 'Invitation envoyée avec succès' });
+        res.status(201).json({ message: 'Invitation envoyée avec succès' });
     } catch (err) {
         console.error('Erreur lors de l\'envoie de l\'invitation à l\'utilisateur :', err.message);
         res.status(500).json({ response: 'Erreur de serveur interne '})
@@ -117,7 +135,7 @@ export const updateGroups = async (req, res) => {
         // if (!updatedGroup) {
         //     return res.status(404).json({ error: 'groupe introuvable' })
         // }
-        res.status(200).json({ message: 'Groupe mis à jour avec succès', updatedGroup });
+        res.status(204).json({ message: 'Groupe mis à jour avec succès', updatedGroup });
     } catch (error) {
 
       console.error('Erreur lors de la modification du groupe :', error.message);
@@ -135,7 +153,7 @@ export const deleteGroups = async (req, res) => {
     const { id }  = req.params
     try {
         await deleteGroup(id);
-        res.status(200).json({ message: 'Groupe supprimé avec succés'})
+        res.status(204).json({ message: 'Groupe supprimé avec succès'})
     } catch(err) {
         res.status(500).json({ response: 'Erreur de serveur interne ' + err.message})
     }
