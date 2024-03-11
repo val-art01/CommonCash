@@ -37,6 +37,10 @@
     text-transform: none;
     color: rgb(145, 37, 145) !important}
 
+    v.list-item-title::after{
+      text-decoration: none;
+    }
+
   .ml-2 {
     margin-left: 300px !important;
     font-size: larger;
@@ -209,4 +213,9 @@
 .mdi-account-circle::before {
   content: "\F0009";
   color: #5727f4;
+}
+
+.h2, h2 {
+  font-size: 2rem;
+  font-family: Snell Roundhand, cursive;
 }

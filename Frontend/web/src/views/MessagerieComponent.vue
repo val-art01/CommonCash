@@ -133,6 +133,25 @@
       </div>
     </v-col>
   </v-row>
+  <v-dialog v-model="chatDialogOpen" persistent max-width="600">
+    <v-card>
+      <v-toolbar color="primary" dark>
+        <v-btn icon @click="chatDialogOpen = false">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-toolbar-title>Discussion avec {{ selectedContact.username }}</v-toolbar-title>
+      </v-toolbar>
+
+      <v-card-text>
+        <!-- Contenu de la fenêtre de discussion -->
+        <div v-for="message in selectedContact.messages" :key="message.id">
+          {{ message.sender }}: {{ message.content }}
+        </div>
+        <v-textarea v-model="newMessage" placeholder="Écrire un message"></v-textarea>
+        <v-btn @click="sendMessage">Envoyer</v-btn>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 
 
     </v-container>
@@ -264,11 +283,15 @@ const sendMessage = () => {
   }
 };
 
+
+
 const isDrawerOpen = ref(true);
 
 const drawerWidth = ref(400);
 
 const showDiscussion = ref(false);
+
+const chatDialogOpen = ref(false);
 
 
 </script>
