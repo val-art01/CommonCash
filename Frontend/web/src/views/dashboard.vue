@@ -337,72 +337,121 @@
           </v-list>
         </v-card>
       </v-col>-->
-      <v-col cols="12" sm="8">
-           
-           <v-toolbar flat color="rgba(0,0,0,0)" dark>
-          <v-toolbar-title>Market Overview</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn outlined >Weekly (2020)
-          <v-icon right  class="mr-2" >fas fa-chevron-down</v-icon> 
-        </v-btn>
-        </v-toolbar>
-       <v-sparkline
-:value="value"
-:smooth="radius || false"
-:padding="padding"
-:line-width="width"
-:stroke-linecap="lineCap"
-:fill="fill"
-:type="type"
-:auto-line-width="autoLineWidth"
-auto-draw
-color="white"
-></v-sparkline>
-<v-divider color="white" class="mx-4"></v-divider>
-<v-toolbar flat color="rgba(0,0,0,0)" dark>
-          <v-toolbar-title>Recent Activities</v-toolbar-title>
-        </v-toolbar>
-        </v-col>
+  <VCard title="Transactions">
+    <template #append>
+      <div class="me-n3 mt-n2">
+        <MoreBtn :menu-list="moreList" />
+      </div>
+    </template>
+
+    <VCardText>
+      <VList class="card-list">
+        <VListItem
+          v-for="item in transactions"
+          :key="item.paymentMethod"
+        >
+          <template #prepend>
+            <VAvatar
+              rounded
+              variant="tonal"
+              :color="item.color"
+              :image="item.icon"
+              class="me-3"
+            />
+          </template>
+
+          <VListItemSubtitle class="text-disabled mb-1">
+            {{ item.paymentMethod }}
+          </VListItemSubtitle>
+          <VListItemTitle>
+            {{ item.description }}
+          </VListItemTitle>
+
+          <template #append>
+            <VListItemAction>
+              <span class="me-1">{{ item.amount > 0 ? `+$${Math.abs(item.amount)}` : `-$${Math.abs(item.amount)}` }}</span>
+              <span class="text-disabled">USD</span>
+            </VListItemAction>
+          </template>
+        </VListItem>
+      </VList>
+    </VCardText>
+  </VCard>
+  <!--order statistique-->
+  <VCard>
+    <VCardItem class="pb-3">
+      <VCardTitle class="mb-1">
+        Order Statistics
+      </VCardTitle>
+      <VCardSubtitle>42.82k Total Sales</VCardSubtitle>
+
+      <template #append>
+        <div class="me-n3 mt-n8">
+          <MoreBtn :menu-list="moreList" />
+        </div>
+      </template>
+    </VCardItem>
+
+    <VCardText>
+      <div class="d-flex align-center justify-space-between mb-3">
+        <div class="flex-grow-1">
+          <h4 class="text-h4 mb-1">
+            8,258
+          </h4>
+          <span>Total Orders</span>
+        </div>
+
+        <div>
+          <VueApexCharts
+            type="donut"
+            :height="125"
+            width="105"
+            :options="chartOptions"
+            :series="series"
+          />
+        </div>
+      </div>
+
+      <VList class="card-list mt-7">
+        <VListItem
+          v-for="order in orders"
+          :key="order.title"
+        >
+          <template #prepend>
+            <VAvatar
+              rounded
+              variant="tonal"
+              :color="order.avatarColor"
+            >
+              <VIcon :icon="order.avatarIcon" />
+            </VAvatar>
+          </template>
+
+          <VListItemTitle class="mb-1">
+            {{ order.title }}
+          </VListItemTitle>
+          <VListItemSubtitle class="text-disabled">
+            {{ order.subtitle }}
+          </VListItemSubtitle>
+
+          <template #append>
+            <span>{{ order.amount }}</span>
+          </template>
+        </VListItem>
+      </VList>
+    </VCardText>
+  </VCard>
+
     </v-row>
     
       <!-- Section des statistiques globales -->
   <v-row align="center" justify="center">
     <!-- Carte pour les statistiques globales -->
-    <v-col lg="6" cols="12">
-      <v-card elevation="2" class="rounded-lg">
-        <v-card-title>
-          Statistiques Globales
-        </v-card-title>
-        <v-card-text>
-          <!-- Graphique en ligne pour les dépenses mensuelles -->
-          <v-line-chart
-            :chart-data="monthlyExpenses"
-            :options="chartOptions"
-          ></v-line-chart>
-
-          <!-- Chiffres -->
-          <v-row>
-            <v-col>
-              <v-chip>
-                <v-avatar color="primary" left>
-                  <v-icon>mdi-currency-usd</v-icon>
-                </v-avatar>
-                Total des dépenses : 2000€
-              </v-chip>
-            </v-col>
-            <v-col>
-              <v-chip>
-                <v-avatar color="success" left>
-                  <v-icon>mdi-currency-usd</v-icon>
-                </v-avatar>
-                Total des revenus : 10000€
-              </v-chip>
-            </v-col>
-          </v-row>
-        </v-card-text>
-      </v-card>
-    </v-col>
-
+   
+    <!--card total statistique-->
+   <div>
+    <Card />
+   </div>
     <!-- Liste des alertes -->
     <v-col lg="4" cols="12">
       <!-- ... (le reste de votre code) ... -->
@@ -418,35 +467,29 @@ color="white"
 </template>
 
 <script setup>
-import Chartkick from 'chartkick'
+import VueApexCharts from 'vue3-apexcharts'
+import { useTheme } from 'vuetify'
+import { computed } from 'vue';
 import { ref } from 'vue';
 import Alerte from './Alerte.vue';
+import Card from './Card.vue';
 
 
 
 
 
 
-const monthlyExpenses = ref({
-labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May'],
-datasets: [
-  {
-    label: 'Dépenses mensuelles',
-    data: [200, 150, 300, 100, 250],
-    fill: false,
-    borderColor: 'primary',
-    borderWidth: 2,
-  },
-],
-});
 
-const chartOptions = {
+
+
+
+/*const chartOptions = {
 scales: {
   y: {
     beginAtZero: true,
   },
 },
-};
+};*/
 
 
 
@@ -503,7 +546,7 @@ const value = [0, 2, 5, 9, 5, 10, 3, 5, 0, 0, 1, 8, 2, 9, 0];
 const fill = false;
 const type = 'trend';
 const autoLineWidth = false;
-const orders = [
+/*const orders = [
   {
     price: 89.03,
     amount: 0.15,
@@ -524,7 +567,7 @@ const orders = [
     price: 33.03,
     amount: 0.19,
   },
-];
+];*/
 const messages = [
   {
     title: "Brunch this weekend?",
@@ -567,4 +610,419 @@ const messages = [
     time: "8 hr",
   },
 ];
+
+/*transaction*/
+const transactions = [
+  {
+    amount: +82.6,
+    paymentMethod: 'Paypal',
+    description: 'Send money',
+    icon: 'mdi-paypal',
+    color: 'error',
+  },
+  {
+    paymentMethod: 'Wallet',
+    amount: +270.69,
+    description: 'Mac\'D',
+    icon: 'mdi-wallet',
+    color: 'primary',
+  },
+  {
+    amount: +637.91,
+    paymentMethod: 'Transfer',
+    description: 'Refund',
+    icon: 'mdi-chart-line',
+    color: 'info',
+  },
+  {
+    paymentMethod: 'Credit Card',
+    amount: -838.71,
+    description: 'Ordered Food',
+    icon: 'mdi-credit-card-plus',
+    color: 'success',
+  },
+  {
+    paymentMethod: 'Wallet',
+    amount: +203.33,
+    description: 'Starbucks',
+    icon: 'mdi-wallet',
+    color: 'primary',
+  },
+  {
+    paymentMethod: 'Mastercard',
+    amount: -92.45,
+    description: 'Ordered Food',
+    icon: 'mdi-credit-card-alert',
+    color: 'warning',
+  },
+]
+
+
+
+/*total revenu*/
+
+function hexToRgb(hex) {
+    // Enlevez le # du début s'il est présent
+    hex = hex.replace(/^#/, '');
+
+    // Divisez la chaîne hexadécimale en deux valeurs de couleur
+    let r = parseInt(hex.substring(0, 2), 16);
+    let g = parseInt(hex.substring(2, 4), 16);
+    let b = parseInt(hex.substring(4, 6), 16);
+
+    // Retourne les valeurs RGB sous forme d'objet
+    return { r, g, b };
+}
+
+
+const vuetifyTheme = useTheme()
+
+const series = [
+  45,
+  80,
+  20,
+  40,
+]
+
+const chartOptions = computed(() => {
+  const currentTheme = vuetifyTheme.current.value.colors
+  const variableTheme = vuetifyTheme.current.value.variables
+  const disabledTextColor = `rgba(${ hexToRgb(String(currentTheme['on-surface'])) },${ variableTheme['disabled-opacity'] })`
+  const primaryTextColor = `rgba(${ hexToRgb(String(currentTheme['on-surface'])) },${ variableTheme['high-emphasis-opacity'] })`
+  
+  return {
+    chart: {
+      sparkline: { enabled: true },
+      animations: { enabled: false },
+    },
+    stroke: {
+      width: 6,
+      colors: [currentTheme.surface],
+    },
+    legend: { show: false },
+    tooltip: { enabled: false },
+    dataLabels: { enabled: false },
+    labels: [
+      'Fashion',
+      'Electronic',
+      'Sports',
+      'Decor',
+    ],
+    colors: [
+      currentTheme.success,
+      currentTheme.primary,
+      currentTheme.secondary,
+      currentTheme.info,
+    ],
+    grid: {
+      padding: {
+        top: -7,
+        bottom: 5,
+      },
+    },
+    states: {
+      hover: { filter: { type: 'none' } },
+      active: { filter: { type: 'none' } },
+    },
+    plotOptions: {
+      pie: {
+        expandOnClick: false,
+        donut: {
+          size: '75%',
+          labels: {
+            show: true,
+            name: {
+              offsetY: 17,
+              fontSize: '14px',
+              color: disabledTextColor,
+              fontFamily: 'Public Sans',
+            },
+            value: {
+              offsetY: -17,
+              fontSize: '24px',
+              color: primaryTextColor,
+              fontFamily: 'Public Sans',
+            },
+            total: {
+              show: true,
+              label: 'Weekly',
+              fontSize: '14px',
+              formatter: () => '38%',
+              color: disabledTextColor,
+              fontFamily: 'Public Sans',
+            },
+          },
+        },
+      },
+    },
+  }
+})
+
+const orders = [
+  {
+    amount: '82.5k',
+    title: 'Electronic',
+    avatarColor: 'primary',
+    subtitle: 'Mobile, Earbuds, TV',
+    avatarIcon: 'bx-mobile-alt',
+  },
+  {
+    amount: '23.8k',
+    title: 'Fashion',
+    avatarColor: 'success',
+    subtitle: 'Tshirt, Jeans, Shoes',
+    avatarIcon: 'bx-closet',
+  },
+  {
+    amount: 849,
+    title: 'Decor',
+    avatarColor: 'info',
+    subtitle: 'Fine Art, Dining',
+    avatarIcon: 'bx-home',
+  },
+  {
+    amount: 99,
+    title: 'Sports',
+    avatarColor: 'secondary',
+    subtitle: 'Football, Cricket Kit',
+    avatarIcon: 'bx-football',
+  },
+]
+
+const moreList = [
+  {
+    title: 'Share',
+    value: 'Share',
+  },
+  {
+    title: 'Refresh',
+    value: 'Refresh',
+  },
+  {
+    title: 'Update',
+    value: 'Update',
+  },
+]
+/* statistique revenu */
+
+
+/*const series = [
+  {
+    name: `${ new Date().getFullYear() - 1 }`,
+    data: [
+      18,
+      7,
+      15,
+      29,
+      18,
+      12,
+      9,
+    ],
+  },
+  {
+    name: `${ new Date().getFullYear() - 2 }`,
+    data: [
+      -13,
+      -18,
+      -9,
+      -14,
+      -5,
+      -17,
+      -15,
+    ],
+  },
+]
+
+const chartOptions = computed(() => {
+  const currentTheme = vuetifyTheme.current.value.colors
+  const variableTheme = vuetifyTheme.current.value.variables
+  const disabledTextColor = `rgba(${ hexToRgb(String(currentTheme['on-surface'])) },${ variableTheme['disabled-opacity'] })`
+  const primaryTextColor = `rgba(${ hexToRgb(String(currentTheme['on-surface'])) },${ variableTheme['high-emphasis-opacity'] })`
+  const borderColor = `rgba(${ hexToRgb(String(variableTheme['border-color'])) },${ variableTheme['border-opacity'] })`
+  
+  return {
+    bar: {
+      chart: {
+        stacked: true,
+        parentHeightOffset: 0,
+        toolbar: { show: false },
+      },
+      dataLabels: { enabled: false },
+      stroke: {
+        width: 6,
+        lineCap: 'round',
+        colors: [currentTheme.surface],
+      },
+      colors: [
+        `rgba(${ hexToRgb(String(currentTheme.primary)) }, 1)`,
+        `rgba(${ hexToRgb(String(currentTheme.info)) }, 1)`,
+      ],
+      legend: {
+        offsetX: -10,
+        position: 'top',
+        fontSize: '14px',
+        horizontalAlign: 'left',
+        fontFamily: 'Public Sans',
+        labels: { colors: currentTheme.secondary },
+        itemMargin: {
+          vertical: 4,
+          horizontal: 10,
+        },
+        markers: {
+          width: 8,
+          height: 8,
+          radius: 10,
+          offsetX: -4,
+        },
+      },
+      states: {
+        hover: { filter: { type: 'none' } },
+        active: { filter: { type: 'none' } },
+      },
+      grid: {
+        borderColor,
+        padding: { bottom: 5 },
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: '30%',
+          endingShape: 'rounded',
+          startingShape: 'rounded',
+        },
+      },
+      xaxis: {
+        axisTicks: { show: false },
+        crosshairs: { opacity: 0 },
+        axisBorder: { show: false },
+        categories: [
+          'Jan',
+          'Feb',
+          'Mar',
+          'Apr',
+          'May',
+          'Jun',
+          'Jul',
+        ],
+        labels: {
+          style: {
+            fontSize: '14px',
+            colors: disabledTextColor,
+            fontFamily: 'Public Sans',
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: {
+            fontSize: '14px',
+            colors: disabledTextColor,
+            fontFamily: 'Public Sans',
+          },
+        },
+      },
+      responsive: [
+        {
+          breakpoint: display.thresholds.value.xl,
+          options: { plotOptions: { bar: { columnWidth: '43%' } } },
+        },
+        {
+          breakpoint: display.thresholds.value.lg,
+          options: { plotOptions: { bar: { columnWidth: '50%' } } },
+        },
+        {
+          breakpoint: display.thresholds.value.md,
+          options: { plotOptions: { bar: { columnWidth: '42%' } } },
+        },
+        {
+          breakpoint: display.thresholds.value.sm,
+          options: { plotOptions: { bar: { columnWidth: '45%' } } },
+        },
+      ],
+    },
+    radial: {
+      chart: { sparkline: { enabled: true } },
+      labels: ['Growth'],
+      stroke: { dashArray: 5 },
+      colors: [`rgba(${ hexToRgb(String(currentTheme.primary)) }, 1)`],
+      states: {
+        hover: { filter: { type: 'none' } },
+        active: { filter: { type: 'none' } },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'dark',
+          opacityTo: 0.6,
+          opacityFrom: 1,
+          shadeIntensity: 0.5,
+          stops: [
+            30,
+            70,
+            100,
+          ],
+          inverseColors: false,
+          gradientToColors: [currentTheme.primary],
+        },
+      },
+      plotOptions: {
+        radialBar: {
+          endAngle: 150,
+          startAngle: -140,
+          hollow: { size: '55%' },
+          track: { background: 'transparent' },
+          dataLabels: {
+            name: {
+              offsetY: 25,
+              fontWeight: 600,
+              fontSize: '16px',
+              color: currentTheme.secondary,
+              fontFamily: 'Public Sans',
+            },
+            value: {
+              offsetY: -15,
+              fontWeight: 500,
+              fontSize: '24px',
+              color: primaryTextColor,
+              fontFamily: 'Public Sans',
+            },
+          },
+        },
+      },
+      responsive: [
+        {
+          breakpoint: 900,
+          options: { chart: { height: 200 } },
+        },
+        {
+          breakpoint: 735,
+          options: { chart: { height: 200 } },
+        },
+        {
+          breakpoint: 660,
+          options: { chart: { height: 200 } },
+        },
+        {
+          breakpoint: 600,
+          options: { chart: { height: 280 } },
+        },
+      ],
+    },
+  }
+})
+
+const balanceData = [
+  {
+    icon: 'bx-dollar',
+    amount: '$32.5k',
+    year: '2023',
+    color: 'primary',
+  },
+  {
+    icon: 'bx-wallet',
+    amount: '$41.2k',
+    year: '2022',
+    color: 'info',
+  },
+]*/
 </script>

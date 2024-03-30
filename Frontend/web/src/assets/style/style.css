@@ -8,10 +8,19 @@
   
   
 }
+.v-row--no-gutters{
+  background: linear-gradient(to left, rgb(45, 45, 45), rgb(99, 99, 236));
+  left: 100%;
+}
 
-.v-application {
-    background-color: #B39DDB; /* Exemple de personnalisation de l'arrière-plan de l'application */
-  }
+v-application {
+    background-color: #B39DDB; /* Exemple de personnalisation de l'arrière-plan de l'application */}
+  
+
+.v-theme--light .bg-gray{
+  background: linear-gradient(to left, black, rgb(99, 99, 236));
+ 
+} */
   
   /* Ajoutez d'autres styles personnalisés selon vos besoins */
  
@@ -218,4 +227,32 @@
 .h2, h2 {
   font-size: 2rem;
   font-family: Snell Roundhand, cursive;
+  color: #5727f4;
+}
+
+.element {
+  border-bottom: 1px solid white;
+}
+
+.v-card .v-card-text {
+  line-height: 1.25rem;
+  background: linear-gradient(to left, rgb(207, 205, 205), rgb(99, 99, 236));
+
+}
+
+.v-list.v-theme--light.v-list--density-default.v-list--one-line.card-list.mt-7{
+  background: linear-gradient(to left, rgb(45, 45, 45), rgb(99, 99, 236));
+
+}
+
+.v-card-item.pb-3{
+  background: linear-gradient(to left, rgb(207, 205, 205), rgb(99, 99, 236));
+}
+
+.v-list.v-theme--light.v-list--density-default.v-list--one-line.card-list{
+  background: linear-gradient(to left, rgb(207, 205, 205), rgb(99, 99, 236));
+
+}
+.v-card-item{
+  background: linear-gradient(to left, rgb(207, 205, 205), rgb(99, 99, 236));
 }

@@ -70,7 +70,7 @@ export default {
 /* Styles spécifiques à la barre de navigation */
 
 body {
-  background: linear-gradient(to left, black, rgb(119, 119, 244));
+  background: linear-gradient(to left, black, rgb(99, 99, 236));
   color: white; 
   }
 
