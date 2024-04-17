@@ -9,11 +9,7 @@
 
   >
     <div class="text-center">
-      <v-avatar class="mb-4" color="#4A148C" size="64">
-          <v-icon size="60">
-        mdi-account-circle
-      </v-icon>
-      </v-avatar>
+      
       <h2 class="white--text" color="#4A148C">Donia laajili</h2>
     </div>
   </v-img>

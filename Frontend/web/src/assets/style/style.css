@@ -13,8 +13,17 @@
   left: 100%;
 }
 
+.v-navigation-drawer__content {
+  flex: 0 1 auto;
+  height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+ 
+}
+
 v-application {
-    background-color: #B39DDB; /* Exemple de personnalisation de l'arrière-plan de l'application */}
+    background-color: #7e40f3; /* Exemple de personnalisation de l'arrière-plan de l'application */}
   
 
 .v-theme--light .bg-gray{
@@ -26,7 +35,7 @@ v-application {
  
 /* Exemple avec une classe supplémentaire */
 #inspire .v-list-item__title.custom-list-item {
-  color: violet !important;}
+  color: rgb(254, 4, 254) !important;}
 
   .v-list-item-title {
 

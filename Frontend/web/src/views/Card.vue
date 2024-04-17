@@ -247,9 +247,9 @@ const balanceData = [
   <VCard>
     <VRow no-gutters>
       <VCol
-        cols="12"
-        sm="7"
-        xl="8"
+        cols="6"
+        sm="5"
+        xl="4"
         :class="$vuetify.display.smAndUp ? 'border-e' : 'border-b'"
       >
         <VCardItem class="pb-0">
@@ -273,9 +273,9 @@ const balanceData = [
       </VCol>
 
       <VCol
-        cols="12"
-        sm="5"
-        xl="4"
+        cols="6" class="move-right"
+        sm="7"
+        xl="8"
       >
         <VCardText class="text-center">
           <VBtn
@@ -341,5 +341,8 @@ const balanceData = [
 <style lang="scss">
 #bar-chart .apexcharts-series[rel="2"] {
   transform: translateY(-10px);
+}
+.move-right {
+  margin-left: auto;
 }
 </style>

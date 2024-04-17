@@ -337,48 +337,15 @@
           </v-list>
         </v-card>
       </v-col>-->
-  <VCard title="Transactions">
-    <template #append>
-      <div class="me-n3 mt-n2">
-        <MoreBtn :menu-list="moreList" />
-      </div>
-    </template>
-
-    <VCardText>
-      <VList class="card-list">
-        <VListItem
-          v-for="item in transactions"
-          :key="item.paymentMethod"
-        >
-          <template #prepend>
-            <VAvatar
-              rounded
-              variant="tonal"
-              :color="item.color"
-              :image="item.icon"
-              class="me-3"
-            />
-          </template>
-
-          <VListItemSubtitle class="text-disabled mb-1">
-            {{ item.paymentMethod }}
-          </VListItemSubtitle>
-          <VListItemTitle>
-            {{ item.description }}
-          </VListItemTitle>
-
-          <template #append>
-            <VListItemAction>
-              <span class="me-1">{{ item.amount > 0 ? `+$${Math.abs(item.amount)}` : `-$${Math.abs(item.amount)}` }}</span>
-              <span class="text-disabled">USD</span>
-            </VListItemAction>
-          </template>
-        </VListItem>
-      </VList>
-    </VCardText>
-  </VCard>
+      
+  
+  <div>
+    <Card />
+   </div>
+  
   <!--order statistique-->
   <VCard>
+    
     <VCardItem class="pb-3">
       <VCardTitle class="mb-1">
         Order Statistics
@@ -449,9 +416,52 @@
     <!-- Carte pour les statistiques globales -->
    
     <!--card total statistique-->
+    <VCard title="Transactions">
+    
+    
+    <template #append>
+      <div class="me-n3 mt-n2">
+        <MoreBtn :menu-list="moreList" />
+      </div>
+    </template>
+
+    <VCardText>
+      <VList class="card-list">
+        <VListItem
+          v-for="item in transactions"
+          :key="item.paymentMethod"
+        >
+          <template #prepend>
+            <VAvatar
+              rounded
+              variant="tonal"
+              :color="item.color"
+              :image="item.icon"
+              class="me-3"
+            />
+          </template>
+
+          <VListItemSubtitle class="text-disabled mb-1">
+            {{ item.paymentMethod }}
+          </VListItemSubtitle>
+          <VListItemTitle>
+            {{ item.description }}
+          </VListItemTitle>
+
+          <template #append>
+            <VListItemAction>
+              <span class="me-1">{{ item.amount > 0 ? `+$${Math.abs(item.amount)}` : `-$${Math.abs(item.amount)}` }}</span>
+              <span class="text-disabled">USD</span>
+            </VListItemAction>
+          </template>
+        </VListItem>
+      </VList>
+    </VCardText>
+  </VCard>
    <div>
-    <Card />
+    <Card1 />
    </div>
+   
     <!-- Liste des alertes -->
     <v-col lg="4" cols="12">
       <!-- ... (le reste de votre code) ... -->
@@ -473,6 +483,7 @@ import { computed } from 'vue';
 import { ref } from 'vue';
 import Alerte from './Alerte.vue';
 import Card from './Card.vue';
+import Card1 from './Card1.vue';
 
 
 
