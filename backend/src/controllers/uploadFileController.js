@@ -2,19 +2,11 @@ import fs from 'fs';
 import path from 'path';
 
 /**
- * Télécharge un fichier sur le serveur, vérifie sa taille et son format, puis renomme le fichier.
- *
- * @param {Object} file - L'objet de fichier à télécharger.
- * @param {Object} res - L'objet de réponse Express.js.
- * @param {Function} callback - Le callback à exécuter après le téléchargement du fichier.
- *
- * @property {number} file.size - La taille du fichier en octets.
- * @property {string} file.originalname - Le nom original du fichier.
- * @property {string} file.path - Le chemin d'accès au fichier sur le serveur.
- *
- * @returns {void}
- */
-
+ * Télécharge un fichier et renvoie le nom de fichier unique.
+ * @param {object} file - L'objet de fichier téléchargé.
+ * @returns {string} - Le nom de fichier unique.
+ * @throws {Error} - Erreur si la validation échoue.
+*/
 const uploadFile = (file) => {
   try {
     // Ajout d'une validation spécifique du serveur

@@ -37,6 +37,12 @@ export const createSpend = async (req, res) =>{
     }
 }
 
+/**
+ * Récupère les dépenses d'un groupe spécifique.
+ * @param {object} req - L'objet de requête contenant les paramètres.
+ * @param {object} res - L'objet de réponse pour renvoyer les dépenses.
+ * @returns {Promise<void>} - Une promesse qui ne renvoie aucune valeur explicite.
+*/
 export const getGroupSpends = async (req, res) => {
     try {
         const { groupId } = req.params;
@@ -49,6 +55,12 @@ export const getGroupSpends = async (req, res) => {
     }
 }
 
+/**
+ * Récupère les détails d'une dépense spécifique.
+ * @param {object} req - L'objet de requête contenant l'identifiant de la dépense.
+ * @param {object} res - L'objet de réponse pour renvoyer les détails de la dépense.
+ * @returns {Promise<void>} - Une promesse qui ne renvoie aucune valeur explicite.
+*/
 export const getSpendDetail = async (req, res) =>{
     try {
         const { id } = req.params;
@@ -60,6 +72,12 @@ export const getSpendDetail = async (req, res) =>{
     }
 }
 
+/**
+ * Recherche les justificatifs en fonction d'un terme de recherche.
+ * @param {object} req - L'objet de requête contenant le terme de recherche.
+ * @param {object} res - L'objet de réponse pour renvoyer les justificatifs correspondants.
+ * @returns {Promise<void>} - Une promesse qui ne renvoie aucune valeur explicite.
+*/
 export const searchReceipts = async (req, res) => {
     try {
         const searchTerm = req.body.searchTerm; 
@@ -71,9 +89,15 @@ export const searchReceipts = async (req, res) => {
     }
 };
 
+/**
+ * Trie les dépenses en fonction d'un critère de tri spécifié.
+ * @param {object} req - L'objet de requête contenant le critère de tri.
+ * @param {object} res - L'objet de réponse pour renvoyer les dépenses triées.
+ * @returns {Promise<void>} - Une promesse qui ne renvoie aucune valeur explicite.
+*/
 export const sortExpenses = async (req, res) => {
     try {
-        const sortBy = req.query.sortBy; // Assurez-vous de récupérer le critère de tri approprié
+        const sortBy = req.query.sortBy;
         const sortedExpenses = await Spend.find().sort(sortBy);
         res.json(sortedExpenses);
     } catch (error) {

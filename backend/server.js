@@ -11,6 +11,7 @@ import userRoute from './routes/userRoute.js';
 import authRoute from './routes/authRoute.js';
 import groupRoute from './routes/groupRoute.js';
 import spendRoute from './routes/expenseRoute.js';
+import balanRepay from './routes/balanceRepayment.js'
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -38,6 +39,7 @@ app.use('/users', userRoute);
 app.use('/auht', authRoute);
 app.use('/group', groupRoute);
 app.use('/spend', spendRoute);
+app.use('/balanRepay', balanRepay);
 
 // Gestionnaire d'erreurs global
 app.use((err, req, res, next) => {

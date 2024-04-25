@@ -168,5 +168,5 @@ router.post('/search', authentificationWithoutId, searchReceipts);
  *         - payingMember
  *         - groupId
  *         - membersInvolveds
- */
+*/
 export default router

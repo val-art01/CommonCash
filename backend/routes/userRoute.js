@@ -205,7 +205,6 @@ router.put('/:id', authentificationWithId, updateUser);
  */
 router.delete('/:id', authentificationWithId, deleteUser);
 
-
 /**
  * @swagger
  * components:
@@ -242,6 +241,6 @@ router.delete('/:id', authentificationWithId, deleteUser);
  *         - password
  *         - iv
  *         - authTokens
- */
+*/
 
 export default router
