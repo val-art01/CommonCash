@@ -10,14 +10,17 @@ import {getAllSpends} from './../services/expenseService.js';
 */
 export const getRepayments = async (req, res) =>{
     try {
+
         const { groupId } = req.params;
-        expenses = getAllSpends(groupId);
+        let expensesAll = await getAllSpends(groupId);
 
         // calcul soldes individuels
-        const balances= calculateBalance(expenses);
+        const balances= await calculateBalance(expensesAll);
         
         // generer la liste des remboucements
-        const repayments = generateReimbursementList(balances, groupId);
+        const repayments = await generateReimbursementList(balances, groupId);
+
+        console.log(`repayments ${JSON.stringify(repayments, null, 2)}`);
 
         res.status(200).json({message: 'Liste des remboussement remboussement', repayments})
         

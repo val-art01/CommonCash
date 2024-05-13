@@ -9,7 +9,7 @@ import Group from '../models/Groups.js';
  * @param {string[]} admins - Les identifiants des administrateurs du groupe.
  * @returns {Promise<object>} - Une promesse résolue avec l'objet du groupe créé.
  * @throws {Error} - Une erreur si la création du groupe échoue.
- */
+*/
 export const registerGroup = async (name, description, admin ) => {
   
   // Créer un groupe
@@ -34,7 +34,7 @@ export const registerGroup = async (name, description, admin ) => {
  *
  * @returns {Promise<object[]>} - Une promesse résolue avec la liste des groupes.
  * @throws {Error} - Une erreur si la récupération des groupes échoue.
- */
+*/
 export const getAllGroup = async () => {
   try {
     const groups = await Group.find();
@@ -50,7 +50,7 @@ export const getAllGroup = async () => {
  * @param {string} groupId - L'identifiant du groupe à récupérer.
  * @returns {Promise<object|null>} - Une promesse résolue avec les détails du groupe, ou null si le groupe n'est pas trouvé.
  * @throws {Error} - Une erreur si la récupération du groupe échoue.
- */
+*/
 export const getGroupById = async (groupId) => {
   try {
     const group = await Group.findById(groupId).lean(); 
@@ -66,7 +66,7 @@ export const getGroupById = async (groupId) => {
  * @param {string} name - L'identifiant du groupe à récupérer.
  * @returns {Promise<object|null>} - Une promesse résolue avec les détails du groupe, ou null si le groupe n'est pas trouvé.
  * @throws {Error} - Une erreur si la récupération du nom de groupe échoue.
- */
+*/
 export const getGroupByName = async (name) => {
   try {
     const groupName = await Group.findOne({ name }).lean(); 
@@ -83,7 +83,7 @@ export const getGroupByName = async (name) => {
  * @param {object} updatedDetails - Les détails mis à jour du groupe.
  * @returns {Promise<object>} - Une promesse résolue avec les détails du groupe mis à jour.
  * @throws {Error} - Une erreur si la modification du groupe échoue.
- */
+*/
 export const editGroup = async (groupId, updatedDetails) => {
   const {name, description} = updatedDetails
   try {
@@ -104,7 +104,7 @@ export const editGroup = async (groupId, updatedDetails) => {
  * @param {string} groupId - L'identifiant du groupe à supprimer.
  * @returns {Promise<void>} - Une promesse résolue une fois que le groupe est supprimé.
  * @throws {Error} - Une erreur si la suppression du groupe échoue.
- */
+*/
 export const deleteGroup = async (groupId) => {
   try {
     await Group.findByIdAndDelete(groupId);
@@ -119,7 +119,7 @@ export const deleteGroup = async (groupId) => {
  * @param {Array.<string>} memberIds - Les IDs des membres à ajouter.
  * @returns {Promise} Une promesse qui se résout avec le groupe mis à jour après l'ajout des membres.
  * @throws {Error} Lance une erreur si une erreur se produit lors de l'ajout des membres au groupe.
- */
+*/
 export const addMembersToGroup = async (groupId, memberIds) =>{
   try{
     //  Récupérer le groupe

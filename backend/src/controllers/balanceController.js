@@ -10,10 +10,10 @@ import {getAllSpends} from './../services/expenseService.js';
 export const getBalances = async (req, res) =>{
     try {
         const { groupId } = req.params;
-        expenses = getAllSpends(groupId);
+        let expensesAll = await getAllSpends(groupId);
 
         // calcul soldes individuels
-        const balances= calculateBalance(expenses);
+        const balances= await calculateBalance(expensesAll);
       
         res.status(200).json({message: 'solde individuel', balances})
         

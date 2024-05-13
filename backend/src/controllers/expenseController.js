@@ -46,7 +46,6 @@ export const createSpend = async (req, res) =>{
 export const getGroupSpends = async (req, res) => {
     try {
         const { groupId } = req.params;
-        console.log(`groupId: ${groupId}`)
         const expenses = await getAllSpends(groupId)
         res.status(200).json({ expenses });
     } catch (error) {

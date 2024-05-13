@@ -1,20 +1,13 @@
-import User from "./models/Users";
-import bcrypt from "bcrypt";
-import crypto from "crypto";
+import User from "./../models/Users.js";
 
-export const registerUser = async (userData) => {
-    const { name, email, password } = userData;
-
+export const registerUser = async (name, email, password, ivValue) => {
     try {
-        // Générer une valeur pour le champ 'iv'
-        const ivValue = crypto.randomBytes(16).toString('hex');
-        const passwordHash = await bcrypt.hash(password, 10);
-
+        
         // Créer un nouvel utilisateur
         const newUser = new User({
             name,
             email,
-            password: passwordHash,
+            password,
             iv: ivValue,
         });
 

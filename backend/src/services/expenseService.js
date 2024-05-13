@@ -11,7 +11,7 @@ import Expense from "../models/Expense.js";
  * @returns {Promise<object>} - La dépense ajoutée à la base de données.
  * @throws {Error} - Une erreur est levée si l'ajout de la dépense échoue. 
 */
-export const addSpend = async (title, amount, receiptFile, category, payingMember, groupId, membersInvolved) => {
+export const addSpend = async (title, amount, /*receiptFile,*/ category, payingMember, groupId, membersInvolved) => {
     try {
         // Convertir payingMember en ObjectId
         // payingMember = mongoose.Types.ObjectId(payingMember);
@@ -24,7 +24,7 @@ export const addSpend = async (title, amount, receiptFile, category, payingMembe
         const newSpend = new Expense({
             title,
             amount,
-            receipts: [receiptFile.filename],
+            // receipts: [receiptFile.filename],
             category,
             payingMember,
             groupId,
@@ -46,10 +46,10 @@ export const addSpend = async (title, amount, receiptFile, category, payingMembe
 */
 export const getAllSpends = async (groupId) => {
     try {
-      const spends = await Expense.find({groupId}).populate('payingMember membersInvolveds.member');
-      return spends;
+        const spends = await Expense.find({groupId}).populate('payingMember membersInvolveds.member');
+        return spends;
     } catch (error) {
-      throw error;
+        throw error;
     }
 };
 
