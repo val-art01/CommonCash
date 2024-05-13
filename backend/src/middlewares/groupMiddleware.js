@@ -8,7 +8,7 @@ import {getGroupById, getGroupByName} from './../services/groupService.js';
  * @param {Object} res - L'objet de la réponse Express.
  * @param {function} next - La fonction pour passer au middleware suivant.
  * @returns {void}
- */
+*/
 const validateGroupName = async (req, res, next) => {
   const { name, members } = req.body;
   
@@ -60,14 +60,14 @@ const validateGroupChamps = (req, res, next) => {
  * @param {Object} res - L'objet de la réponse Express.
  * @param {function} next - La fonction pour passer au middleware suivant.
  * @returns {void}
- */
+*/
 const existGroup = async (req, res, next) => {
   const { id } = req.params;
   const loggedInUserId = req.user._id.toString(); 
   const { groupId } = req.body;
 
   try {  
-    console.log(`groupId: ${groupId}`);
+    // console.log(`groupId: ${groupId}`);
     // Récupérer le groupe par son ID
     const groupIdOK = id || groupId;
     const group = await getGroupById(groupIdOK);
@@ -98,7 +98,7 @@ const existGroup = async (req, res, next) => {
  * @param {Object} res - L'objet de la réponse Express.
  * @param {function} next - La fonction pour passer au middleware suivant.
  * @returns {void}
- */
+*/
 const checkGroupManagementauthorisations = async (req, res, next) => {
   const { id } = req.params;
   const { members } = req.body;
@@ -140,7 +140,7 @@ const checkGroupManagementauthorisations = async (req, res, next) => {
  * Vérifie si les utilisateurs ont un compte.
  * @param {Array} userIds - Les IDs des utilisateurs à vérifier.
  * @returns {Array} Les IDs des utilisateurs qui n'ont pas de compte.
- */
+*/
 const checkUsersExistence = async (userIds) =>{
   try {
     // Convertir les chaînes en objets ObjectId

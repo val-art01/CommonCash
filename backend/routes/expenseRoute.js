@@ -2,7 +2,7 @@ import express from 'express';
 import multer from 'multer';
 import {createSpend, getGroupSpends, getSpendDetail, searchReceipts} from '../src/controllers/expenseController.js';
 import { authentificationWithoutId } from '../src/middlewares/authMiddleware.js';
-import {validateAmountDesc, isAvailable} from '../src/middlewares/expenseMiddleware.js';
+import {validateAmount, isAvailable} from '../src/middlewares/expenseMiddleware.js';
 import {existGroup} from '../src/middlewares/groupMiddleware.js';
 
 /**
@@ -39,7 +39,7 @@ const uploadReceipts = upload.single('receipts');
  *               data:
  *                 spend: { ... }
  */
-router.post('/create', authentificationWithoutId, existGroup, validateAmountDesc, uploadReceipts, createSpend);
+router.post('/create', authentificationWithoutId, existGroup, validateAmount, uploadReceipts, createSpend);
 
 /**
  * @swagger

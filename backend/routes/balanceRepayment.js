@@ -1,6 +1,7 @@
 import express from 'express';
 import {getBalances} from '../src/controllers/balanceController.js'
 import {getRepayments} from '../src/controllers/RepaymentController.js';
+import { authentificationWithoutId } from '../src/middlewares/authMiddleware.js';
 
 /**
  * @swagger
@@ -34,7 +35,7 @@ const router = express.Router();
  *               message: Individual balances retrieved successfully
  *               balances: { ... }
 */
-router.get('/balances/:groupId', getBalances);
+router.get('/balances/:groupId', authentificationWithoutId, getBalances);
 
 /**
  * @swagger
@@ -63,7 +64,7 @@ router.get('/balances/:groupId', getBalances);
  *                 items:
  *                   $ref: '#/components/schemas/Refund'
 */
-router.get('/repayments/:groupId', getRepayments);
+router.get('/repayments/:groupId', authentificationWithoutId, getRepayments);
 
 /**
  * @swagger
