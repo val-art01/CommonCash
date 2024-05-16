@@ -1,6 +1,7 @@
 import User from './../models/Users.js';
 import bcrypt from "bcrypt";
 import {generateTokenAndSave, ivValue} from '../services/authService.js'
+import { registerUser } from './../services/userService.js';
 
 /**
  * Contrôleur pour l'inscription d'un nouvel utilisateur.
@@ -11,17 +12,8 @@ import {generateTokenAndSave, ivValue} from '../services/authService.js'
 export const register = async (req, res) =>{
     const { name, email, password } = req.body
     try{
-        // const ivValue = crypto.randomBytes(16).toString('hex');
         const passwordAxe = await bcrypt.hash(password, 10);
-
-        // Créer un nouvel utilisateur
-        const newUser = new User({
-            name,
-            email,
-            password: passwordAxe,
-            iv: ivValue
-        });
-
+        const newUser = await registerUser(name, email, passwordAxe, ivValue)
         const authToken = await generateTokenAndSave(newUser);
 
         res.status(201).json({ message: 'Compte utilisateur créé avec succès', newUser, authToken});

@@ -8,8 +8,7 @@ import {validateGroupName, validateGroupChamps, existGroup, checkGroupManagement
  * tags:
  *   name: Group
  *   description: API operations related to Goups
- */
-
+*/
 const router = express.Router()
 
 /**
@@ -72,7 +71,7 @@ router.post('/create', authentificationWithoutId, validateGroupName, createGroup
  *                   "members": [],
  *                   "admins": [],
  *                 }
- */
+*/
 router.get('/', getAllGroups);
 
 /**
@@ -99,7 +98,7 @@ router.get('/', getAllGroups);
  *               message: Successfully retrieved group
  *               data:
  *                 group: { ... }
- */
+*/
 router.get('/:id', authentificationWithoutId, existGroup, getGroupByIds);
 
 // route pour inviter un joueur dans un groupe
@@ -135,7 +134,7 @@ router.get('/:id', authentificationWithoutId, existGroup, getGroupByIds);
  *               message: Members added to the group successfully
  *               data:
  *                 group: { ... }
- */           
+*/           
 router.put('/add-members/:id', authentificationWithoutId, checkGroupManagementauthorisations, addMembers);
 
 /**
@@ -173,7 +172,7 @@ router.put('/add-members/:id', authentificationWithoutId, checkGroupManagementau
  *               message: Group information updated successfully
  *               data:
  *                 group: { ... }
- */
+*/
 router.put('/:id', authentificationWithoutId, validateGroupChamps, updateGroups);
 
 /**
@@ -198,7 +197,7 @@ router.put('/:id', authentificationWithoutId, validateGroupChamps, updateGroups)
  *           application/json:
  *             example:
  *               message: Group deleted successfully
- */
+*/
 router.delete('/:id', authentificationWithoutId, existGroup, deleteGroups);
 
 /**
@@ -225,6 +224,6 @@ router.delete('/:id', authentificationWithoutId, existGroup, deleteGroups);
  *       required:
  *         - name
  *         - admins
- */
+*/
 
 export default router
