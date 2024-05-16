@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 const apiClient = axios.create({
     baseURL: 'http://localhost:8080/',
     headers: {
@@ -15,7 +16,7 @@ export default {
         return apiClient.post('/users/register', data);
     },
     login(data) {
-        return apiClient.post('/login', data);
+        return apiClient.post('/auht/login', data);
     },
 }
 

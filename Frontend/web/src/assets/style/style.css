@@ -29,7 +29,21 @@ v-application {
 .v-theme--light .bg-gray{
   background: linear-gradient(to left, black, rgb(99, 99, 236));
  
-} */
+} 
+
+.v-sheet{
+  background-color:  linear-gradient(to left, black, rgb(99, 99, 236));
+ 
+    color: rgb(255, 255, 255);
+    caret-color: rgb(255, 255, 255);
+
+
+}
+
+
+ 
+
+
   
   /* Ajoutez d'autres styles personnalisés selon vos besoins */
  

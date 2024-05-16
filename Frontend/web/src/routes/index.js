@@ -12,7 +12,7 @@ import SoldeComponent from '@/views/SoldeComponent.vue';
 import MessagerieComponent from '@/views/MessagerieComponent.vue';
 import StatistiqueComponent from '@/views/StatistiqueComponent.vue';
 import MonProfilComponent from '@/views/MonProfilComponent.vue';
-import Sidebar from '@/components/Sidebar.vue';
+//import navbar from '@/components/navbar.vue';//
 
 
 const routes = [
@@ -28,7 +28,7 @@ const routes = [
   { path: '/messagerie',name: 'Messagerie',component: MessagerieComponent,},
   { path: '/statistique',name: 'Statistique',component: StatistiqueComponent,},
   { path: '/mon-profil',name: 'Mon profil',component: MonProfilComponent,},
-  { path: '/sidebar',name: 'Sidebar',component: Sidebar,},
+  //{ path: '/navbar',name: 'navbar',component: navbar,},
 
     // ...
   
