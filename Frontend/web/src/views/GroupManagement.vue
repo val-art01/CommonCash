@@ -1,305 +1,452 @@
 <template>
   <v-app id="inspire">
-  
+    <v-navigation-drawer v-model="drawer" color="#2A0050">
+      <v-img height="172" class="pa-4" src="https://fr.pngtree.com/freepng/automatic-floating-bubble-illustration_4701485.html">
+        <div class="text-center">
+          <h2 class="white--text" color="#4A148C">Donia Laajili</h2>
+        </div>
+      </v-img>
+      <v-divider></v-divider>
+      <router-link v-for="[icon, text] in links" :key="icon" :to="{ name: text }">
+        <v-list-item :prepend-icon="icon" link class="custom-list-item">
+          <v-list-item-title>{{ text }}</v-list-item-title>
+        </v-list-item>
+      </router-link>
+    </v-navigation-drawer>
 
-    <div>
-    <navbar />
-   </div>
+    <v-app-bar app color="#4A148C" elevate-on-scroll>
+      <v-app-bar-nav-icon @click="toggleDrawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>CommonCash</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-text-field v-model="search" append-icon="mdi-magnify" label="Recherche" single-line hide-details></v-text-field>
+      <v-menu location="bottom right" transition="slide-y-transition">
+        <template v-slot:activator="{ props }">
+          <v-btn icon v-bind="props" class="text-none">
+            <v-badge content="2" color="error">
+              <v-icon>mdi-bell-outline</v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+        <v-list elevation="1" lines="three" density="compact" max-width="400">
+          <v-list-subheader>Notifications</v-list-subheader>
+          <v-list-item v-for="(message, i) in messages" :key="i" @click="">
+            <template v-slot:prepend>
+              <v-avatar size="40" :color="message.color">
+                <v-icon color="white">{{ message.icon }}</v-icon>
+              </v-avatar>
+            </template>
+            <template v-slot:append>
+              <div class="full-h d-flex align-center">
+                <span class="text-body-2 text-grey">{{ message.time }}</span>
+              </div>
+            </template>
+            <div>
+              <v-list-item-title class="font-weight-bold text-primary">{{ message.title }}</v-list-item-title>
+              <v-list-item-subtitle>{{ message.subtitle }}</v-list-item-subtitle>
+            </div>
+          </v-list-item>
+          <div class="text-center py-5">
+            <v-btn size="small" variant="elevated" elevation="1">See all</v-btn>
+          </div>
+        </v-list>
+      </v-menu>
 
-  <v-sheet color="#6A1B9A" class="pa-4 fill-height">
-  <v-container fluid>
-    <v-row align="center" justify="end" style="height: 80vh; align-items: center;">
+      <v-menu left bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-badge dot location="bottom right" offset-x="3" offset-y="3" color="success" bordered>
+            <v-avatar class="cursor-pointer" color="primary" variant="tonal">
+              <v-icon>mdi-account-circle</v-icon>
+              <v-menu activator="parent" width="230" location="bottom end" offset="14px">
+                <v-list>
+                  <v-list-item>
+                    <template #prepend>
+                      <v-list-item-action start>
+                        <v-badge dot location="bottom right" offset-x="3" offset-y="3" color="success">
+                          <v-avatar color="primary" variant="tonal">
+                            <v-icon>mdi-account-circle</v-icon>
+                          </v-avatar>
+                        </v-badge>
+                      </v-list-item-action>
+                    </template>
+                    <v-list-item-title class="font-weight-semibold">Donia Laajili</v-list-item-title>
+                    <v-list-item-subtitle>Admin</v-list-item-subtitle>
+                  </v-list-item>
+                  <v-divider class="my-2" />
+                  <v-list-item link>
+                    <template #prepend>
+                      <v-icon class="me-2" icon="ri-user-line" size="22" />
+                    </template>
+                    <v-list-item-title>Profile</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item link>
+                    <template #prepend>
+                      <v-icon class="me-2" icon="ri-settings-4-line" size="22" />
+                    </template>
+                    <v-list-item-title>Settings</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item link>
+                    <template #prepend>
+                      <v-icon class="me-2" icon="ri-money-dollar-circle-line" size="22" />
+                    </template>
+                    <v-list-item-title>Pricing</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item link>
+                    <template #prepend>
+                      <v-icon class="me-2" icon="ri-question-line" size="22" />
+                    </template>
+                    <v-list-item-title>FAQ</v-list-item-title>
+                  </v-list-item>
+                  <v-divider class="my-2" />
+                  <v-list-item to="/login">
+                    <template #prepend>
+                      <v-icon class="me-2" icon="ri-logout-box-r-line" size="22" />
+                    </template>
+                    <v-list-item-title>Logout</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-avatar>
+          </v-badge>
+        </template>
+      </v-menu>
+    </v-app-bar>
+    
+    
 
-      <!-- Bouton pour ajouter un membre -->
-      <v-btn icon @click="showInviteCard">
-        <v-icon>mdi-account-plus</v-icon>
-      </v-btn>
+   
 
-      <!-- Carte pour inviter un membre -->
-      <v-col lg="4" cols="12" class="ml-3" v-if="showInvite">
-        <v-card elevation="2" class="rounded-lg mb-3">
-          <v-card-title>
-            Inviter un Nouveau Membre
-          </v-card-title>
-          <v-card-text>
-            <v-form @submit.prevent="inviteMember">
-              <v-select
-                v-model="selectedGroup"
-                :items="groups"
-                item-text="name"
-                label="Sélectionnez un Groupe"
-              ></v-select>
-              <v-text-field v-model="newMemberName" label="Nom du Membre"></v-text-field>
-              <v-btn @click="inviteMember(selectedGroupDetails.id)">Inviter</v-btn>
-              
-            </v-form>
-          </v-card-text>
-        </v-card>
-      </v-col>
-
-      <!-- Liste des groupes -->
-      <v-col lg="6" cols="12">
-        <v-data-table
-          :headers="tableHeaders"
-          :items="groups"
-          :items-per-page="5"
-          class="elevation-1"
-        >
-          <template v-slot:top>
-            <v-toolbar flat>
-              <v-toolbar-title>Liste des groupes</v-toolbar-title>
-              <v-divider class="mx-4" inset vertical></v-divider>
-              <v-spacer></v-spacer>
-              <v-dialog v-model="dialog" max-width="600px">
-<template v-slot:activator="{ on, attrs }">
-<v-form @submit.prevent="createGroup">
-  <v-text-field v-model="newGroupName" label="Nom du Groupe"></v-text-field>
-  <v-btn type="submit" class="mt-2 ml-9">Créer</v-btn>
-</v-form>
-</template>
-<v-card>
-  <v-card-title>
-    <span class="headline">{{ formTitle }}</span>
-  </v-card-title>
-  <v-card-text>
     <v-container>
       <v-row>
-        <v-col>
-          <v-text-field v-model="editedItem.name" class="mt-2 ml-0" label="Nom du Groupe"></v-text-field>
+        <v-col cols="12" md="4">
+          <v-card>
+            <v-card-title>Group Management</v-card-title>
+            <v-card-text>
+              <v-text-field v-model="newGroupName" label="New Group Name"></v-text-field>
+              <v-btn @click="createGroup" color="primary">Create Group</v-btn>
+              <v-list>
+                <v-list-item v-for="group in groups" :key="group.id">
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      <v-text-field v-if="editingGroupId === group.id" v-model="group.name" @blur="saveGroup(group)" @keyup.enter="saveGroup(group)"></v-text-field>
+                      <span v-else @dblclick="editGroup(group.id)">{{ group.name }}</span>
+                    </v-list-item-title>
+                    <v-list-item-action>
+                      <v-btn icon @click="deleteGroup(group.id)">
+                        <v-icon>mdi-delete</v-icon>
+                      </v-btn>
+                    </v-list-item-action>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-col>
+        <v-col cols="12" md="8">
+          <v-card>
+            <v-card-title>Group Chat</v-card-title>
+            <v-card-text>
+              <v-select v-model="selectedGroup" :items="groups" item-text="name" item-value="id" label="Select Group"></v-select>
+              <div v-if="selectedGroup">
+                <v-text-field v-model="newMessage" label="New Message" @keyup.enter="sendMessage"></v-text-field>
+                <v-btn @click="sendMessage" color="primary">Send</v-btn>
+                <v-list>
+                  <v-list-item v-for="message in groupMessages[selectedGroup]" :key="message.id">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ message.text }}</v-list-item-title>
+                      <v-list-item-subtitle>{{ message.timestamp }}</v-list-item-subtitle>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
+            </v-card-text>
+          </v-card>
+          <v-card>
+            <v-card-title>Add Member to Group</v-card-title>
+            <v-card-text>
+              <v-select v-model="selectedMember" :items="members" item-text="name" item-value="id" label="Select Member"></v-select>
+              <v-btn @click="addMemberToGroup" color="primary">Add Member</v-btn>
+              <div v-if="selectedGroup">
+                <v-subheader>Members in Group</v-subheader>
+                <v-list>
+                  <v-list-item v-for="member in groupMembers[selectedGroup]" :key="member.id">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ member.name }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
+            </v-card-text>
+          </v-card>
+          <v-card>
+            <v-card-title>Group Information</v-card-title>
+            <v-card-text>
+              <div v-if="selectedGroup">
+                <h3>Group: {{ groupInfo.name }}</h3>
+                <v-subheader>Members</v-subheader>
+                <v-list>
+                  <v-list-item v-for="member in groupInfo.members" :key="member.id">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ member.name }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+                <v-subheader>Expenses</v-subheader>
+                <v-list>
+                  <v-list-item v-for="expense in groupInfo.expenses" :key="expense.id">
+                    <v-list-item-content>
+                      <v-list-item-title>{{ expense.description }} - ${{ expense.amount }}</v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </div>
+            </v-card-text>
+          </v-card>
         </v-col>
       </v-row>
     </v-container>
-  </v-card-text>
-  <v-card-actions>
-    <v-spacer></v-spacer>
-    <v-btn color="blue darken-1" text @click="close">Annuler</v-btn>
-    <v-btn color="blue darken-1" text @click="save">Enregistrer</v-btn>
-  </v-card-actions>
-</v-card>
-</v-dialog>
-            </v-toolbar>
-          </template>
-          <template v-slot:item.actions="{ item }">
-            <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
-            <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
-          </template>
-          <template v-slot:item.details="{ item }">
-<v-icon small @click="showDetails(item)">mdi-information</v-icon>
-</template>
-        </v-data-table>
-      </v-col>
-    </v-row>
-  </v-container>
-
-<div>
-    <chatgroupcard/>
- </div>
-<!-- Nouvelle section pour afficher les détails du groupe sélectionné -->
-
-<v-dialog v-model="showDetailsModal" max-width="800px">
-<v-card>
-<v-card-title>
-  Détails du Groupe {{ selectedGroupDetails.name }}
-</v-card-title>
-<v-card-text>
-  <!-- Affichez ici les détails du groupe, tels que la liste des membres, les dépenses récentes, etc. -->
-  <v-list>
-    <v-list-item-group>
-      <v-list-item v-for="(member, index) in selectedGroupDetails.members" :key="index">
-        <v-list-item-content>
-          <v-list-item-title>{{ member.name }}</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list-item-group>
-  </v-list>
-</v-card-text>
-<v-card-actions>
-  <v-spacer></v-spacer>
-  <v-btn color="blue darken-1" text @click="showDetailsModal = false">Annuler</v-btn>
-</v-card-actions>
-</v-card>
-<!-- Affichez ici les détails du groupe, tels que la liste des membres, les dépenses récentes, etc. -->
-<v-list>
-            <!-- Liste des membres 
-            <v-list-item-group>
-              <v-list-item v-for="(member, index) in selectedGroupDetails.members" :key="index">
-                <v-list-item-content>
-                  <v-list-item-title>{{ member.name }}</v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </v-list-item-group>-->
-
-            <!-- Dépenses récentes -->
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Dépenses Récentes</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item v-for="(expense, index) in selectedGroupDetails.recentExpenses" :key="index">
-              <v-list-item-content>
-                <v-list-item-title>{{ expense.title }} - {{ expense.amount }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <!-- Soldes individuels -->
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Soldes Individuels</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-list-item v-for="(balance, index) in selectedGroupDetails.individualBalances" :key="index">
-              <v-list-item-content>
-                <v-list-item-title>{{ balance.member }} - {{ balance.balance }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-
-            <!-- Statistiques globales -->
-            <v-list-item>
-              <v-list-item-content>
-                <v-list-item-title>Statistiques Globales</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <!-- Ajoutez vos statistiques globales ici -->
-          </v-list>
-       
-</v-dialog>
-
-
-</v-sheet>
-
-</v-app>
+  </v-app>
 </template>
 
-<script setup>
+<script>
+import { ref, reactive, computed, onMounted } from 'vue';
+import axios from 'axios';
 
-import { ref, reactive, onMounted } from 'vue';
-import chatgroupcard from './chatgroupcard.vue';
-import navbar from './navbar.vue';
-const links = [
-['mdi-view-dashboard', 'Dashboard'],
-['mdi-cash-multiple', 'Nos Depenses'],
-['mdi-account-group', 'GroupManagement'],
-['mdi-cash-refund', 'Remboursement'],
-['mdi-currency-usd', 'Solde'],
-['mdi-email', 'Messagerie'],
-['mdi-chart-bar', 'Statistique'],
-['mdi-account-circle', 'Mon profil'],
+export default {
+  setup() {
+    const links = [
+      ['mdi-view-dashboard', 'Dashboard'],
+      ['mdi-cash-multiple', 'Nos Depenses'],
+      ['mdi-account-group', 'GroupManagement'],
+      ['mdi-cash-refund', 'Remboursement'],
+      ['mdi-currency-usd', 'Solde'],
+      ['mdi-email', 'Messagerie'],
+      ['mdi-chart-bar', 'Statistique'],
+      ['mdi-account-circle', 'Mon profil'],
+    ];
 
-];
+    const drawer = ref(false);
+    const search = ref('');
+    const menu = ref(false);
+    const profileMenu = ref(false);
 
-const drawer = ref(null);
-const activityLog = ref([
-{ title: 'Item 1', amount: 10, color: 'blue' },
-{ title: 'Item 2', amount: 15, color: 'green' },
-// Ajoutez d'autres éléments si nécessaire
-]);
+    const newGroupName = ref('');
+    const newMessage = ref('');
+    const groups = ref([]);
+    const groupMessages = reactive({});
+    const groupMembers = reactive({});
+    const groupExpenses = reactive({});
+    const selectedGroup = ref(null);
+    const editingGroupId = ref(null);
 
-const currentUser = ref(''); // Initialisez avec une valeur par défaut
+    const members = ref([
+      { id: 1, name: 'Alice' },
+      { id: 2, name: 'Bob' },
+      { id: 3, name: 'Charlie' },
+    ]);
+    const selectedMember = ref(null);
 
-const handleLogin = (username) => {
-// Mettez à jour le nom de l'utilisateur lorsqu'il se connecte
-currentUser.value = username;
+    const fetchGroups = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/groups');
+        groups.value = response.data;
+        groups.value.forEach(group => {
+          groupMessages[group.id] = [];
+          groupMembers[group.id] = [];
+          groupExpenses[group.id] = [];
+        });
+      } catch (error) {
+        console.error('Failed to fetch groups:', error);
+      }
+    };
+
+    const createGroup = async () => {
+      try {
+        const response = await axios.post('http://localhost:3000/groups', { name: newGroupName.value });
+        groups.value.push(response.data);
+        groupMessages[response.data.id] = [];
+        groupMembers[response.data.id] = [];
+        groupExpenses[response.data.id] = [];
+        newGroupName.value = '';
+      } catch (error) {
+        console.error('Failed to create group:', error);
+      }
+    };
+
+    const deleteGroup = async (id) => {
+      try {
+        await axios.delete(`http://localhost:3000/groups/${id}`);
+        groups.value = groups.value.filter(group => group.id !== id);
+        delete groupMessages[id];
+        delete groupMembers[id];
+        delete groupExpenses[id];
+      } catch (error) {
+        console.error('Failed to delete group:', error);
+      }
+    };
+
+    const editGroup = (id) => {
+      editingGroupId.value = id;
+    };
+
+    const saveGroup = async (group) => {
+      try {
+        await axios.put(`http://localhost:3000/groups/${group.id}`, { name: group.name });
+        editingGroupId.value = null;
+      } catch (error) {
+        console.error('Failed to save group:', error);
+      }
+    };
+
+    const sendMessage = async () => {
+      if (selectedGroup.value && newMessage.value.trim()) {
+        try {
+          const response = await axios.post(`http://localhost:3000/groups/${selectedGroup.value}/messages`, {
+            text: newMessage.value,
+            timestamp: new Date().toLocaleString(),
+          });
+          groupMessages[selectedGroup.value].push(response.data);
+          newMessage.value = '';
+        } catch (error) {
+          console.error('Failed to send message:', error);
+        }
+      }
+    };
+
+    const addMemberToGroup = async () => {
+      if (selectedGroup.value && selectedMember.value) {
+        try {
+          const response = await axios.post(`http://localhost:3000/groups/${selectedGroup.value}/members`, { memberId: selectedMember.value });
+          groupMembers[selectedGroup.value].push(response.data);
+          selectedMember.value = null;
+        } catch (error) {
+          console.error('Failed to add member to group:', error);
+        }
+      }
+    };
+
+    const fetchGroupInfo = async () => {
+      if (selectedGroup.value) {
+        try {
+          const response = await axios.get(`http://localhost:3000/groups/${selectedGroup.value}`);
+          const { name, members, expenses } = response.data;
+          groupInfo.value = { name, members, expenses };
+        } catch (error) {
+          console.error('Failed to fetch group info:', error);
+        }
+      }
+    };
+
+    const groupInfo = computed(() => {
+      if (selectedGroup.value) {
+        const group = groups.value.find(g => g.id === selectedGroup.value);
+        return {
+          name: group ? group.name : '',
+          members: groupMembers[selectedGroup.value] || [],
+          expenses: groupExpenses[selectedGroup.value] || [],
+        };
+      }
+      return {
+        name: '',
+        members: [],
+        expenses: [],
+      };
+    });
+
+    const toggleDrawer = () => {
+      drawer.value = !drawer.value;
+    };
+
+    const logout = () => {
+      // Logique pour la déconnexion
+    };
+
+    const messages = [
+      {
+        title: "Brunch this weekend?",
+        color: "primary",
+        icon: "mdi-account-circle",
+        subtitle: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, repudiandae?",
+        time: "3 min",
+      },
+      {
+        title: "Summer BBQ",
+        color: "success",
+        icon: "mdi-email-outline",
+        subtitle: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, repudiandae?",
+        time: "3 min",
+      },
+      {
+        title: "Oui oui",
+        color: "teal lighten-1",
+        icon: "mdi-airplane-landing",
+        subtitle: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, repudiandae?",
+        time: "4 min",
+      },
+      {
+        title: "Disk capacity is at maximum",
+        color: "teal accent-3",
+        icon: "mdi-server",
+        subtitle: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, repudiandae?",
+        time: "3 hr",
+      },
+      {
+        title: "Recipe to try",
+        color: "blue-grey lighten-2",
+        icon: "mdi-noodles",
+        subtitle: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sint, repudiandae?",
+        time: "8 hr",
+      },
+    ];
+
+    onMounted(() => {
+      fetchGroups();
+    });
+
+    return {
+      links,
+      drawer,
+      search,
+      menu,
+      profileMenu,
+      newGroupName,
+      groups,
+      createGroup,
+      deleteGroup,
+      editGroup,
+      saveGroup,
+      editingGroupId,
+      selectedGroup,
+      newMessage,
+      groupMessages,
+      sendMessage,
+      members,
+      selectedMember,
+      addMemberToGroup,
+      groupMembers,
+      groupExpenses,
+      groupInfo,
+      toggleDrawer,
+      logout,
+      messages,
+    };
+  },
 };
+</script>
 
-const groups = ref([
-{ id: 1, name: 'Groupe 1', members: [{ name: '' }, { name: '' }] },
-{ id: 2, name: 'Groupe 2', members: [{ name: '' }, { name: '' }] },
-// ... Ajoutez d'autres groupes si nécessaire
-]);
 
-const headers = [
-{ text: 'Nom du Groupe', align: 'start', value: 'name' },
-{ text: 'Actions', value: 'actions', sortable: false },
-{ text: 'Détails', value: 'details', sortable: false }, // Nouvelle colonne pour les détails
-];
 
-const editedItem = ref(null);
-const dialog = ref(false);
-const selectedGroupDetails = ref(null);
-
-const formTitle = ref('');
-const tableHeaders = reactive(headers);
-
-const editItem = (item) => {
-selectedGroupDetails.value = item;
-editedItem.value = Object.assign({}, item);
-formTitle.value = 'Modifier le Groupe';
-dialog.value = true;
-};
-
-const deleteItem = (item) => {
-const index = groups.value.indexOf(item);
-groups.value.splice(index, 1);
-};
-
-const close = () => {
-editedItem.value = {};
-dialog.value = false;
-};
-
-const save = () => {
-if (editedItem.value.id === undefined) {
-// Nouveau groupe
-groups.value.push(editedItem.value);
-} else {
-// Modifier le groupe existant
-const index = groups.value.findIndex((g) => g.id === editedItem.value.id);
-groups.value.splice(index, 1, editedItem.value);
+<style scoped>
+#inspire {
+  font-family: 'Roboto', sans-serif;
 }
-
-close();
-};
-
-onMounted(() => {
-// Assurez-vous de modifier ces valeurs pour refléter vos données réelles
-groups.value.forEach((group) => {
-group.actions = true;
-});
-});
-
-const inviteMember = () => {
-if (selectedGroupDetails.value && newMemberName.value) {
-const group = groups.value.find(g => g.id === selectedGroupDetails.value.id);
-if (group) {
-  group.members = group.members || [];
-  group.members.push({ name: newMemberName.value });
-  newMemberName.value = '';
-  showDetailsModal.value = false;  // Fermez la fenêtre modale après l'invitation
+.custom-list-item {
+  color: white;
 }
+.v-list-item__prepend-icon {
+  color: white;
 }
-};
+</style>
 
 
-const newGroupName = ref('');
-const selectedGroup = ref(null);
-const newMemberName = ref('');
-
-const createGroup = () => {
-if (newGroupName.value) {
-const newGroup = { id: groups.value.length + 1, name: newGroupName.value, members: [] };
-groups.value.push(newGroup);
-newGroupName.value = '';
-}
-};
-
-const showInvite = ref(false);
-
-const showInviteCard = () => {
-showInvite.value = !showInvite.value;
-};
-
-const toggleDrawer = () => {
-drawer.value = !drawer.value; // Inverse la valeur actuelle (true devient false, et vice versa)
-};
-
-const showDetails = (item) => {
-selectedGroupDetails.value = item;
-showDetailsModal.value = true;
-};
-
-const showDetailsModal = ref(false);
-
-
-
-
-</script> 
+<style scoped>
+</style>

@@ -200,7 +200,7 @@ const chartConfig = computed(() => {
 </script>
 
 <template>
-  <VCard>
+  <VCard class="custom-height-card">
     <VCardItem>
       <VTabs
         v-model="currentTab"
@@ -218,7 +218,7 @@ const chartConfig = computed(() => {
       </VTabs>
     </VCardItem>
 
-    <VCardText class="d-flex align-center gap-3">
+    <VCardText class="custom-height-card">
       <VAvatar
         size="46"
         rounded
@@ -256,7 +256,7 @@ const chartConfig = computed(() => {
       />
     </VCardText>
 
-    <VCardText class="d-flex align-center justify-center gap-3">
+    <VCardText class="custom-height-card">
       <VProgressCircular
         size="45"
         :model-value="tabData.profitLoss"
@@ -274,3 +274,8 @@ const chartConfig = computed(() => {
     </VCardText>
   </VCard>
 </template>
+
+<style>
+
+
+</style>

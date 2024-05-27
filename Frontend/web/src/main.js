@@ -11,7 +11,7 @@ import 'chart.js'; // Importez Chart.js
 import 'chartkick/chart.js'; // Importez le support Chartkick pour Chart.js
 import VueChartkick from 'vue-chartkick';
 import '@/assets/style/style.css';
-
+import VueApexCharts from 'vue3-apexcharts';
 
 
 // Créez l'application Vue
@@ -32,6 +32,8 @@ const vuetify = createVuetify({
 app.use(vuetify);
 
 app.use(VueChartkick);
+
+app.use(VueApexCharts);
 
 // Montez l'application sur l'élément avec l'ID 'app'
 app.mount('#app');
