@@ -1,32 +1,35 @@
 import axios from 'axios';
 
-const baseURL = 'http://localhost:8080/'; 
+const baseURL = 'http://localhost:8080'; // Ensure no trailing slash
+
+const axiosInstance = axios.create({
+  baseURL: baseURL
+});
 
 export default {
-  // Méthode pour récupérer tous les groupes
+  // Method to get all groups
   getAllGroups() {
-    return axios.get(`${baseURL}/group/all`);
+    return axiosInstance.get('/group/all');
   },
 
-  // Méthode pour créer un nouveau groupe
+  // Method to create a new group
   createGroup(groupData) {
-    return axios.post(`${baseURL}/group/create`, groupData);
+    return axiosInstance.post('/group/create', groupData);
   },
 
-  // Méthode pour récupérer un groupe par son ID
+  // Method to get a group by its ID
   getGroupById(groupId) {
-    return axios.get(`${baseURL}/group/${groupId}`);
+    return axiosInstance.get(`/group/${groupId}`);
   },
 
-  // Méthode pour ajouter des membres à un groupe
+  // Method to add members to a group
   addMembersToGroup(groupId, membersData) {
-    return axios.post(`${baseURL}/group/${groupId}/addMembers`, membersData);
+    return axiosInstance.post(`/group/${groupId}/addMembers`, membersData);
   },
 
-  // Méthode pour supprimer un groupe
+  // Method to delete a group
   deleteGroup(groupId) {
-    return axios.delete(`${baseURL}/group/${groupId}`);
+    return axiosInstance.delete(`/group/${groupId}`);
   }
-
-  
 };
+
