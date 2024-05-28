@@ -207,9 +207,13 @@
   </v-app>
 </template>
 
+
+
+
+
 <script>
 import { ref, reactive, computed, onMounted } from 'vue';
-import axios from 'axios';
+import axiosConfig from '@/services/groupService.js'; 
 
 export default {
   setup() {
@@ -231,56 +235,49 @@ export default {
 
     const newGroupName = ref('');
     const newMessage = ref('');
-    const groups = ref([]);
+    const groups = reactive([]);
     const groupMessages = reactive({});
     const groupMembers = reactive({});
     const groupExpenses = reactive({});
     const selectedGroup = ref(null);
     const editingGroupId = ref(null);
 
-    const members = ref([
-      { id: 1, name: 'Alice' },
-      { id: 2, name: 'Bob' },
-      { id: 3, name: 'Charlie' },
-    ]);
+    const members = reactive([]);
     const selectedMember = ref(null);
 
     const fetchGroups = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/groups');
-        groups.value = response.data;
-        groups.value.forEach(group => {
-          groupMessages[group.id] = [];
-          groupMembers[group.id] = [];
-          groupExpenses[group.id] = [];
-        });
+        const response = await axiosConfig.getAllGroups();
+        groups.push(...response.data);
       } catch (error) {
-        console.error('Failed to fetch groups:', error);
+        console.error('Error fetching groups:', error);
       }
     };
 
     const createGroup = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/groups', { name: newGroupName.value });
-        groups.value.push(response.data);
-        groupMessages[response.data.id] = [];
-        groupMembers[response.data.id] = [];
-        groupExpenses[response.data.id] = [];
+        const response = await axiosConfig.createGroup({ name: newGroupName.value });
+        const newGroup = response.data;
+        groups.push(newGroup);
+        groupMessages[newGroup.id] = [];
+        groupMembers[newGroup.id] = [];
+        groupExpenses[newGroup.id] = [];
         newGroupName.value = '';
       } catch (error) {
-        console.error('Failed to create group:', error);
+        console.error('Error creating group:', error);
       }
     };
 
     const deleteGroup = async (id) => {
       try {
-        await axios.delete(`http://localhost:3000/groups/${id}`);
-        groups.value = groups.value.filter(group => group.id !== id);
+        await axiosConfig.deleteGroup(id);
+        const index = groups.findIndex(group => group.id === id);
+        if (index !== -1) groups.splice(index, 1);
         delete groupMessages[id];
         delete groupMembers[id];
         delete groupExpenses[id];
       } catch (error) {
-        console.error('Failed to delete group:', error);
+        console.error('Error deleting group:', error);
       }
     };
 
@@ -290,24 +287,22 @@ export default {
 
     const saveGroup = async (group) => {
       try {
-        await axios.put(`http://localhost:3000/groups/${group.id}`, { name: group.name });
+        await axiosConfig.updateGroup(group.id, { name: group.name });
         editingGroupId.value = null;
       } catch (error) {
-        console.error('Failed to save group:', error);
+        console.error('Error saving group:', error);
       }
     };
 
     const sendMessage = async () => {
       if (selectedGroup.value && newMessage.value.trim()) {
         try {
-          const response = await axios.post(`http://localhost:3000/groups/${selectedGroup.value}/messages`, {
-            text: newMessage.value,
-            timestamp: new Date().toLocaleString(),
-          });
-          groupMessages[selectedGroup.value].push(response.data);
+          const response = await axiosConfig.sendMessage(selectedGroup.value, { text: newMessage.value });
+          const newMessageData = response.data;
+          groupMessages[selectedGroup.value].push(newMessageData);
           newMessage.value = '';
         } catch (error) {
-          console.error('Failed to send message:', error);
+          console.error('Error sending message:', error);
         }
       }
     };
@@ -315,30 +310,30 @@ export default {
     const addMemberToGroup = async () => {
       if (selectedGroup.value && selectedMember.value) {
         try {
-          const response = await axios.post(`http://localhost:3000/groups/${selectedGroup.value}/members`, { memberId: selectedMember.value });
-          groupMembers[selectedGroup.value].push(response.data);
+          const response = await axiosConfig.addMembersToGroup(selectedGroup.value, { memberId: selectedMember.value });
+          const member = members.find(member => member.id === selectedMember.value);
+          if (member && !groupMembers[selectedGroup.value].some(m => m.id === member.id)) {
+            groupMembers[selectedGroup.value].push(member);
+          }
           selectedMember.value = null;
         } catch (error) {
-          console.error('Failed to add member to group:', error);
+          console.error('Error adding member to group:', error);
         }
       }
     };
 
-    const fetchGroupInfo = async () => {
-      if (selectedGroup.value) {
-        try {
-          const response = await axios.get(`http://localhost:3000/groups/${selectedGroup.value}`);
-          const { name, members, expenses } = response.data;
-          groupInfo.value = { name, members, expenses };
-        } catch (error) {
-          console.error('Failed to fetch group info:', error);
-        }
+    const fetchMembers = async () => {
+      try {
+        const response = await axiosConfig.getAllMembers();
+        members.push(...response.data);
+      } catch (error) {
+        console.error('Error fetching members:', error);
       }
     };
 
     const groupInfo = computed(() => {
       if (selectedGroup.value) {
-        const group = groups.value.find(g => g.id === selectedGroup.value);
+        const group = groups.find(g => g.id === selectedGroup.value);
         return {
           name: group ? group.name : '',
           members: groupMembers[selectedGroup.value] || [],
@@ -400,6 +395,7 @@ export default {
 
     onMounted(() => {
       fetchGroups();
+      fetchMembers();
     });
 
     return {
@@ -433,6 +429,30 @@ export default {
 };
 </script>
 
+<style scoped>
+#inspire {
+  font-family: 'Roboto', sans-serif;
+}
+.custom-list-item {
+  color: white;
+}
+.v-list-item__prepend-icon {
+  color: white;
+}
+</style>
+
+
+<style scoped>
+#inspire {
+  font-family: 'Roboto', sans-serif;
+}
+.custom-list-item {
+  color: white;
+}
+.v-list-item__prepend-icon {
+  color: white;
+}
+</style>
 
 
 <style scoped>
